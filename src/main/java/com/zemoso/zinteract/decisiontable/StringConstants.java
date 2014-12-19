@@ -17,6 +17,8 @@ public class StringConstants {
     private static final String CONDITION_NOT_EQUALS = "notequals";
     private static final String CONDITION_GREATERTHAN_EQUALS = "greaterthanequals";
     private static final String CONDITION_BETWEEN = "between";
+    private static final String CONDITION_IN = "in";
+    private static final String CONDITION_NOTIN = "notin";
 
     private static final String COMPARATOR_LESSTHAN = "lessthan";
     private static final String COMPARATOR_GREATERTHAN = "greaterthan";
@@ -26,6 +28,8 @@ public class StringConstants {
     private static final String COMPARATOR_NOT_EQUALS = "notequals";
     private static final String COMPARATOR_GREATERTHAN_EQUALS = "greaterthanequals";
     private static final String COMPARATOR_BETWEEN = "between";
+    private static final String COMPARATOR_IN = "in";
+    private static final String COMPARATOR_NOTIN = "notin";
 
     public static String getDATATYPE_STRING() {
         return DATATYPE_STRING;
@@ -71,6 +75,14 @@ public class StringConstants {
         return CONDITION_BETWEEN;
     }
 
+    public static String getCONDITION_IN() {
+        return CONDITION_IN;
+    }
+
+    public static String getCONDITION_NOTIN() {
+        return CONDITION_NOTIN;
+    }
+
     public static String getCOMPARATOR_LESSTHAN() {
         return COMPARATOR_LESSTHAN;
     }
@@ -97,6 +109,14 @@ public class StringConstants {
 
     public static String getCOMPARATOR_BETWEEN() {
         return COMPARATOR_BETWEEN;
+    }
+
+    public static String getCOMPARATOR_IN() {
+        return COMPARATOR_IN;
+    }
+
+    public static String getCOMPARATOR_NOTIN() {
+        return COMPARATOR_NOTIN;
     }
 
 }

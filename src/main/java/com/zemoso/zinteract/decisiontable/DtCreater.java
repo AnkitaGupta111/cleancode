@@ -331,13 +331,121 @@ public class DtCreater {
             }
         }
 
-        String notEqualsStringPattern = "(^!=+)(.*)";
+        String inLongPattern = "(^in)(\\s*)(\\d+,\\d+){1,}";
+        r = Pattern.compile(inLongPattern);
+        // Now create matcher object.
+        m = r.matcher(conValue);
+        if (m.find( )) {
+            String group1 = m.group(1);
+            String group2 = m.group(3);
+            if(group1 != null && group2 != null) {
+                InCondition inCondition = new InCondition();
+                inCondition.setComparatorName(StringConstants.getCOMPARATOR_IN());
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.getDATATYPE_LONG());
+                String[] longs = m.group(3).split(",");
+                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                for(String s : longs){
+                    finalCondition = new GenericCondition();
+                    finalCondition.setComparatorName(StringConstants.getCOMPARATOR_EQUALS());
+                    finalCondition.setConditionName(condName);
+                    finalCondition.setDataType(StringConstants.getDATATYPE_LONG());
+                    finalCondition.setConditionValue(Long.valueOf(s).longValue());
+                    list.add(finalCondition);
+                }
+                inCondition.setConditionValue(list);
+                return inCondition;
+            }
+        }
+
+        String notInLongPattern = "(^not)(\\s*)(in)(\\s*)(\\d+,\\d+){1,}";
+        r = Pattern.compile(notInLongPattern);
+        // Now create matcher object.
+        m = r.matcher(conValue);
+        if (m.find( )) {
+            String group1 = m.group(1);
+            String group2 = m.group(3);
+            if(group1 != null && group2 != null && m.group(5) != null) {
+                InCondition inCondition = new InCondition();
+                inCondition.setComparatorName(StringConstants.getCOMPARATOR_NOTIN());
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.getDATATYPE_LONG());
+                String[] longs = m.group(5).split(",");
+                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                for(String s : longs){
+                    finalCondition = new GenericCondition();
+                    finalCondition.setComparatorName(StringConstants.getCOMPARATOR_NOT_EQUALS());
+                    finalCondition.setConditionName(condName);
+                    finalCondition.setDataType(StringConstants.getDATATYPE_LONG());
+                    finalCondition.setConditionValue(Long.valueOf(s).longValue());
+                    list.add(finalCondition);
+                }
+                inCondition.setConditionValue(list);
+                return inCondition;
+            }
+        }
+
+        String inDoublePattern = "(^in)(\\s*)(\\d+\\.\\d+,\\d+\\.\\d+){1,}";
+        r = Pattern.compile(inDoublePattern);
+        // Now create matcher object.
+        m = r.matcher(conValue);
+        if (m.find( )) {
+            String group1 = m.group(1);
+            String group2 = m.group(3);
+            if(group1 != null && group2 != null) {
+                InCondition inCondition = new InCondition();
+                inCondition.setComparatorName(StringConstants.getCOMPARATOR_IN());
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.getDATATYPE_DOUBLE());
+                String[] longs = m.group(3).split(",");
+                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                for(String s : longs){
+                    finalCondition = new GenericCondition();
+                    finalCondition.setComparatorName(StringConstants.getCOMPARATOR_EQUALS());
+                    finalCondition.setConditionName(condName);
+                    finalCondition.setDataType(StringConstants.getDATATYPE_DOUBLE());
+                    finalCondition.setConditionValue(Double.valueOf(s).doubleValue());
+                    list.add(finalCondition);
+                }
+                inCondition.setConditionValue(list);
+                return inCondition;
+            }
+        }
+
+        String notInDoublePattern = "(^not)(\\s*)(in)(\\s*)(\\d+\\.\\d+,\\d+\\.\\d+){1,}";
+        r = Pattern.compile(notInDoublePattern);
+        // Now create matcher object.
+        m = r.matcher(conValue);
+        if (m.find( )) {
+            String group1 = m.group(1);
+            String group2 = m.group(3);
+            if(group1 != null && group2 != null && m.group(5) !=null) {
+                InCondition inCondition = new InCondition();
+                inCondition.setComparatorName(StringConstants.getCOMPARATOR_NOTIN());
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.getDATATYPE_DOUBLE());
+                String[] longs = m.group(5).split(",");
+                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                for(String s : longs){
+                    finalCondition = new GenericCondition();
+                    finalCondition.setComparatorName(StringConstants.getCOMPARATOR_NOT_EQUALS());
+                    finalCondition.setConditionName(condName);
+                    finalCondition.setDataType(StringConstants.getDATATYPE_DOUBLE());
+                    finalCondition.setConditionValue(Double.valueOf(s).doubleValue());
+                    list.add(finalCondition);
+                }
+                inCondition.setConditionValue(list);
+                return inCondition;
+            }
+        }
+
+        String notEqualsStringPattern = "(^!=+)(\\s*)(.*)";
         r = Pattern.compile(notEqualsStringPattern);
         // Now create matcher object.
         m = r.matcher(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
-            String group2 = m.group(2);
+            String group2 = m.group(3);
             if(group1 != null && group2 != null) {
                 finalCondition = new GenericCondition();
                 finalCondition.setDataType(StringConstants.getDATATYPE_STRING());
@@ -348,13 +456,67 @@ public class DtCreater {
             }
         }
 
-        String equalsStringPattern = "(^=*)(.*)";
+        String inStringPattern = "(^in)(\\s*)(.*,.*){1,}";
+        r = Pattern.compile(inStringPattern);
+        // Now create matcher object.
+        m = r.matcher(conValue);
+        if (m.find( )) {
+            String group1 = m.group(1);
+            String group2 = m.group(3);
+            if(group1 != null && group2 != null) {
+                InCondition inCondition = new InCondition();
+                inCondition.setComparatorName(StringConstants.getCOMPARATOR_IN());
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.getDATATYPE_STRING());
+                String[] longs = m.group(3).split(",");
+                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                for(String s : longs){
+                    finalCondition = new GenericCondition();
+                    finalCondition.setComparatorName(StringConstants.getCOMPARATOR_EQUALS());
+                    finalCondition.setConditionName(condName);
+                    finalCondition.setDataType(StringConstants.getDATATYPE_STRING());
+                    finalCondition.setConditionValue(s);
+                    list.add(finalCondition);
+                }
+                inCondition.setConditionValue(list);
+                return inCondition;
+            }
+        }
+
+        String notInStringPattern = "(^not)(\\s*)(in)(\\s*)(.*,.*){1,}";
+        r = Pattern.compile(notInStringPattern);
+        // Now create matcher object.
+        m = r.matcher(conValue);
+        if (m.find( )) {
+            String group1 = m.group(1);
+            String group2 = m.group(3);
+            if(group1 != null && group2 != null && m.group(5) != null) {
+                InCondition inCondition = new InCondition();
+                inCondition.setComparatorName(StringConstants.getCOMPARATOR_NOTIN());
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.getDATATYPE_STRING());
+                String[] longs = m.group(5).split(",");
+                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                for(String s : longs){
+                    finalCondition = new GenericCondition();
+                    finalCondition.setComparatorName(StringConstants.getCOMPARATOR_NOT_EQUALS());
+                    finalCondition.setConditionName(condName);
+                    finalCondition.setDataType(StringConstants.getDATATYPE_STRING());
+                    finalCondition.setConditionValue(s);
+                    list.add(finalCondition);
+                }
+                inCondition.setConditionValue(list);
+                return inCondition;
+            }
+        }
+
+        String equalsStringPattern = "(^=*)(\\s*)(.*)";
         r = Pattern.compile(equalsStringPattern);
         // Now create matcher object.
         m = r.matcher(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
-            String group2 = m.group(2);
+            String group2 = m.group(3);
             if(group1 != null && group2 != null) {
                 finalCondition = new GenericCondition();
                 finalCondition.setDataType(StringConstants.getDATATYPE_STRING());

@@ -28,7 +28,7 @@ public class Main {
 
             // load a properties file
             prop.load(input);
-            dTString = prop.getProperty("dtjson2");
+            dTString = prop.getProperty("dtjson500");
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -48,16 +48,20 @@ public class Main {
         value.put("Con2","2");
         value.put("Con3","50");
         value.put("Con4","99");
-        value.put("Con5","15");
+        value.put("Con5","hey");
         value.put("Con6","1ff");
         value.put("Con7","hhhh");
         value.put("Con8","130");
 
-        long startTime = System.currentTimeMillis();
         execute(value, dTString);
-        long stopTime = System.currentTimeMillis();
-        long elapsedTime = stopTime - startTime;
-        System.out.println("First Time: " + elapsedTime);
+
+//        for(int i=0; i< 50; i++){
+//            long startTime = System.currentTimeMillis();
+//            execute(value, dTString);
+//            long stopTime = System.currentTimeMillis();
+//            long elapsedTime = stopTime - startTime;
+//            System.out.println("First Time: "+i +" "+ elapsedTime);
+//        }
 
 
 //        HashMap<String,String> value1 = new HashMap<String,String>();
@@ -78,48 +82,26 @@ public class Main {
         DtRow row = dtExecutor.execute(s);
 
         if(row != null) {
-
-            Iterator i;
-
-            for (String c : dtExecutor.getDt().getConditions()) {
-                GenericCondition con = (GenericCondition) row.getConditionValues().get(c);
-                if (con.getDataType() == StringConstants.getDATATYPE_LONG()) {
-                    System.out.println(con.getConditionName() + " " + con.getComparatorName() + " " + con.getConditionValue(new Long(1)));
-                }
-                if (con.getDataType() == StringConstants.getDATATYPE_DOUBLE()) {
-                    System.out.println(con.getConditionName() + " " + con.getComparatorName() + " " + con.getConditionValue(new Double(1.5)));
-                }
-                if (con.getDataType() == StringConstants.getDATATYPE_STRING()) {
-                    System.out.println(con.getConditionName() + " " + con.getComparatorName() + " " + con.getConditionValue(""));
-                }
-
-            }
+            System.out.println("Match Found");
+//            Iterator i;
+//
+//            for (String c : dtExecutor.getDt().getConditions()) {
+//                GenericCondition con = (GenericCondition) row.getConditionValues().get(c);
+//                if (con.getDataType() == StringConstants.getDATATYPE_LONG()) {
+//                    System.out.println(con.getConditionName() + " " + con.getComparatorName() + " " + con.getConditionValue(new Long(1)));
+//                }
+//                if (con.getDataType() == StringConstants.getDATATYPE_DOUBLE()) {
+//                    System.out.println(con.getConditionName() + " " + con.getComparatorName() + " " + con.getConditionValue(new Double(1.5)));
+//                }
+//                if (con.getDataType() == StringConstants.getDATATYPE_STRING()) {
+//                    System.out.println(con.getConditionName() + " " + con.getComparatorName() + " " + con.getConditionValue(""));
+//                }
+//
+//            }
         }
         else {
-            System.out.println("No conditions matching");
+            //System.out.println("No conditions matching");
         }
     }
-//
-//        // String to be scanned to find the pattern.
-//        //Greater Than (^>)(\s*\d+)
-//        String line = "> 22";
-//        //String pattern = "(^=*\\s*\\d+$)|(^=*.*)";
-//        String pattern = "(^>)(\\s*)(\\d+$)";
-//        // Create a Pattern object
-//        Pattern r = Pattern.compile(pattern);
-//
-//        // Now create matcher object.
-//        Matcher m = r.matcher(line);
-//        if (m.find( )) {
-//            System.out.println("Found value: " + m.group(0) );
-//            System.out.println("Found value: " + m.group(1) );
-//            System.out.println("Found value: " + m.group(2) );
-//            System.out.println("Found value: " + m.group(3) );
-//            System.out.println("Group count" + m.groupCount());
-//            //System.out.println("Group count1" + line.matches(pattern));
-//            //System.out.println("Group count2" + m.groupCount());
-//        } else {
-//            System.out.println("NO MATCH");
-//        }
 
 }

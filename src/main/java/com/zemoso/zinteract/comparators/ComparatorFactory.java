@@ -7,6 +7,7 @@ public class ComparatorFactory {
 	private static LessThanComparator lessThanC = new LessThanComparator();
 	private static BetweenComparator betweenC = new BetweenComparator();
 	private static InComparator inC = new InComparator();
+	private static NotInComparator notInC = new NotInComparator();
 	private static GreaterThanComparator greaterThanC = new GreaterThanComparator();
 	private static GreaterThanEqualsComparator greaterThanEqualsC = new GreaterThanEqualsComparator();
 	private static LessThanEqualsComparator lessThanEqualsC = new LessThanEqualsComparator();
@@ -45,6 +46,12 @@ public class ComparatorFactory {
 		}
 		else if(StringConstants.getCOMPARATOR_NOT_EQUALS() == keyword){
 			return notEqualsC;
+		}
+		else if(StringConstants.getCOMPARATOR_IN() == keyword){
+			return inC;
+		}
+		else if(StringConstants.getCOMPARATOR_NOTIN() == keyword){
+			return notInC;
 		}
 //		if (keyword) {
 //			//(^[<=>]=*\s*(\d+|\d*.\d+))|(^!=+\s*(\d+|\d*.\d+))|(^[not]*\s*between\s*(\d+|\d*.\d+)\s*and\s*(\d+|\d*.\d+))|(\d+|\d*.\d+)
