@@ -5,9 +5,6 @@ import com.zemoso.zinteract.decisiontable.GenericCondition;
 import com.zemoso.zinteract.decisiontable.StringConstants;
 
 public class EqualsComparator extends Comparator {
-	private long l = 2;
-	private double d = 5;
-	private String s = "a";
 
 	@Override
 	public Boolean satisfies(DtCondition condition,String rhs) {
@@ -17,13 +14,13 @@ public class EqualsComparator extends Comparator {
 			return false;
 		}
 		else if(condition.getDataType() == StringConstants.DATATYPE_DOUBLE){
-			return eCondition.getConditionValue(d) == Double.valueOf(rhs).doubleValue();
+			return eCondition.getConditionValue().getDoubleConditionValue() == Double.valueOf(rhs).doubleValue();
 		}
 		else if(condition.getDataType() == StringConstants.DATATYPE_LONG){
-			return eCondition.getConditionValue(l) == Long.valueOf(rhs).longValue();
+			return eCondition.getConditionValue().getLongConditionValue() == Long.valueOf(rhs).longValue();
 		}
 		else if(condition.getDataType() == StringConstants.DATATYPE_STRING){
-			return eCondition.getConditionValue(s).equals(rhs);
+			return eCondition.getConditionValue().getStringConditionValue().equals(rhs);
 		}
 
 		return false;

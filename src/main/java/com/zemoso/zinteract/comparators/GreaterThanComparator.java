@@ -6,9 +6,6 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
 
 public class GreaterThanComparator extends Comparator {
 
-	private long l = 2;
-	private double d = 5;
-
 	@Override
 	public Boolean satisfies(DtCondition condition,String rhs) {
 		GenericCondition greaterThanCondition = (GenericCondition) condition;
@@ -17,10 +14,10 @@ public class GreaterThanComparator extends Comparator {
 			return false;
 		}
 		else if(condition.getDataType() == StringConstants.DATATYPE_DOUBLE){
-			return greaterThanCondition.getConditionValue(d) < Double.valueOf(rhs).doubleValue();
+			return greaterThanCondition.getConditionValue().getDoubleConditionValue() < Double.valueOf(rhs).doubleValue();
 		}
 		else if(condition.getDataType() == StringConstants.DATATYPE_LONG){
-			return greaterThanCondition.getConditionValue(l) < Long.valueOf(rhs).longValue();
+			return greaterThanCondition.getConditionValue().getLongConditionValue() < Long.valueOf(rhs).longValue();
 		}
 
 		return false;

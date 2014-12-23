@@ -2,10 +2,7 @@ package com.zemoso.zinteract.decisiontableexecutor;
 
 import com.zemoso.zinteract.comparators.Comparator;
 import com.zemoso.zinteract.comparators.ComparatorFactory;
-import com.zemoso.zinteract.decisiontable.DecisionTable;
-import com.zemoso.zinteract.decisiontable.DtCondition;
-import com.zemoso.zinteract.decisiontable.DtCreater;
-import com.zemoso.zinteract.decisiontable.DtRow;
+import com.zemoso.zinteract.decisiontable.*;
 
 import java.util.HashMap;
 import java.util.Iterator;

@@ -5,9 +5,6 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
 
 public class GreaterThanEqualsComparator extends Comparator {
 
-    private long l = 2;
-    private double d = 5;
-
     @Override
     public Boolean satisfies(DtCondition condition,String rhs) {
         return getGreaterThanComparator().satisfies(condition,rhs) || getEqualsComparator().satisfies(condition, rhs);
