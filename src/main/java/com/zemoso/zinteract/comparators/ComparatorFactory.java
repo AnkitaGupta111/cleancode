@@ -6,11 +6,9 @@ import java.util.HashMap;
 
 public class ComparatorFactory {
 
-	private HashMap<Enum,Comparator> comparators = new HashMap<Enum, Comparator>();
+	private static HashMap<Enum,Comparator> comparators = new HashMap<Enum, Comparator>();
 
-	private static ComparatorFactory cFactory = new ComparatorFactory();
-
-	private ComparatorFactory() {
+	static {
 		comparators.put(StringConstants.COMPARATOR_GREATERTHAN,new GreaterThanComparator());
 		comparators.put(StringConstants.COMPARATOR_GREATERTHAN_EQUALS,new GreaterThanEqualsComparator());
 		comparators.put(StringConstants.COMPARATOR_BETWEEN,new BetweenComparator());
@@ -20,6 +18,12 @@ public class ComparatorFactory {
 		comparators.put(StringConstants.COMPARATOR_NOT_EQUALS,new NotEqualsComparator());
 		comparators.put(StringConstants.COMPARATOR_IN,new InComparator());
 		comparators.put(StringConstants.COMPARATOR_NOTIN,new NotInComparator());
+	}
+
+	private static ComparatorFactory cFactory = new ComparatorFactory();
+
+	private ComparatorFactory() {
+
 	}
 
 	public static ComparatorFactory getComparatorFactory() {

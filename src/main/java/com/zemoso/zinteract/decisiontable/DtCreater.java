@@ -66,12 +66,10 @@ public class DtCreater {
     private DtCondition getCondition(String conValue,String dataType, String condName) {
         //String equalsPattern = "=*\\s*(\\d+|\\d*.\\d+|\w+))";
 
-
+        PatternMatcher patternMatcher = new PatternMatcher();
         GenericCondition finalCondition;
-        String greaterThanLongPattern = "(^>)(\\s*)(\\d+$)";
-        Pattern r = Pattern.compile(greaterThanLongPattern);
-        // Now create matcher object.
-        Matcher m = r.matcher(conValue);
+        Matcher m = patternMatcher.getMatcher(PatternMatcher.type.GREATERTHANLONGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -85,10 +83,8 @@ public class DtCreater {
             }
         }
 
-        String lessThanLongPattern = "(^<)(\\s*)(\\d+$)";
-        r = Pattern.compile(lessThanLongPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.LESSTHANLONGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -102,10 +98,8 @@ public class DtCreater {
             }
         }
 
-        String equalsLongPattern = "(^=*)(\\s*)(\\d+$)";
-        r = Pattern.compile(equalsLongPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSLONGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -119,10 +113,8 @@ public class DtCreater {
             }
         }
 
-        String notEqualsLongPattern = "(^!=+)(\\s*)(\\d+$)";
-        r = Pattern.compile(notEqualsLongPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.NOTEQUALSLONGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -136,10 +128,8 @@ public class DtCreater {
             }
         }
 
-        String lessThanEqualsLongPattern = "(^<\\s*=+)(\\s*)(\\d+$)";
-        r = Pattern.compile(lessThanEqualsLongPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.LESSTHANEQUALSLONGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -153,10 +143,8 @@ public class DtCreater {
             }
         }
 
-        String greaterThanDoublePattern = "(^>)(\\s*)(\\d+\\.\\d+$)";
-        r = Pattern.compile(greaterThanDoublePattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.GREATERTHANDOUBLEPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -170,11 +158,8 @@ public class DtCreater {
             }
         }
 
-        String equalsDoublePattern = "(^=*)(\\s*)(\\d+\\.\\d+$)";
-
-        r = Pattern.compile(equalsDoublePattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSDOUBLEPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -188,10 +173,8 @@ public class DtCreater {
             }
         }
 
-        String notEqualsDoublePattern = "(^!=+)(\\s*)(\\d+\\.\\d+$)";
-        r = Pattern.compile(notEqualsDoublePattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.NOTEQUALSDOUBLEPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -205,10 +188,8 @@ public class DtCreater {
             }
         }
 
-        String greaterThanEqualsDoublePattern = "(^>\\s*=+)(\\s*)(\\d+\\.\\d+$)";
-        r = Pattern.compile(greaterThanEqualsDoublePattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.GREATERTHANEQUALSDOUBLEPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -223,11 +204,8 @@ public class DtCreater {
         }
 
 
-        String lessThanDoublePattern = "(^<)(\\s*)(\\d+\\.\\d+$)";
-
-        r = Pattern.compile(lessThanDoublePattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.LESSTHANDOUBLEPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -241,10 +219,8 @@ public class DtCreater {
             }
         }
 
-        String lessThanEqualsDoublePattern = "(^<\\s*=+)(\\s*)(\\d+\\.\\d+$)";
-        r = Pattern.compile(lessThanEqualsDoublePattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.LESSTHANEQUALSDOUBLEPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -258,10 +234,8 @@ public class DtCreater {
             }
         }
 
-        String greaterThanEqualsLongPattern = "(^>\\s*=+)(\\s*)(\\d+$)";
-        r = Pattern.compile(greaterThanEqualsLongPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.GREATERTHANEQUALSLONGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -276,10 +250,8 @@ public class DtCreater {
         }
 
 
-        String betweenLongPattern = "(^between)(\\s*)(\\d+)(\\s*)(and)(\\s*)(\\d+$)";
-        r = Pattern.compile(betweenLongPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.BETWEENLONGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(2);
@@ -305,10 +277,8 @@ public class DtCreater {
         }
 
 
-        String betweenDoublePattern = "(^between)(\\s*)(\\d+\\.\\d+)(\\s*)(and)(\\s*)(\\d+\\.\\d+$)";
-        r = Pattern.compile(betweenDoublePattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.BETWEENDOUBLEPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(2);
@@ -332,10 +302,8 @@ public class DtCreater {
             }
         }
 
-        String inLongPattern = "(^in)(\\s*)(\\d+,\\d+){1,}";
-        r = Pattern.compile(inLongPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.INLONGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -359,10 +327,8 @@ public class DtCreater {
             }
         }
 
-        String notInLongPattern = "(^not)(\\s*)(in)(\\s*)(\\d+,\\d+){1,}";
-        r = Pattern.compile(notInLongPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.NOTINLONGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -386,10 +352,8 @@ public class DtCreater {
             }
         }
 
-        String inDoublePattern = "(^in)(\\s*)(\\d+\\.\\d+,\\d+\\.\\d+){1,}";
-        r = Pattern.compile(inDoublePattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.INDOUBLEPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -413,10 +377,8 @@ public class DtCreater {
             }
         }
 
-        String notInDoublePattern = "(^not)(\\s*)(in)(\\s*)(\\d+\\.\\d+,\\d+\\.\\d+){1,}";
-        r = Pattern.compile(notInDoublePattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.NOTINDOUBLEPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -440,10 +402,8 @@ public class DtCreater {
             }
         }
 
-        String notEqualsStringPattern = "(^!=+)(\\s*)(.*)";
-        r = Pattern.compile(notEqualsStringPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.NOTEQUALSSTRINGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -457,10 +417,8 @@ public class DtCreater {
             }
         }
 
-        String inStringPattern = "(^in)(\\s*)(.*,.*){1,}";
-        r = Pattern.compile(inStringPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.INSTRINGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -484,10 +442,8 @@ public class DtCreater {
             }
         }
 
-        String notInStringPattern = "(^not)(\\s*)(in)(\\s*)(.*,.*){1,}";
-        r = Pattern.compile(notInStringPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.NOTINSTRINGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
@@ -511,10 +467,8 @@ public class DtCreater {
             }
         }
 
-        String equalsStringPattern = "(^=*)(\\s*)(.*)";
-        r = Pattern.compile(equalsStringPattern);
-        // Now create matcher object.
-        m = r.matcher(conValue);
+        m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSSTRINGPATTERN);
+        m.reset(conValue);
         if (m.find( )) {
             String group1 = m.group(1);
             String group2 = m.group(3);
