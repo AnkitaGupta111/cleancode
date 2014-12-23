@@ -10,16 +10,15 @@ public class GreaterThanComparator extends Comparator {
 	public Boolean satisfies(DtCondition condition,String rhs) {
 		GenericCondition greaterThanCondition = (GenericCondition) condition;
 
-		if(condition.getDataType() == StringConstants.DATATYPE_DATE){
-			return false;
+		if(condition.getDataType() == StringConstants.DATATYPE_LONG){
+			return greaterThanCondition.getConditionValue().getLongConditionValue() < Long.valueOf(rhs).longValue();
 		}
 		else if(condition.getDataType() == StringConstants.DATATYPE_DOUBLE){
 			return greaterThanCondition.getConditionValue().getDoubleConditionValue() < Double.valueOf(rhs).doubleValue();
 		}
-		else if(condition.getDataType() == StringConstants.DATATYPE_LONG){
-			return greaterThanCondition.getConditionValue().getLongConditionValue() < Long.valueOf(rhs).longValue();
+		if(condition.getDataType() == StringConstants.DATATYPE_DATE){
+			return false;
 		}
-
 		return false;
 	}
 }
