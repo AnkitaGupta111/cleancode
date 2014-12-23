@@ -17,10 +17,10 @@ public class BetweenComparator extends Comparator {
 	}
 
 	private LessThanComparator getLessThanComparator(){
-		return (LessThanComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.getCOMPARATOR_LESSTHAN());
+		return (LessThanComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_LESSTHAN);
 	}
 
 	private GreaterThanComparator getGreaterThanComparator(){
-		return (GreaterThanComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.getCOMPARATOR_GREATERTHAN());
+		return (GreaterThanComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_GREATERTHAN);
 	}
 }

@@ -23,6 +23,6 @@ public class InComparator extends Comparator {
 	}
 
 	private EqualsComparator getEqualsComparator(){
-		return (EqualsComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.getCOMPARATOR_EQUALS());
+		return (EqualsComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_EQUALS);
 	}
 }

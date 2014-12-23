@@ -6,16 +6,16 @@ import java.util.ArrayList;
  * Created by Praveen on 19-Dec-14.
  */
 public class InCondition extends GenericCondition{
-    private String comparatorName = "InComparator";
+    private StringConstants comparatorName;
     private ArrayList<GenericCondition> inCondition;
     private String conditionName;
-    private String dataType;
+    private StringConstants dataType;
 
     public void setConditionValue(ArrayList<GenericCondition> l) {
         this.inCondition = l;
     }
 
-    public String getDataType() {
+    public StringConstants getDataType() {
         return this.dataType;
     }
 
@@ -27,11 +27,11 @@ public class InCondition extends GenericCondition{
         return this.inCondition;
     }
 
-    public void setComparatorName(String s){
+    public void setComparatorName(StringConstants s){
         this.comparatorName = s;
     }
 
-    public String getComparatorName() {
+    public StringConstants getComparatorName() {
         return comparatorName;
     }
 

@@ -14,10 +14,10 @@ public class LessThanEqualsComparator extends Comparator {
     }
 
     private LessThanComparator getLessThanComparator() {
-        return (LessThanComparator)ComparatorFactory.getComparatorFactory().getComparator(StringConstants.getCOMPARATOR_LESSTHAN());
+        return (LessThanComparator)ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_LESSTHAN);
     }
 
     private EqualsComparator getEqualsComparator(){
-        return (EqualsComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.getCOMPARATOR_EQUALS());
+        return (EqualsComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_EQUALS);
     }
 }

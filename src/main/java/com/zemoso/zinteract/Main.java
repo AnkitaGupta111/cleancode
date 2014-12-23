@@ -55,23 +55,13 @@ public class Main {
 
         execute(value, dTString);
 
-//        for(int i=0; i< 50; i++){
-//            long startTime = System.currentTimeMillis();
-//            execute(value, dTString);
-//            long stopTime = System.currentTimeMillis();
-//            long elapsedTime = stopTime - startTime;
-//            System.out.println("First Time: "+i +" "+ elapsedTime);
-//        }
-
-
-//        HashMap<String,String> value1 = new HashMap<String,String>();
-//        value1.put("Con1","1000");
-//        value1.put("Con2","5");
-//        startTime = System.currentTimeMillis();
-//        execute(value1, dTString);
-//        stopTime = System.currentTimeMillis();
-//        elapsedTime = stopTime - startTime;
-//        System.out.println("Second Time: " + elapsedTime);
+        for(int i=0; i< 50; i++){
+            long startTime = System.currentTimeMillis();
+            execute(value, dTString);
+            long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
+            System.out.println("First Time: "+i +" "+ elapsedTime);
+        }
     }
 
     public static void execute(HashMap<String,String> s, String json){

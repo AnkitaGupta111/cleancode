@@ -2,12 +2,12 @@ package com.zemoso.zinteract.decisiontable;
 
 
 public class GenericCondition extends DtCondition{
-    private String comparatorName = "";
+    private StringConstants comparatorName;
     private String sConditionValue;
     private long lConditionValue;
     private double dConditionValue;
     private String conditionName;
-    private String dataType;
+    private StringConstants dataType;
 
     public void setConditionValue(String s) {
         this.sConditionValue = s;
@@ -33,7 +33,7 @@ public class GenericCondition extends DtCondition{
         return this.dConditionValue;
     }
 
-    public String getComparatorName() {
+    public StringConstants getComparatorName() {
         return comparatorName;
     }
 
@@ -41,15 +41,15 @@ public class GenericCondition extends DtCondition{
         return conditionName;
     }
 
-    public String getDataType() {
+    public StringConstants getDataType() {
         return this.dataType;
     }
 
-    public void setDataType(String s) {
+    public void setDataType(StringConstants s) {
         this.dataType = s;
     }
 
-    public void setComparatorName(String s) {
+    public void setComparatorName(StringConstants s) {
         this.comparatorName = s;
     }
 

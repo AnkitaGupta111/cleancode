@@ -24,33 +24,33 @@ public class ComparatorFactory {
 		return cFactory;
 	}
 
-	public Comparator getComparator(String keyword) {
+	public Comparator getComparator(StringConstants keyword) {
 		//Find out the appropriate comparator required and return that instance
-		if(StringConstants.getCOMPARATOR_GREATERTHAN() == keyword){
+		if(StringConstants.COMPARATOR_GREATERTHAN == keyword){
 			return greaterThanC;
 		}
-		else if(StringConstants.getCOMPARATOR_GREATERTHAN_EQUALS() == keyword){
+		else if(StringConstants.COMPARATOR_GREATERTHAN_EQUALS == keyword){
 			return greaterThanEqualsC;
 		}
-		else if(StringConstants.getCOMPARATOR_BETWEEN() == keyword){
+		else if(StringConstants.COMPARATOR_BETWEEN == keyword){
 			return betweenC;
 		}
-		else if(StringConstants.getCOMPARATOR_LESSTHAN() == keyword){
+		else if(StringConstants.COMPARATOR_LESSTHAN == keyword){
 			return lessThanC;
 		}
-		else if(StringConstants.getCOMPARATOR_LESSTHAN_EQUALS() == keyword){
+		else if(StringConstants.COMPARATOR_LESSTHAN_EQUALS == keyword){
 			return lessThanEqualsC;
 		}
-		else if(StringConstants.getCOMPARATOR_EQUALS() == keyword){
+		else if(StringConstants.COMPARATOR_EQUALS == keyword){
 			return equalsC;
 		}
-		else if(StringConstants.getCOMPARATOR_NOT_EQUALS() == keyword){
+		else if(StringConstants.COMPARATOR_NOT_EQUALS == keyword){
 			return notEqualsC;
 		}
-		else if(StringConstants.getCOMPARATOR_IN() == keyword){
+		else if(StringConstants.COMPARATOR_IN == keyword){
 			return inC;
 		}
-		else if(StringConstants.getCOMPARATOR_NOTIN() == keyword){
+		else if(StringConstants.COMPARATOR_NOTIN == keyword){
 			return notInC;
 		}
 //		if (keyword) {

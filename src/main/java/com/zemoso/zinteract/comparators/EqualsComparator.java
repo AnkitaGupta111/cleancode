@@ -13,16 +13,16 @@ public class EqualsComparator extends Comparator {
 	public Boolean satisfies(DtCondition condition,String rhs) {
 		GenericCondition eCondition = (GenericCondition) condition;
 
-		if(condition.getDataType() == StringConstants.getDATATYPE_DATE()){
+		if(condition.getDataType() == StringConstants.DATATYPE_DATE){
 			return false;
 		}
-		else if(condition.getDataType() == StringConstants.getDATATYPE_DOUBLE()){
+		else if(condition.getDataType() == StringConstants.DATATYPE_DOUBLE){
 			return eCondition.getConditionValue(d) == Double.valueOf(rhs).doubleValue();
 		}
-		else if(condition.getDataType() == StringConstants.getDATATYPE_LONG()){
+		else if(condition.getDataType() == StringConstants.DATATYPE_LONG){
 			return eCondition.getConditionValue(l) == Long.valueOf(rhs).longValue();
 		}
-		else if(condition.getDataType() == StringConstants.getDATATYPE_STRING()){
+		else if(condition.getDataType() == StringConstants.DATATYPE_STRING){
 			return eCondition.getConditionValue(s).equals(rhs);
 		}
 

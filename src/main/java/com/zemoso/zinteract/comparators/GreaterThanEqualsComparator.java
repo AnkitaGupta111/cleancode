@@ -14,10 +14,10 @@ public class GreaterThanEqualsComparator extends Comparator {
     }
 
     private GreaterThanComparator getGreaterThanComparator() {
-        return (GreaterThanComparator)ComparatorFactory.getComparatorFactory().getComparator(StringConstants.getCOMPARATOR_GREATERTHAN());
+        return (GreaterThanComparator)ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_GREATERTHAN);
     }
 
     private EqualsComparator getEqualsComparator(){
-        return (EqualsComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.getCOMPARATOR_EQUALS());
+        return (EqualsComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_EQUALS);
     }
 }

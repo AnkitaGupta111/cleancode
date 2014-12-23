@@ -13,13 +13,13 @@ public class GreaterThanComparator extends Comparator {
 	public Boolean satisfies(DtCondition condition,String rhs) {
 		GenericCondition greaterThanCondition = (GenericCondition) condition;
 
-		if(condition.getDataType() == StringConstants.getDATATYPE_DATE()){
+		if(condition.getDataType() == StringConstants.DATATYPE_DATE){
 			return false;
 		}
-		else if(condition.getDataType() == StringConstants.getDATATYPE_DOUBLE()){
+		else if(condition.getDataType() == StringConstants.DATATYPE_DOUBLE){
 			return greaterThanCondition.getConditionValue(d) < Double.valueOf(rhs).doubleValue();
 		}
-		else if(condition.getDataType() == StringConstants.getDATATYPE_LONG()){
+		else if(condition.getDataType() == StringConstants.DATATYPE_LONG){
 			return greaterThanCondition.getConditionValue(l) < Long.valueOf(rhs).longValue();
 		}
 

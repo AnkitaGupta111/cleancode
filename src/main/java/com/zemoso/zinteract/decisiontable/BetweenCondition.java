@@ -2,18 +2,18 @@ package com.zemoso.zinteract.decisiontable;
 
 
 public class BetweenCondition extends GenericCondition{
-    private String comparatorName = "BetweenComparator";
+    private StringConstants comparatorName;
     private GenericCondition lessThanCondition;
     private GenericCondition greaterThanCondition;
     private String conditionName;
-    private String dataType;
+    private StringConstants dataType;
 
     public void setConditionValue(GenericCondition l,GenericCondition g) {
         this.lessThanCondition = l;
         this.greaterThanCondition = g;
     }
 
-    public String getDataType() {
+    public StringConstants getDataType() {
         return this.dataType;
     }
 
@@ -33,11 +33,11 @@ public class BetweenCondition extends GenericCondition{
         this.greaterThanCondition = g;
     }
 
-    public void setComparatorName(String s){
+    public void setComparatorName(StringConstants s){
         this.comparatorName = s;
     }
 
-    public String getComparatorName() {
+    public StringConstants getComparatorName() {
         return comparatorName;
     }
 
