@@ -23,7 +23,7 @@ public class DtExecutor{
 	}
 
 	public DtRow execute(HashMap<String,String> value) {
-		ComparatorFactory cFactory = ComparatorFactory.getComparatorFactory();
+		ComparatorFactory cFactory = (ComparatorFactory)ComparatorFactory.getComparatorFactory();
 		Iterator i;
 		DtCondition dtCondition;
 		Comparator comparator;

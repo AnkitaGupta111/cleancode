@@ -4,11 +4,13 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
 
 import java.util.HashMap;
 
-public class ComparatorFactory {
+public class ComparatorFactory extends AbstractComparatorFactory{
 
-	private static HashMap<Enum,Comparator> comparators = new HashMap<Enum, Comparator>();
+	protected HashMap<Enum,Comparator> comparators = new HashMap<Enum, Comparator>();
 
-	static {
+	private static AbstractComparatorFactory cFactory = null;
+
+	protected ComparatorFactory() {
 		comparators.put(StringConstants.COMPARATOR_GREATERTHAN,new GreaterThanComparator());
 		comparators.put(StringConstants.COMPARATOR_GREATERTHAN_EQUALS,new GreaterThanEqualsComparator());
 		comparators.put(StringConstants.COMPARATOR_BETWEEN,new BetweenComparator());
@@ -20,13 +22,30 @@ public class ComparatorFactory {
 		comparators.put(StringConstants.COMPARATOR_NOTIN,new NotInComparator());
 	}
 
-	private static ComparatorFactory cFactory = new ComparatorFactory();
-
-	private ComparatorFactory() {
-
-	}
-
-	public static ComparatorFactory getComparatorFactory() {
+	public static AbstractComparatorFactory getComparatorFactory() {
+		if(cFactory != null){
+			return cFactory;
+		}
+		else {
+			synchronized (AbstractComparatorFactory.class){
+				if(cFactory != null){
+					return cFactory;
+				}
+				System.setProperty("comparatorfactory_class_name","com.zemoso.zinteract.comparators.ComparatorFactory");
+				String className = System.getProperty("comparatorfactory_class_name");
+				try {
+					Class c = Class.forName(className);
+					cFactory = (AbstractComparatorFactory)c.newInstance();
+					return cFactory;
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		return cFactory;
 	}
 
