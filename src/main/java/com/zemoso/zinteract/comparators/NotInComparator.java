@@ -13,7 +13,12 @@ public class NotInComparator extends Comparator {
         InCondition con = (InCondition) condition;
         Boolean matches = true;
         for(GenericCondition gC : con.getInCondition()){
-            if(ComparatorUtils.isEqual(gC,rhs)){
+            Boolean isEqual = ComparatorUtils.isEqual(gC,rhs);
+            if(isEqual == null){
+                matches = false;
+                break;
+            }
+            if(isEqual){
                 matches = false;
                 break;
             }
