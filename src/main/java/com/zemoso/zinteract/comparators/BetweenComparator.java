@@ -10,17 +10,13 @@ public class BetweenComparator extends Comparator {
 
 	@Override
 	public Boolean satisfies(DtCondition condition,String rhs) {
+
 		BetweenCondition bCondition = (BetweenCondition) condition;
-		GreaterThanComparator cG = getGreaterThanComparator();
-		LessThanComparator cL = getLessThanComparator();
-		return cG.satisfies(bCondition.getLessThanConditionValue(),rhs) && cL.satisfies(bCondition.getGreaterThanConditionValue(),rhs);
-	}
-
-	private LessThanComparator getLessThanComparator(){
-		return (LessThanComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_LESSTHAN);
-	}
-
-	private GreaterThanComparator getGreaterThanComparator(){
-		return (GreaterThanComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_GREATERTHAN);
+		Boolean lessThan = ComparatorUtils.isGreaterThan(bCondition.getLessThanConditionValue(),rhs);
+		Boolean greaterThan = ComparatorUtils.isLessThan(bCondition.getGreaterThanConditionValue(),rhs);
+		if(lessThan == null || greaterThan == null){
+			return false;
+		}
+		return lessThan && greaterThan;
 	}
 }

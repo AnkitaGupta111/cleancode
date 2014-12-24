@@ -11,18 +11,13 @@ public class InComparator extends Comparator {
 	@Override
 	public Boolean satisfies(DtCondition condition,String rhs) {
 		InCondition con = (InCondition) condition;
-		EqualsComparator equalsComparator = getEqualsComparator();
 		Boolean matches = false;
 		for(GenericCondition gC : con.getInCondition()){
-			if(equalsComparator.satisfies(gC,rhs)){
+			if(ComparatorUtils.isEqual(gC,rhs)){
 				matches = true;
 				break;
 			}
 		}
 		return matches;
-	}
-
-	private EqualsComparator getEqualsComparator(){
-		return (EqualsComparator) ComparatorFactory.getComparatorFactory().getComparator(StringConstants.COMPARATOR_EQUALS);
 	}
 }
