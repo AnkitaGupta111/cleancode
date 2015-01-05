@@ -1,5 +1,6 @@
 package com.zemoso.zinteract.decisiontableexecutor;
 
+import com.zemoso.zinteract.comparators.AbstractComparatorFactory;
 import com.zemoso.zinteract.comparators.Comparator;
 import com.zemoso.zinteract.comparators.ComparatorFactory;
 import com.zemoso.zinteract.decisiontable.*;
@@ -9,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class DtExecutor{
+public class DtExecutor extends AbstractDtExecutor{
 
 	private DecisionTable dT;
 
@@ -22,8 +23,9 @@ public class DtExecutor{
 		return dT;
 	}
 
+
 	public DtRow execute(HashMap<String,String> value) {
-		ComparatorFactory cFactory = (ComparatorFactory)ComparatorFactory.getComparatorFactory();
+		AbstractComparatorFactory cFactory = AbstractComparatorFactory.getComparatorFactory();
 		Iterator i;
 		DtCondition dtCondition;
 		Comparator comparator;

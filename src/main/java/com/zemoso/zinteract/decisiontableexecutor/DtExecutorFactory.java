@@ -5,19 +5,8 @@ import java.util.Map;
 
 public class DtExecutorFactory extends AbstractDtExecutorFactory{
 
-	private static DtExecutorFactory dtExecutorFactory = new DtExecutorFactory();
-	private Map<String,Object> hM = new HashMap();
-
-	private DtExecutorFactory() {
-
-	}
-
-	public static DtExecutorFactory getInstance() {
-		return dtExecutorFactory;
-	}
-
 	@Override
-	public DtExecutor getDtExecutor(String dT_id, String json) {
+	public AbstractDtExecutor getDtExecutor(String dT_id, String json) {
 
 		
 			DtExecutor d = (DtExecutor) hM.get(dT_id);

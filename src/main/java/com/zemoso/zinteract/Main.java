@@ -1,18 +1,14 @@
 package com.zemoso.zinteract;
 
 import com.zemoso.zinteract.decisiontable.DtRow;
-import com.zemoso.zinteract.decisiontable.GenericCondition;
-import com.zemoso.zinteract.decisiontable.StringConstants;
+import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutor;
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutorFactory;
-import com.zemoso.zinteract.decisiontableexecutor.DtExecutor;
-import com.zemoso.zinteract.decisiontableexecutor.FactoryProducer;
 import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Properties;
 
 
@@ -79,9 +75,9 @@ public class Main {
 
     public static void execute(HashMap<String,String> s, String json){
 
-        AbstractDtExecutorFactory Factory = FactoryProducer.getFactory();
+        AbstractDtExecutorFactory Factory = AbstractDtExecutorFactory.getDtExecutorFactory();
 
-        DtExecutor dtExecutor = Factory.getDtExecutor("dT_id1",json);
+        AbstractDtExecutor dtExecutor = Factory.getDtExecutor("dT_id1",json);
         DtRow row = dtExecutor.execute(s);
 
         if(row != null) {
