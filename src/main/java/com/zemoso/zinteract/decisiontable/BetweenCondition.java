@@ -17,6 +17,10 @@ public class BetweenCondition extends GenericCondition{
         return this.dataType;
     }
 
+    public void setDataType(StringConstants s){
+        this.dataType = s;
+    }
+
     public GenericCondition getLessThanConditionValue() {
         return lessThanCondition;
     }

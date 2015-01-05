@@ -1,5 +1,6 @@
 package com.zemoso.zinteract.comparators;
 
+import com.zemoso.zinteract.decisiontable.ConditionValue;
 import com.zemoso.zinteract.decisiontable.DtCondition;
 import com.zemoso.zinteract.decisiontable.GenericCondition;
 import com.zemoso.zinteract.decisiontable.InCondition;
@@ -9,7 +10,7 @@ import com.zemoso.zinteract.decisiontable.InCondition;
  */
 public class NotInComparator extends Comparator {
     @Override
-    public Boolean satisfies(DtCondition condition,String rhs) {
+    public Boolean satisfies(DtCondition condition,ConditionValue rhs) {
         InCondition con = (InCondition) condition;
         Boolean matches = true;
         for(GenericCondition gC : con.getInCondition()){

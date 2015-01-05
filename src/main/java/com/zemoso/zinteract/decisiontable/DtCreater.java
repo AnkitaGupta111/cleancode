@@ -45,7 +45,7 @@ public class DtCreater {
                 condition = this.getCondition(condValue,"",condName);
                 row.setConditionValues(condName,condition);
                 if(i==0) {
-                    dT.setConditions(condName);
+                    dT.setHeaderConditions(condName, condition.getDataType());
                 }
 
             }
@@ -263,6 +263,7 @@ public class DtCreater {
                 lessT.setConditionName(condName);
                 lessT.setConditionValue(new ConditionValue(Long.valueOf(m.group(7)).longValue()));
                 bCondition.setLessThanCondition(lessT);
+                bCondition.setDataType(StringConstants.DATATYPE_LONG);
 
                 GenericCondition greatT = new GenericCondition();
                 greatT.setConditionName(condName);
@@ -290,6 +291,7 @@ public class DtCreater {
                 lessT.setConditionName(condName);
                 lessT.setConditionValue(new ConditionValue(Double.valueOf(m.group(7)).doubleValue()));
                 bCondition.setLessThanCondition(lessT);
+                bCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
 
                 GenericCondition greatT = new GenericCondition();
                 greatT.setConditionName(condName);

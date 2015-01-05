@@ -1,6 +1,7 @@
 package com.zemoso.zinteract.decisiontable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DecisionTable {
 
@@ -10,7 +11,8 @@ public class DecisionTable {
 	private String description;
 	private String artifact_id;
 
-	private ArrayList<String> conditions = new ArrayList<String>();
+	private DtHeader header = new DtHeader();
+	//private HashMap<String,Enum> conditions = new HashMap<String, Enum>();
 
 	private ArrayList<DtRow> dT = new ArrayList<DtRow>();
 
@@ -28,12 +30,12 @@ public class DecisionTable {
 		dT = dt;
 	};
 
-	public void setConditions(String s) {
-		this.conditions.add(s);
+	public void setHeaderConditions(String s,Enum e) {
+		this.header.conditions.put(s,e);
 	}
 
-	public ArrayList<String> getConditions() {
-		return this.conditions;
+	public DtHeader getHeader() {
+		return this.header;
 	}
 
 	public ArrayList<DtRow> getDt() {
