@@ -6,6 +6,7 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutorFactory;
 import com.zemoso.zinteract.decisiontableexecutor.DtExecutor;
 import com.zemoso.zinteract.decisiontableexecutor.FactoryProducer;
+import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,8 +15,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class Main {
 
+public class Main {
+    private static Logger LOGGER = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
         String dTString = "{\"name\":\" The table to decide\",\"description\":\" blah, blah ,,,,,....\",\"artifact_id\":235,\"options\":[{\"propname\":\"exit_on_first_match\",\"propvalue\":\"true\"}],\"headers\":{\"conditions\":[{\"condition\":\"Opportunity Size\"},{\"condition\":\"Number of Employees\"}],\"actions\":[{\"action\":\"Priority\"}]},\"rows\":[{\"conditions\":[{\"value\":\">1000000\"},{\"value\":\">100\"}],\"actions\":[{\"value\":\"High\"}]},{\"conditions\":[{\"value\":\"between 2000 and 500\"},{\"value\":\"<100\"}],\"actions\":[{\"value\":\"High\"}]},{\"conditions\":[{\"value\":\">1000\"},{\"value\":\"<10\"}],\"actions\":[{\"value\":\"Low\"}]}]}";
@@ -53,6 +55,7 @@ public class Main {
         value.put("Con7","hhhh");
         value.put("Con8","130");
 
+        LOGGER.info("Executing now");
         execute(value, dTString);
 
 //        for(int i=0; i< 50; i++){
