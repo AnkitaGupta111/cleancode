@@ -10,7 +10,7 @@ import com.zemoso.zinteract.decisiontable.InCondition;
  */
 public class NotInComparator extends Comparator {
     @Override
-    public Boolean satisfies(DtCondition condition,ConditionValue rhs, Boolean ignoreCase) {
+    public Boolean satisfies(DtCondition condition,ConditionValue rhs, boolean ignoreCase) {
         InCondition con = (InCondition) condition;
         Boolean matches = true;
         for(GenericCondition gC : con.getInCondition()){

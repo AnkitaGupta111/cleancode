@@ -7,6 +7,7 @@ public class ConditionValue {
     private String sConditionValue;
     private long lConditionValue;
     private double dConditionValue;
+    private boolean bConditionValue;
 
     public ConditionValue(long l){
         this.lConditionValue = l;
@@ -18,6 +19,10 @@ public class ConditionValue {
 
     public ConditionValue(String s){
         this.sConditionValue = s;
+    }
+
+    public ConditionValue(boolean b){
+        this.bConditionValue = b;
     }
 
     public String getStringConditionValue() {
@@ -42,5 +47,13 @@ public class ConditionValue {
 
     public void setDoubleConditionValue(double dConditionValue) {
         this.dConditionValue = dConditionValue;
+    }
+
+    public boolean getBooleanConditionValue(){
+        return this.bConditionValue;
+    }
+
+    public void setBooleanConditionValue(boolean b){
+        this.bConditionValue = b;
     }
 }

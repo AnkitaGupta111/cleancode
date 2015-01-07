@@ -9,7 +9,7 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
  */
 public class NotEqualsComparator extends Comparator {
     @Override
-    public Boolean satisfies(DtCondition condition,ConditionValue rhs, Boolean ignoreCase) {
+    public Boolean satisfies(DtCondition condition,ConditionValue rhs, boolean ignoreCase) {
         Boolean satisfies = ComparatorUtils.isEqual(condition,rhs,ignoreCase);
         if(satisfies == null){
             return false;

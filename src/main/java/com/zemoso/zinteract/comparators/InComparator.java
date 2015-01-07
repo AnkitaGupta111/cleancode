@@ -9,7 +9,7 @@ public class InComparator extends Comparator {
 
 
 	@Override
-	public Boolean satisfies(DtCondition condition,ConditionValue rhs, Boolean ignoreCase) {
+	public Boolean satisfies(DtCondition condition,ConditionValue rhs, boolean ignoreCase) {
 		InCondition con = (InCondition) condition;
 		Boolean matches = false;
 		for(GenericCondition gC : con.getInCondition()){

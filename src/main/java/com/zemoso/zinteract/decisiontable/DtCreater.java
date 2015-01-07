@@ -94,6 +94,9 @@ public class DtCreater {
         else if(StringConstants.DATATYPE_DOUBLE == dataType){
             conditionValue = new ConditionValue(Double.valueOf(cValue).doubleValue());
         }
+        else if(StringConstants.DATATYPE_BOOLEAN == dataType){
+            conditionValue = new ConditionValue(Boolean.valueOf(cValue).booleanValue());
+        }
         else if(StringConstants.DATATYPE_STRING == dataType){
             conditionValue = new ConditionValue(cValue);
         }
@@ -109,7 +112,7 @@ public class DtCreater {
         GenericCondition finalCondition;
         Matcher m = patternMatcher.getMatcher(PatternMatcher.type.GREATERTHANLONGPATTERN);
         m.reset(conValue);
-        if (m.find( )) {
+        if (m.find()) {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
@@ -412,6 +415,18 @@ public class DtCreater {
                 return inCondition;
             }
         }
+
+        m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSBOOLEANPATTERN);
+        m.reset(conValue);
+        if (m.find( )) {
+            String group1 = m.group(1);
+            String group2 = m.group(3);
+            if(group1 != null && group2 != null) {
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_BOOLEAN,StringConstants.COMPARATOR_EQUALS);
+            }
+        }
+
+        //TODO add Not equals boolean condition
 
         m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSSTRINGPATTERN);
         m.reset(conValue);

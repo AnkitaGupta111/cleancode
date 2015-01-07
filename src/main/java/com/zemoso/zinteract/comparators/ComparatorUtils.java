@@ -10,7 +10,7 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
  */
 public class ComparatorUtils {
 
-    public static Boolean isEqual(DtCondition condition,ConditionValue rhs, Boolean ignoreCase){
+    public static Boolean isEqual(DtCondition condition,ConditionValue rhs, boolean ignoreCase){
         GenericCondition eCondition = (GenericCondition) condition;
 
         if(condition.getDataType() == StringConstants.DATATYPE_STRING){
@@ -24,6 +24,9 @@ public class ComparatorUtils {
         }
         else if(condition.getDataType() == StringConstants.DATATYPE_DOUBLE){
             return eCondition.getConditionValue().getDoubleConditionValue() == rhs.getDoubleConditionValue();
+        }
+        else if(condition.getDataType() == StringConstants.DATATYPE_BOOLEAN){
+            return eCondition.getConditionValue().getBooleanConditionValue() == rhs.getBooleanConditionValue();
         }
         else if(condition.getDataType() == StringConstants.DATATYPE_DATE){
             return false;

@@ -102,6 +102,10 @@ public class DtExecutor extends AbstractDtExecutor{
 				cValue = new ConditionValue(Double.valueOf(me.getValue().toString()).doubleValue());
 				conditionValues.put(me.getKey().toString(),cValue);
 			}
+			else if(headerConditions.get(me.getKey()).equals(StringConstants.DATATYPE_BOOLEAN)){
+				cValue = new ConditionValue(Boolean.valueOf(me.getValue().toString()).booleanValue());
+				conditionValues.put(me.getKey().toString(),cValue);
+			}
 			else {
 				cValue = new ConditionValue(me.getValue().toString());
 				conditionValues.put(me.getKey().toString(),cValue);

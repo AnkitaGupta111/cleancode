@@ -9,7 +9,7 @@ public class BetweenComparator extends Comparator {
 
 
 	@Override
-	public Boolean satisfies(DtCondition condition,ConditionValue rhs, Boolean ignoreCase) {
+	public Boolean satisfies(DtCondition condition,ConditionValue rhs, boolean ignoreCase) {
 
 		BetweenCondition bCondition = (BetweenCondition) condition;
 		Boolean lessThan = ComparatorUtils.isGreaterThan(bCondition.getLessThanConditionValue(),rhs);
