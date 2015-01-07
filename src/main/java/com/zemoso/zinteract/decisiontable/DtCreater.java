@@ -70,7 +70,7 @@ public class DtCreater {
         genericCondition.setConditionName(condName);
         genericCondition.setComparatorName(comparatorName);
         genericCondition.setDataType(dataType);
-        
+
         if(StringConstants.DATATYPE_LONG == dataType){
             conditionValue = new ConditionValue(Long.valueOf(cValue).longValue());
 

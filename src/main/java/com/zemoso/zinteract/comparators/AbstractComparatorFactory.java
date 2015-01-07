@@ -8,6 +8,9 @@ import java.util.HashMap;
  * Created by Praveen on 24-Dec-14.
  */
 public abstract class AbstractComparatorFactory {
+
+    private static final String PROPERTY_KEY_FOR_COMPARATORYFACTORY_CLASSNAME = "comparatorfactory_class_name";
+    private static final String DEFAULT_COMPARATORYFACTORY_CLASSNAME = "com.zemoso.zinteract.comparators.ComparatorFactory";
     public abstract Comparator getComparator(StringConstants keyword);
 
     protected HashMap<Enum,Comparator> comparators = new HashMap<Enum, Comparator>();
@@ -35,8 +38,10 @@ public abstract class AbstractComparatorFactory {
                 if(cFactory != null){
                     return cFactory;
                 }
-                System.setProperty("comparatorfactory_class_name","com.zemoso.zinteract.comparators.ComparatorFactory");
-                String className = System.getProperty("comparatorfactory_class_name");
+                String className = System.getProperty(PROPERTY_KEY_FOR_COMPARATORYFACTORY_CLASSNAME);
+                if(className == null){
+                    className = DEFAULT_COMPARATORYFACTORY_CLASSNAME;
+                }
                 try {
                     Class c = Class.forName(className);
                     cFactory = (AbstractComparatorFactory)c.newInstance();

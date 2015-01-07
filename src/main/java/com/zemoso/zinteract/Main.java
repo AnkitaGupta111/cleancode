@@ -1,6 +1,7 @@
 package com.zemoso.zinteract;
 
 import com.zemoso.zinteract.decisiontable.DtRow;
+import com.zemoso.zinteract.decisiontable.StringConstants;
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutor;
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutorFactory;
 import org.apache.log4j.Logger;
@@ -78,7 +79,7 @@ public class Main {
         AbstractDtExecutorFactory Factory = AbstractDtExecutorFactory.getDtExecutorFactory();
 
         AbstractDtExecutor dtExecutor = Factory.getDtExecutor("dT_id1",json);
-        DtRow row = dtExecutor.execute(s);
+        DtRow row = dtExecutor.getFirstMatch(s, StringConstants.CASE_INSENSITIVE);
 
         if(row != null) {
             System.out.println("Match Found");

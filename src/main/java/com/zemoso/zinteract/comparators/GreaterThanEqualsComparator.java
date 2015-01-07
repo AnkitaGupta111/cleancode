@@ -6,7 +6,7 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
 
 public class GreaterThanEqualsComparator extends Comparator{
 
-    public Boolean satisfies(DtCondition condition,ConditionValue rhs) {
+    public Boolean satisfies(DtCondition condition,ConditionValue rhs, StringConstants caseSensitivity) {
         Boolean satisfies = ComparatorUtils.isLessThan(condition,rhs);
         if(satisfies == null){
             return false;

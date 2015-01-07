@@ -8,7 +8,7 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
 public class GreaterThanComparator extends Comparator {
 
 	@Override
-	public Boolean satisfies(DtCondition condition,ConditionValue rhs) {
+	public Boolean satisfies(DtCondition condition,ConditionValue rhs, StringConstants caseSensitivity) {
 
 		Boolean satisfies = ComparatorUtils.isGreaterThan(condition,rhs);
 		if(satisfies == null){
