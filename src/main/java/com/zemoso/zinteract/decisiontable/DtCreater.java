@@ -17,7 +17,8 @@ public class DtCreater {
         this.dTJson = s;
     }
 
-    public DecisionTable createDtModel(String dTJson) {
+    public DecisionTable createDtModel() {
+        String dTJson = this.dTJson;
         //format and transform dT properly
         DecisionTable dT = new DecisionTable();
         JsonObject jObject = (JsonObject)new JsonParser().parse(dTJson);
@@ -63,6 +64,28 @@ public class DtCreater {
         return dT;
     }
 
+    private GenericCondition createGenericCondition(String condName, String cValue,StringConstants dataType, StringConstants comparatorName){
+        ConditionValue conditionValue = new ConditionValue(cValue);
+        GenericCondition genericCondition = new GenericCondition();
+        genericCondition.setConditionName(condName);
+        genericCondition.setComparatorName(comparatorName);
+        genericCondition.setDataType(dataType);
+        
+        if(StringConstants.DATATYPE_LONG == dataType){
+            conditionValue = new ConditionValue(Long.valueOf(cValue).longValue());
+
+        }
+        else if(StringConstants.DATATYPE_DOUBLE == dataType){
+            conditionValue = new ConditionValue(Double.valueOf(cValue).doubleValue());
+        }
+        else if(StringConstants.DATATYPE_STRING == dataType){
+            conditionValue = new ConditionValue(cValue);
+        }
+        genericCondition.setConditionValue(conditionValue);
+
+        return genericCondition;
+    }
+
     private DtCondition getCondition(String conValue,String dataType, String condName) {
         //String equalsPattern = "=*\\s*(\\d+|\\d*.\\d+|\w+))";
 
@@ -74,12 +97,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_LONG);
-                finalCondition.setConditionValue(new ConditionValue(Long.valueOf(group2).longValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_GREATERTHAN);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_GREATERTHAN);
             }
         }
 
@@ -89,12 +107,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_LONG);
-                finalCondition.setConditionValue(new ConditionValue(Long.valueOf(group2).longValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_LESSTHAN);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN);
             }
         }
 
@@ -104,12 +117,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_LONG);
-                finalCondition.setConditionValue(new ConditionValue(Long.valueOf(group2).longValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_EQUALS);
             }
         }
 
@@ -119,12 +127,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_LONG);
-                finalCondition.setConditionValue(new ConditionValue(Long.valueOf(group2).longValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_NOT_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_NOT_EQUALS);
             }
         }
 
@@ -134,12 +137,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_LONG);
-                finalCondition.setConditionValue(new ConditionValue(Long.valueOf(group2).longValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_LESSTHAN_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN_EQUALS);
             }
         }
 
@@ -149,12 +147,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
-                finalCondition.setConditionValue(new ConditionValue(Double.valueOf(group2).doubleValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_GREATERTHAN);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN);
             }
         }
 
@@ -164,12 +157,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
-                finalCondition.setConditionValue(new ConditionValue(Double.valueOf(group2).doubleValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_EQUALS);
             }
         }
 
@@ -179,12 +167,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
-                finalCondition.setConditionValue(new ConditionValue(Double.valueOf(group2).doubleValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_NOT_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_NOT_EQUALS);
             }
         }
 
@@ -194,12 +177,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
-                finalCondition.setConditionValue(new ConditionValue(Double.valueOf(group2).doubleValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_GREATERTHAN_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN_EQUALS);
             }
         }
 
@@ -210,12 +188,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
-                finalCondition.setConditionValue(new ConditionValue(Double.valueOf(group2).doubleValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_LESSTHAN);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN);
             }
         }
 
@@ -225,12 +198,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
-                finalCondition.setConditionValue(new ConditionValue(Double.valueOf(group2).doubleValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_LESSTHAN_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN_EQUALS);
             }
         }
 
@@ -240,12 +208,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_LONG);
-                finalCondition.setConditionValue(new ConditionValue(Long.valueOf(group2).longValue()));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_GREATERTHAN_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN_EQUALS);
             }
         }
 
@@ -257,21 +220,14 @@ public class DtCreater {
             String group2 = m.group(2);
             if(group1 != null && m.group(3) != null && m.group(5) != null && m.group(7) != null) {
                 BetweenCondition bCondition = new BetweenCondition();
-                GenericCondition lessT = new GenericCondition();
-                lessT.setDataType(StringConstants.DATATYPE_LONG);
-                lessT.setComparatorName(StringConstants.COMPARATOR_LESSTHAN);
-                lessT.setConditionName(condName);
-                lessT.setConditionValue(new ConditionValue(Long.valueOf(m.group(7)).longValue()));
+                GenericCondition lessT = createGenericCondition(condName,m.group(7),StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN);
+
+                GenericCondition greatT = createGenericCondition(condName,m.group(3),StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_GREATERTHAN);
+
                 bCondition.setLessThanCondition(lessT);
-                bCondition.setDataType(StringConstants.DATATYPE_LONG);
-
-                GenericCondition greatT = new GenericCondition();
-                greatT.setConditionName(condName);
-                greatT.setComparatorName(StringConstants.COMPARATOR_GREATERTHAN);
-                greatT.setDataType(StringConstants.DATATYPE_LONG);
-                greatT.setConditionValue(new ConditionValue(Long.valueOf(m.group(3)).longValue()));
-
                 bCondition.setGreaterThanCondition(greatT);
+                bCondition.setDataType(StringConstants.DATATYPE_LONG);
+                bCondition.setConditionName(condName);
                 bCondition.setComparatorName(StringConstants.COMPARATOR_BETWEEN);
                 return bCondition;
             }
@@ -285,21 +241,15 @@ public class DtCreater {
             String group2 = m.group(2);
             if(group1 != null && m.group(3) != null && m.group(5) != null && m.group(7) != null) {
                 BetweenCondition bCondition = new BetweenCondition();
-                GenericCondition lessT = new GenericCondition();
-                lessT.setDataType(StringConstants.DATATYPE_DOUBLE);
-                lessT.setComparatorName(StringConstants.COMPARATOR_LESSTHAN);
-                lessT.setConditionName(condName);
-                lessT.setConditionValue(new ConditionValue(Double.valueOf(m.group(7)).doubleValue()));
+                GenericCondition lessT = createGenericCondition(condName,m.group(7),StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN);
+
+                GenericCondition greatT = createGenericCondition(condName,m.group(3),StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN);
+
                 bCondition.setLessThanCondition(lessT);
-                bCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
-
-                GenericCondition greatT = new GenericCondition();
-                greatT.setConditionName(condName);
-                greatT.setComparatorName(StringConstants.COMPARATOR_GREATERTHAN);
-                greatT.setDataType(StringConstants.DATATYPE_DOUBLE);
-                greatT.setConditionValue(new ConditionValue(Long.valueOf(m.group(3)).doubleValue()));
-
                 bCondition.setGreaterThanCondition(greatT);
+                bCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
+                bCondition.setConditionName(condName);
+                bCondition.setComparatorName(StringConstants.COMPARATOR_BETWEEN);
                 return bCondition;
             }
         }
@@ -311,19 +261,17 @@ public class DtCreater {
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
                 InCondition inCondition = new InCondition();
-                inCondition.setComparatorName(StringConstants.COMPARATOR_IN);
-                inCondition.setConditionName(condName);
-                inCondition.setDataType(StringConstants.DATATYPE_LONG);
+
                 String[] longs = m.group(3).split(",");
                 ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = new GenericCondition();
-                    finalCondition.setComparatorName(StringConstants.COMPARATOR_EQUALS);
-                    finalCondition.setConditionName(condName);
-                    finalCondition.setDataType(StringConstants.DATATYPE_LONG);
-                    finalCondition.setConditionValue(new ConditionValue(Long.valueOf(s).longValue()));
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_EQUALS);
                     list.add(finalCondition);
                 }
+
+                inCondition.setComparatorName(StringConstants.COMPARATOR_IN);
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.DATATYPE_LONG);
                 inCondition.setConditionValue(list);
                 return inCondition;
             }
@@ -336,19 +284,16 @@ public class DtCreater {
             String group2 = m.group(3);
             if(group1 != null && group2 != null && m.group(5) != null) {
                 InCondition inCondition = new InCondition();
-                inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);
-                inCondition.setConditionName(condName);
-                inCondition.setDataType(StringConstants.DATATYPE_LONG);
+
                 String[] longs = m.group(5).split(",");
                 ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = new GenericCondition();
-                    finalCondition.setComparatorName(StringConstants.COMPARATOR_NOT_EQUALS);
-                    finalCondition.setConditionName(condName);
-                    finalCondition.setDataType(StringConstants.DATATYPE_LONG);
-                    finalCondition.setConditionValue(new ConditionValue(Long.valueOf(s).longValue()));
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_NOT_EQUALS);
                     list.add(finalCondition);
                 }
+                inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.DATATYPE_LONG);
                 inCondition.setConditionValue(list);
                 return inCondition;
             }
@@ -361,19 +306,16 @@ public class DtCreater {
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
                 InCondition inCondition = new InCondition();
-                inCondition.setComparatorName(StringConstants.COMPARATOR_IN);
-                inCondition.setConditionName(condName);
-                inCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
+
                 String[] longs = m.group(3).split(",");
                 ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = new GenericCondition();
-                    finalCondition.setComparatorName(StringConstants.COMPARATOR_EQUALS);
-                    finalCondition.setConditionName(condName);
-                    finalCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
-                    finalCondition.setConditionValue(new ConditionValue(Double.valueOf(s).doubleValue()));
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_EQUALS);
                     list.add(finalCondition);
                 }
+                inCondition.setComparatorName(StringConstants.COMPARATOR_IN);
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
                 inCondition.setConditionValue(list);
                 return inCondition;
             }
@@ -386,19 +328,16 @@ public class DtCreater {
             String group2 = m.group(3);
             if(group1 != null && group2 != null && m.group(5) !=null) {
                 InCondition inCondition = new InCondition();
-                inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);
-                inCondition.setConditionName(condName);
-                inCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
+
                 String[] longs = m.group(5).split(",");
                 ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = new GenericCondition();
-                    finalCondition.setComparatorName(StringConstants.COMPARATOR_NOT_EQUALS);
-                    finalCondition.setConditionName(condName);
-                    finalCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
-                    finalCondition.setConditionValue(new ConditionValue(Double.valueOf(s).doubleValue()));
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_NOT_EQUALS);
                     list.add(finalCondition);
                 }
+                inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.DATATYPE_DOUBLE);
                 inCondition.setConditionValue(list);
                 return inCondition;
             }
@@ -410,12 +349,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_STRING);
-                finalCondition.setConditionValue(new ConditionValue((group2)));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_NOT_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_EQUALS);
             }
         }
 
@@ -426,19 +360,16 @@ public class DtCreater {
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
                 InCondition inCondition = new InCondition();
-                inCondition.setComparatorName(StringConstants.COMPARATOR_IN);
-                inCondition.setConditionName(condName);
-                inCondition.setDataType(StringConstants.DATATYPE_STRING);
+
                 String[] longs = m.group(3).split(",");
                 ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = new GenericCondition();
-                    finalCondition.setComparatorName(StringConstants.COMPARATOR_EQUALS);
-                    finalCondition.setConditionName(condName);
-                    finalCondition.setDataType(StringConstants.DATATYPE_STRING);
-                    finalCondition.setConditionValue(new ConditionValue(s));
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_EQUALS);
                     list.add(finalCondition);
                 }
+                inCondition.setComparatorName(StringConstants.COMPARATOR_IN);
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.DATATYPE_STRING);
                 inCondition.setConditionValue(list);
                 return inCondition;
             }
@@ -451,19 +382,16 @@ public class DtCreater {
             String group2 = m.group(3);
             if(group1 != null && group2 != null && m.group(5) != null) {
                 InCondition inCondition = new InCondition();
-                inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);
-                inCondition.setConditionName(condName);
-                inCondition.setDataType(StringConstants.DATATYPE_STRING);
+
                 String[] longs = m.group(5).split(",");
                 ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = new GenericCondition();
-                    finalCondition.setComparatorName(StringConstants.COMPARATOR_NOT_EQUALS);
-                    finalCondition.setConditionName(condName);
-                    finalCondition.setDataType(StringConstants.DATATYPE_STRING);
-                    finalCondition.setConditionValue(new ConditionValue(s));
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_EQUALS);
                     list.add(finalCondition);
                 }
+                inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);
+                inCondition.setConditionName(condName);
+                inCondition.setDataType(StringConstants.DATATYPE_STRING);
                 inCondition.setConditionValue(list);
                 return inCondition;
             }
@@ -475,13 +403,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                finalCondition = new GenericCondition();
-                finalCondition.setDataType(StringConstants.DATATYPE_STRING);
-
-                finalCondition.setConditionValue(new ConditionValue(group2));
-                finalCondition.setConditionName(condName);
-                finalCondition.setComparatorName(StringConstants.COMPARATOR_EQUALS);
-                return finalCondition;
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_EQUALS);
             }
         }
 

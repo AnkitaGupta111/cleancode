@@ -12,14 +12,22 @@ import java.util.Map;
 
 public class DtExecutor extends AbstractDtExecutor{
 
-	private DecisionTable dT;
+	private DecisionTable dT = null;
+	private String[] options;
+	private String dT_json;
 
 	public DtExecutor(String[] options,String dt) {
-		DtCreater creater = new DtCreater(dt);
-		dT = creater.createDtModel(dt);
+		this.options = options;
+		this.dT_json = dt;
 	}
 
 	public DecisionTable getDt(){
+		if(dT != null){
+			return dT;
+		}
+		else {
+			dT = createDT();
+		}
 		return dT;
 	}
 
@@ -51,9 +59,15 @@ public class DtExecutor extends AbstractDtExecutor{
 		return null;
 	}
 
+	private DecisionTable createDT() {
+		DtCreater dtCreater= new DtCreater(dT_json);
+		DecisionTable dt = dtCreater.createDtModel();
+		return dt;
+	}
+
 	private HashMap<String,ConditionValue> getConditionValues(HashMap<String,String> value){
 		HashMap<String,ConditionValue> conditionValues = new HashMap<String, ConditionValue>();
-		DtHeader header = this.dT.getHeader();
+		DtHeader header = getDt().getHeader();
 		HashMap<String,Enum> headerConditions = header.getConditions();
 		Iterator i;
 		ConditionValue cValue;
