@@ -31,7 +31,7 @@ public class DecisionTable {
 	};
 
 	public void setHeaderConditions(String s,Enum e) {
-		this.header.conditions.put(s,e);
+		this.header.addConditions(s,e);
 	}
 
 	public DtHeader getHeader() {

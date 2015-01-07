@@ -54,20 +54,21 @@ public class DtExecutor extends AbstractDtExecutor{
 	private HashMap<String,ConditionValue> getConditionValues(HashMap<String,String> value){
 		HashMap<String,ConditionValue> conditionValues = new HashMap<String, ConditionValue>();
 		DtHeader header = this.dT.getHeader();
+		HashMap<String,Enum> headerConditions = header.getConditions();
 		Iterator i;
 		ConditionValue cValue;
 		i = value.entrySet().iterator();
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
-			if(header.conditions.get(me.getKey()).equals(StringConstants.DATATYPE_STRING)){
+			if(headerConditions.get(me.getKey()).equals(StringConstants.DATATYPE_STRING)){
 				cValue = new ConditionValue(me.getValue().toString());
 				conditionValues.put(me.getKey().toString(),cValue);
 			}
-			else if(header.conditions.get(me.getKey()).equals(StringConstants.DATATYPE_LONG)){
+			else if(headerConditions.get(me.getKey()).equals(StringConstants.DATATYPE_LONG)){
 				cValue = new ConditionValue(Long.valueOf(me.getValue().toString()).longValue());
 				conditionValues.put(me.getKey().toString(),cValue);
 			}
-			else if(header.conditions.get(me.getKey()).equals(StringConstants.DATATYPE_DOUBLE)){
+			else if(headerConditions.get(me.getKey()).equals(StringConstants.DATATYPE_DOUBLE)){
 				cValue = new ConditionValue(Double.valueOf(me.getValue().toString()).doubleValue());
 				conditionValues.put(me.getKey().toString(),cValue);
 			}
