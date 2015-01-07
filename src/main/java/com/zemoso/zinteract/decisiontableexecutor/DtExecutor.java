@@ -2,7 +2,6 @@ package com.zemoso.zinteract.decisiontableexecutor;
 
 import com.zemoso.zinteract.comparators.AbstractComparatorFactory;
 import com.zemoso.zinteract.comparators.Comparator;
-import com.zemoso.zinteract.comparators.ComparatorFactory;
 import com.zemoso.zinteract.decisiontable.*;
 
 import java.util.*;
@@ -19,7 +18,7 @@ public class DtExecutor extends AbstractDtExecutor{
 		this.dT_json = dt;
 	}
 
-	public DecisionTable getDt(){
+	public DecisionTable getDecisionTable(){
 		if(dT != null){
 			return dT;
 		}
@@ -30,8 +29,8 @@ public class DtExecutor extends AbstractDtExecutor{
 	}
 
 
-	public DtRow getFirstMatch(HashMap<String,String> value, StringConstants caseSensivity) {
-		ArrayList<DtRow> allMatches = findMatches(value,caseSensivity,true);
+	public DtRow getFirstMatch(HashMap<String,String> value) {
+		ArrayList<DtRow> allMatches = findMatches(value,true);
 		if(allMatches.size() > 0){
 			return allMatches.get(0);
 		}
@@ -39,12 +38,12 @@ public class DtExecutor extends AbstractDtExecutor{
 
 	}
 
-	public ArrayList<DtRow> getAllMatches(HashMap<String,String> value, StringConstants caseSensivity) {
-		ArrayList<DtRow> allMatches = findMatches(value,caseSensivity,false);
+	public ArrayList<DtRow> getAllMatches(HashMap<String,String> value) {
+		ArrayList<DtRow> allMatches = findMatches(value,false);
 		return allMatches;
 	}
 
-	private ArrayList<DtRow> findMatches(HashMap<String,String> value, StringConstants caseSensivity, Boolean firstOnly){
+	private ArrayList<DtRow> findMatches(HashMap<String,String> value, Boolean firstOnly){
 		AbstractComparatorFactory cFactory = AbstractComparatorFactory.getComparatorFactory();
 		Iterator i;
 		DtCondition dtCondition;
@@ -52,14 +51,15 @@ public class DtExecutor extends AbstractDtExecutor{
 		Boolean match = false;
 		ArrayList<DtRow> rows = new ArrayList<DtRow>();
 		HashMap<String,ConditionValue> conditionValues = getConditionValues(value);
-		for(DtRow row : dT.getDt()) {
+		Boolean ignoreCase = getDecisionTable().getIgnoreCase();
+		for(DtRow row : getDecisionTable().getDt()) {
 			i = conditionValues.entrySet().iterator();
 			while(i.hasNext()) {
 				Map.Entry me = (Map.Entry)i.next();
 				dtCondition = row.getConditionValues().get(me.getKey());
 				comparator = cFactory.getComparator(dtCondition.getComparatorName());
 				ConditionValue cV = (ConditionValue) me.getValue();
-				match = comparator.satisfies(dtCondition,cV,caseSensivity);
+				match = comparator.satisfies(dtCondition,cV,ignoreCase);
 				if(!match) {
 					break;
 				}
@@ -68,7 +68,7 @@ public class DtExecutor extends AbstractDtExecutor{
 			if(match) {
 				rows.add(row);
 			}
-			if(firstOnly){
+			if(match && firstOnly){
 				break;
 			}
 		}
@@ -83,7 +83,7 @@ public class DtExecutor extends AbstractDtExecutor{
 
 	private HashMap<String,ConditionValue> getConditionValues(HashMap<String,String> value){
 		HashMap<String,ConditionValue> conditionValues = new HashMap<String, ConditionValue>();
-		DtHeader header = getDt().getHeader();
+		DtHeader header = getDecisionTable().getHeader();
 		HashMap<String,Enum> headerConditions = header.getConditions();
 		Iterator i;
 		ConditionValue cValue;

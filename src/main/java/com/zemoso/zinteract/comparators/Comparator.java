@@ -8,5 +8,5 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
 public abstract class Comparator {
 
 
-	public abstract Boolean satisfies(DtCondition condition, ConditionValue rhs, StringConstants caseSensitivity);
+	public abstract Boolean satisfies(DtCondition condition, ConditionValue rhs, Boolean ignoreCase);
 }

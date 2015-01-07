@@ -12,6 +12,14 @@ import java.util.regex.Pattern;
  * Created by Praveen on 18-Dec-14.
  */
 public class DtCreater {
+    private final String KEY_DT_NAME = "name";
+    private final String KEY_DT_DESCRIPTION = "description";
+    private final String KEY_DT_ARTIFACT_ID = "artifact_id";
+    private final String KEY_DT_HEADER = "headers";
+    private final String KEY_DT_OPTIONS = "options";
+    private final String KEY_OPTION_IGNORECASE = "ignore_case";
+
+
     private String dTJson;
     public DtCreater(String s) {
         this.dTJson = s;
@@ -22,11 +30,19 @@ public class DtCreater {
         //format and transform dT properly
         DecisionTable dT = new DecisionTable();
         JsonObject jObject = (JsonObject)new JsonParser().parse(dTJson);
-        dT.setName(jObject.get("name").toString());
-        dT.setDescription(jObject.get("description").toString());
-        dT.setArtifactId(jObject.get("artifact_id").toString());
+        JsonArray options = jObject.getAsJsonArray(KEY_DT_OPTIONS);
+        for(int o=0; o < options.size();o++){
+            JsonObject option = options.get(o).getAsJsonObject();
+            if(option.get("propname").getAsString().equals(KEY_OPTION_IGNORECASE)){
+                Boolean ignoreCase = option.get("propvalue").getAsBoolean();
+                dT.setIgnoreCase(ignoreCase);
+            }
+        }
+        dT.setName(jObject.get(KEY_DT_NAME).toString());
+        dT.setDescription(jObject.get(KEY_DT_DESCRIPTION).toString());
+        dT.setArtifactId(jObject.get(KEY_DT_ARTIFACT_ID).toString());
 
-        JsonObject headers = jObject.getAsJsonObject("headers");
+        JsonObject headers = jObject.getAsJsonObject(KEY_DT_HEADER);
         JsonArray conditions = headers.getAsJsonArray("conditions");
 
         JsonArray actions = headers.getAsJsonArray("actions");

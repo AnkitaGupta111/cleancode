@@ -10,6 +10,7 @@ public class DecisionTable {
 	private String name;
 	private String description;
 	private String artifact_id;
+	private Boolean ignoreCase = true;
 
 	private DtHeader header = new DtHeader();
 	//private HashMap<String,Enum> conditions = new HashMap<String, Enum>();
@@ -19,6 +20,14 @@ public class DecisionTable {
 	public DecisionTable() {
 
 	};
+
+	public void setIgnoreCase(Boolean ignoreCase){
+		this.ignoreCase = ignoreCase;
+	}
+
+	public Boolean getIgnoreCase(){
+		return this.ignoreCase;
+	}
 
 	public void setOptions(String options[]) {
 		//filter options and set default options

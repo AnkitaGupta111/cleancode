@@ -1,7 +1,6 @@
 package com.zemoso.zinteract;
 
 import com.zemoso.zinteract.decisiontable.DtRow;
-import com.zemoso.zinteract.decisiontable.StringConstants;
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutor;
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutorFactory;
 import org.apache.log4j.Logger;
@@ -9,6 +8,7 @@ import org.apache.log4j.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -44,13 +44,13 @@ public class Main {
 
         HashMap<String,String> value = new HashMap<String,String>();
         value.put("Con1","10000");
-        value.put("Con2","2");
+        value.put("Con2","100");
         value.put("Con3","50");
         value.put("Con4","99");
-        value.put("Con5","50");
+        value.put("Con5","14");
         value.put("Con6","1ff");
         value.put("Con7","hhhh");
-        value.put("Con8","130");
+        value.put("Con8","300");
 
         LOGGER.info("Executing now");
         execute(value, dTString);
@@ -79,10 +79,20 @@ public class Main {
         AbstractDtExecutorFactory Factory = AbstractDtExecutorFactory.getDtExecutorFactory();
 
         AbstractDtExecutor dtExecutor = Factory.getDtExecutor("dT_id1",json);
-        DtRow row = dtExecutor.getFirstMatch(s, StringConstants.CASE_INSENSITIVE);
+        long startTime = System.currentTimeMillis();
+        DtRow row = dtExecutor.getFirstMatch(s);
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        System.out.println("First time took: "+ elapsedTime+"ms");
+
+        startTime = System.currentTimeMillis();
+        ArrayList<DtRow> rows = dtExecutor.getAllMatches(s);
+        stopTime = System.currentTimeMillis();
+        elapsedTime = stopTime - startTime;
+        System.out.println("Full Scan of 500 rows took: "+ elapsedTime+"ms");
 
         if(row != null) {
-            System.out.println("Match Found");
+            System.out.println("Match Found:"+rows.size());
 //            Iterator i;
 //
 //            for (String c : dtExecutor.getDt().getConditions()) {
@@ -100,7 +110,7 @@ public class Main {
 //            }
         }
         else {
-            //System.out.println("No conditions matching");
+            System.out.println("No conditions matching");
         }
     }
 

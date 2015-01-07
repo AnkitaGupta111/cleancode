@@ -10,11 +10,11 @@ import com.zemoso.zinteract.decisiontable.StringConstants;
  */
 public class ComparatorUtils {
 
-    public static Boolean isEqual(DtCondition condition,ConditionValue rhs, StringConstants caseSensitivity){
+    public static Boolean isEqual(DtCondition condition,ConditionValue rhs, Boolean ignoreCase){
         GenericCondition eCondition = (GenericCondition) condition;
 
         if(condition.getDataType() == StringConstants.DATATYPE_STRING){
-            if(caseSensitivity == StringConstants.CASE_INSENSITIVE){
+            if(ignoreCase){
                 return eCondition.getConditionValue().getStringConditionValue().equalsIgnoreCase(rhs.getStringConditionValue());
             }
             return eCondition.getConditionValue().getStringConditionValue().equals(rhs.getStringConditionValue());
