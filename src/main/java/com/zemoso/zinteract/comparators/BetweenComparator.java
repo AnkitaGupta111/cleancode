@@ -3,7 +3,6 @@ package com.zemoso.zinteract.comparators;
 import com.zemoso.zinteract.decisiontable.BetweenCondition;
 import com.zemoso.zinteract.decisiontable.ConditionValue;
 import com.zemoso.zinteract.decisiontable.DtCondition;
-import com.zemoso.zinteract.decisiontable.StringConstants;
 
 public class BetweenComparator extends Comparator {
 
