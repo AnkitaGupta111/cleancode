@@ -93,6 +93,7 @@ public class Main {
 
         if(row != null) {
             System.out.println("Match Found:"+rows.size());
+            System.out.println(rows.get(0).getActions().get("Act3"));
 //            Iterator i;
 //
 //            for (String c : dtExecutor.getDt().getConditions()) {
