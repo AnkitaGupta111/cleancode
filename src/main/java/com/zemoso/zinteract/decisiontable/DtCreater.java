@@ -6,7 +6,6 @@ import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Praveen on 18-Dec-14.
@@ -70,8 +69,10 @@ public class DtCreater {
             for(int k=0;k < actions.size();k++){
                 dtAction = new DtAction();
                 String acName = actions.get(k).getAsJsonObject().get("action").getAsString();
-                dtAction.setAction(acName);
+                String acValue = acs.get(k).getAsJsonObject().get("value").getAsString();
+                dtAction.setAction(acValue);
                 row.setActions(acName,dtAction);
+               // String fg = "{\"name\":\" The table to decide\",\"description\":\" blah, blah ,,,,,....\",\"artifact_id\":235,\"options\":[{\"propname\":\"exit_on_first_match\",\"propvalue\":\"true\"}],\"headers\":{\"conditions\":[{\"condition\":\"purchase\"},{\"condition\":\"puchase_quantity\"}],\"actions\":[{\"action\":\"Segment\"}]},\"rows\":[{\"conditions\":[{\"value\":\">=1\"},{\"value\":\">=0\"}],\"actions\":[{\"value\":\"purchase_in_last_year\"}]},{\"conditions\":[{\"value\":\">=1\"},{\"value\":\">=30\"}],\"actions\":[{\"value\":\"big_purchaser\"}]}]}"
             }
             dtRows.add(row);
         }

@@ -19,6 +19,9 @@ public class DtRow{
 		this.conditionValues.put(condition,dtCondition);
 	}
 
+    public HashMap<String,DtAction> getActions(){
+        return actions;
+    }
 	public void setActions(String a,DtAction s){
 		this.actions.put(a,s);
 	}
