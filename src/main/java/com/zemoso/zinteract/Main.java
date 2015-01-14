@@ -51,6 +51,7 @@ public class Main {
         value.put("Con6","1ff");
         value.put("Con7","hhhh");
         value.put("Con8","300");
+        value.put("Con80","300");//This field is not present in decision table
 
         LOGGER.info("Executing now");
         execute(value, dTString);

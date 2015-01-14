@@ -52,13 +52,14 @@ public class DtExecutor extends AbstractDtExecutor{
 		ArrayList<DtRow> rows = new ArrayList<DtRow>();
 		HashMap<String,ConditionValue> conditionValues = getConditionValues(value);
 		Boolean ignoreCase = getDecisionTable().getIgnoreCase();
+		HashMap<String,Enum> dtConditions = getDecisionTable().getHeader().getConditions();
 		for(DtRow row : getDecisionTable().getDt()) {
-			i = conditionValues.entrySet().iterator();
+			i = dtConditions.entrySet().iterator();
 			while(i.hasNext()) {
 				Map.Entry me = (Map.Entry)i.next();
 				dtCondition = row.getConditionValues().get(me.getKey());
 				comparator = cFactory.getComparator(dtCondition.getComparatorName());
-				ConditionValue cV = (ConditionValue) me.getValue();
+				ConditionValue cV = (ConditionValue) conditionValues.get(me.getKey());
 				match = comparator.satisfies(dtCondition,cV,ignoreCase);
 				if(!match) {
 					break;
@@ -90,19 +91,23 @@ public class DtExecutor extends AbstractDtExecutor{
 		i = value.entrySet().iterator();
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
-			if(headerConditions.get(me.getKey()).equals(StringConstants.DATATYPE_STRING)){
+			Enum dataType = headerConditions.get(me.getKey());
+			if(dataType == null){
+				continue;
+			}
+			if(dataType.equals(StringConstants.DATATYPE_STRING)){
 				cValue = new ConditionValue(me.getValue().toString());
 				conditionValues.put(me.getKey().toString(),cValue);
 			}
-			else if(headerConditions.get(me.getKey()).equals(StringConstants.DATATYPE_LONG)){
+			else if(dataType.equals(StringConstants.DATATYPE_LONG)){
 				cValue = new ConditionValue(Long.valueOf(me.getValue().toString()).longValue());
 				conditionValues.put(me.getKey().toString(),cValue);
 			}
-			else if(headerConditions.get(me.getKey()).equals(StringConstants.DATATYPE_DOUBLE)){
+			else if(dataType.equals(StringConstants.DATATYPE_DOUBLE)){
 				cValue = new ConditionValue(Double.valueOf(me.getValue().toString()).doubleValue());
 				conditionValues.put(me.getKey().toString(),cValue);
 			}
-			else if(headerConditions.get(me.getKey()).equals(StringConstants.DATATYPE_BOOLEAN)){
+			else if(dataType.equals(StringConstants.DATATYPE_BOOLEAN)){
 				cValue = new ConditionValue(Boolean.valueOf(me.getValue().toString()).booleanValue());
 				conditionValues.put(me.getKey().toString(),cValue);
 			}
