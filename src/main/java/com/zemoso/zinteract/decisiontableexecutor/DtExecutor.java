@@ -39,8 +39,7 @@ public class DtExecutor extends AbstractDtExecutor{
 	}
 
 	public ArrayList<DtRow> getAllMatches(HashMap<String,String> value) {
-		ArrayList<DtRow> allMatches = findMatches(value,false);
-		return allMatches;
+		return findMatches(value,false);
 	}
 
 	private ArrayList<DtRow> findMatches(HashMap<String,String> value, Boolean firstOnly){
@@ -78,8 +77,7 @@ public class DtExecutor extends AbstractDtExecutor{
 
 	private DecisionTable createDT() {
 		DtCreater dtCreater= new DtCreater(dT_json);
-		DecisionTable dt = dtCreater.createDtModel();
-		return dt;
+		return dtCreater.createDtModel();
 	}
 
 	private HashMap<String,ConditionValue> getConditionValues(HashMap<String,String> value){

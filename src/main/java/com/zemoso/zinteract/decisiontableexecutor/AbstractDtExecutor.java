@@ -1,7 +1,6 @@
 package com.zemoso.zinteract.decisiontableexecutor;
 
 import com.zemoso.zinteract.decisiontable.DtRow;
-import com.zemoso.zinteract.decisiontable.StringConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;

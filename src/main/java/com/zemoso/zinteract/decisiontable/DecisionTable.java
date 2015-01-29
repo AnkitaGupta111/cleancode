@@ -1,7 +1,6 @@
 package com.zemoso.zinteract.decisiontable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DecisionTable {
 
@@ -19,7 +18,7 @@ public class DecisionTable {
 
 	public DecisionTable() {
 
-	};
+	}
 
 	public void setIgnoreCase(Boolean ignoreCase){
 		this.ignoreCase = ignoreCase;
@@ -33,11 +32,11 @@ public class DecisionTable {
 		//filter options and set default options
 		options = new String[3];
 
-	};
+	}
 
 	public void setDT(ArrayList<DtRow> dt) {
 		dT = dt;
-	};
+	}
 
 	public void setHeaderConditions(String s,Enum e) {
 		this.header.addConditions(s,e);
