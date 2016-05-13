@@ -1,5 +1,7 @@
 package com.zemoso.zinteract.decisiontable;
 
+import com.google.gson.JsonArray;
+
 import java.util.ArrayList;
 
 public class DecisionTable {
@@ -10,6 +12,11 @@ public class DecisionTable {
 	private String description;
 	private String artifact_id;
 	private Boolean ignoreCase = true;
+	private JsonArray variables;
+
+	public void setVariables(JsonArray variables) {
+		this.variables = variables;
+	}
 
 	private DtHeader header = new DtHeader();
 	//private HashMap<String,Enum> conditions = new HashMap<String, Enum>();

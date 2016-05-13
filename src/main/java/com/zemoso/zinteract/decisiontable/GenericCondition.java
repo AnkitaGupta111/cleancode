@@ -9,6 +9,16 @@ public class GenericCondition extends DtCondition{
     private StringConstants dataType;
     private ConditionValue conditionValue;
 
+    public boolean isScripted() {
+        return isScripted;
+    }
+
+    public void setScripted(boolean scripted) {
+        isScripted = scripted;
+    }
+
+    private boolean isScripted=false;
+
     public ConditionValue getConditionValue(){
         return this.conditionValue;
     }

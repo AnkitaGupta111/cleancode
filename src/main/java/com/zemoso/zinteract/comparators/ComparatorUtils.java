@@ -14,6 +14,9 @@ public class ComparatorUtils {
         GenericCondition eCondition = (GenericCondition) condition;
 
         if(condition.getDataType() == StringConstants.DATATYPE_STRING){
+            if(eCondition.getConditionValue().getStringConditionValue().equals("*")){
+                return true;
+            }
             if(ignoreCase){
                 return eCondition.getConditionValue().getStringConditionValue().equalsIgnoreCase(rhs.getStringConditionValue());
             }
