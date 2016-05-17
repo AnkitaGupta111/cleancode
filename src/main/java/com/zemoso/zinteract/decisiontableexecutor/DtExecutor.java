@@ -75,6 +75,14 @@ public class DtExecutor extends AbstractDtExecutor{
 			}
 
 			if(match) {
+				Iterator it = row.getActions().entrySet().iterator();
+				while (it.hasNext()) {
+					Map.Entry pair = (Map.Entry)it.next();
+					DtAction action = (DtAction) pair.getValue();
+					if(action.isScripted()){
+						action.setVariables(variables);
+					}
+				}
 				rows.add(row);
 			}
 			if(match && firstOnly){

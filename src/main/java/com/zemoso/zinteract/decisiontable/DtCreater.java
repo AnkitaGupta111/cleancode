@@ -88,6 +88,9 @@ public class DtCreater {
                 dtAction = new DtAction();
                 String acName = actions.get(k).getAsJsonObject().get("action").getAsString();
                 String acValue = acs.get(k).getAsJsonObject().get("value").getAsString();
+                if(acs.get(k).getAsJsonObject().has("scripted") && acs.get(k).getAsJsonObject().get("scripted").getAsBoolean()==true){
+                    dtAction.setScripted(true);
+                }
                 dtAction.setAction(acValue);
                 row.setActions(acName,dtAction);
                // String fg = "{\"name\":\" The table to decide\",\"description\":\" blah, blah ,,,,,....\",\"artifact_id\":235,\"options\":[{\"propname\":\"exit_on_first_match\",\"propvalue\":\"true\"}],\"headers\":{\"conditions\":[{\"condition\":\"purchase\"},{\"condition\":\"puchase_quantity\"}],\"actions\":[{\"action\":\"Segment\"}]},\"rows\":[{\"conditions\":[{\"value\":\">=1\"},{\"value\":\">=0\"}],\"actions\":[{\"value\":\"purchase_in_last_year\"}]},{\"conditions\":[{\"value\":\">=1\"},{\"value\":\">=30\"}],\"actions\":[{\"value\":\"big_purchaser\"}]}]}"
