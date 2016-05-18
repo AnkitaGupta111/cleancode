@@ -5,6 +5,8 @@ import com.zemoso.zinteract.decisiontable.DtCondition;
 import com.zemoso.zinteract.decisiontable.GenericCondition;
 import com.zemoso.zinteract.decisiontable.StringConstants;
 
+import java.util.regex.Pattern;
+
 /**
  * Created by Praveen on 24-Dec-14.
  */
@@ -37,6 +39,27 @@ public class ComparatorUtils {
         return null;
     }
 
+    public static Boolean isLike(DtCondition condition,ConditionValue rhs, boolean ignoreCase){
+        GenericCondition eCondition = (GenericCondition) condition;
+        if(condition.getDataType() == StringConstants.DATATYPE_STRING){
+            if(ignoreCase){
+                return Pattern.compile(Pattern.quote(eCondition.getConditionValue().getStringConditionValue()), Pattern.CASE_INSENSITIVE).matcher(rhs.getStringConditionValue()).find();
+            }
+            return Pattern.compile(Pattern.quote(eCondition.getConditionValue().getStringConditionValue())).matcher(rhs.getStringConditionValue()).find();
+        }
+        return null;
+    }
+
+    public static Boolean isNotLike(DtCondition condition,ConditionValue rhs, boolean ignoreCase){
+        GenericCondition eCondition = (GenericCondition) condition;
+        if(condition.getDataType() == StringConstants.DATATYPE_STRING){
+            if(ignoreCase){
+                return !Pattern.compile(Pattern.quote(eCondition.getConditionValue().getStringConditionValue()), Pattern.CASE_INSENSITIVE).matcher(rhs.getStringConditionValue()).find();
+            }
+             return !Pattern.compile(Pattern.quote(eCondition.getConditionValue().getStringConditionValue())).matcher(rhs.getStringConditionValue()).find();
+        }
+        return null;
+    }
     public static Boolean isGreaterThan(DtCondition condition,ConditionValue rhs){
         GenericCondition greaterThanCondition = (GenericCondition) condition;
 

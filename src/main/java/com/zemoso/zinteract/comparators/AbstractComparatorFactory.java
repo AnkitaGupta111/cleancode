@@ -27,6 +27,8 @@ public abstract class AbstractComparatorFactory {
         comparators.put(StringConstants.COMPARATOR_NOT_EQUALS,new NotEqualsComparator());
         comparators.put(StringConstants.COMPARATOR_IN,new InComparator());
         comparators.put(StringConstants.COMPARATOR_NOTIN,new NotInComparator());
+        comparators.put(StringConstants.COMPARATOR_LIKE,new LIKECOMPARATOR());
+        comparators.put(StringConstants.COMPARATOR_NOT_LIKE,new NOTLIKECOMPARATOR());
     }
 
     public static AbstractComparatorFactory getComparatorFactory() {

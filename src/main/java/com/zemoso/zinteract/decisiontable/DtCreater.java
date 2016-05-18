@@ -40,7 +40,7 @@ public class DtCreater {
         dT.setName(jObject.get(KEY_DT_NAME).toString());
         dT.setDescription(jObject.get(KEY_DT_DESCRIPTION).toString());
         dT.setArtifactId(jObject.get(KEY_DT_ARTIFACT_ID).toString());
-        dT.setVariables(jObject.getAsJsonArray("variables"));
+
 
         JsonObject headers = jObject.getAsJsonObject(KEY_DT_HEADER);
         JsonArray conditions = headers.getAsJsonArray("conditions");
@@ -70,23 +70,25 @@ public class DtCreater {
                     }
                 }
             }
-            for(int j=0; j < sConds.size();j++) {
-                String condValue = sConds.get(j).getAsJsonObject().get("value").getAsString();
-                String condName = sConds.get(j).getAsJsonObject().get("condition").getAsString();
-                condition = this.getCondition(condValue,true,condName);
-                row.setConditionValues(condName,condition);
-                if(i==0) {
-                    dT.setHeaderConditions(condName, condition.getDataType());
-                } else {
-                    if(!dT.getHeader().getConditions().containsKey(condName)){
-                    dT.setHeaderConditions(condName, condition.getDataType());
+            if(sConds !=null) {
+                for (int j = 0; j < sConds.size(); j++) {
+                    String condValue = sConds.get(j).getAsJsonObject().get("value").getAsString();
+                    String condName = sConds.get(j).getAsJsonObject().get("condition").getAsString();
+                    condition = this.getCondition(condValue, true, condName);
+                    row.setConditionValues(condName, condition);
+                    if (i == 0) {
+                        dT.setHeaderConditions(condName, condition.getDataType());
+                    } else {
+                        if (!dT.getHeader().getConditions().containsKey(condName)) {
+                            dT.setHeaderConditions(condName, condition.getDataType());
+                        }
                     }
                 }
             }
             JsonArray acs = rows.get(i).getAsJsonObject().getAsJsonArray("actions");
-            for(int k=0;k < actions.size();k++){
+            for(int k=0;k < acs.size();k++){
                 dtAction = new DtAction();
-                String acName = actions.get(k).getAsJsonObject().get("action").getAsString();
+                String acName = acs.get(k).getAsJsonObject().get("action").getAsString();
                 String acValue = acs.get(k).getAsJsonObject().get("value").getAsString();
                 if(acs.get(k).getAsJsonObject().has("scripted") && acs.get(k).getAsJsonObject().get("scripted").getAsBoolean()==true){
                     dtAction.setScripted(true);
@@ -450,6 +452,24 @@ public class DtCreater {
         }
 
         //TODO add Not equals boolean condition
+        m = patternMatcher.getMatcher(PatternMatcher.type.NOTLIKESTRINGPATTERN);
+        m.reset(conValue);
+        if (m.find( )) {
+            String group1 = m.group(1);
+            String group2 = m.group(3);
+            if(group1 != null && group2 != null) {
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_LIKE, isScripted);
+            }
+        }
+        m = patternMatcher.getMatcher(PatternMatcher.type.LIKESTRINGPATTERN);
+        m.reset(conValue);
+        if (m.find( )) {
+            String group1 = m.group(1);
+            String group2 = m.group(3);
+            if(group1 != null && group2 != null) {
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_LIKE, isScripted);
+            }
+        }
 
         m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSSTRINGPATTERN);
         m.reset(conValue);
@@ -460,6 +480,7 @@ public class DtCreater {
                 return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_EQUALS, isScripted);
             }
         }
+
 
         return null;
 

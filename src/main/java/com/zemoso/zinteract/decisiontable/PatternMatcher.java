@@ -34,7 +34,9 @@ public class PatternMatcher {
         INSTRINGPATTERN,
         NOTINSTRINGPATTERN,
         EQUALSSTRINGPATTERN,
-        EQUALSBOOLEANPATTERN
+        EQUALSBOOLEANPATTERN,
+        NOTLIKESTRINGPATTERN,
+        LIKESTRINGPATTERN
     }
 
     static {
@@ -60,6 +62,8 @@ public class PatternMatcher {
         matchers.put(type.INSTRINGPATTERN,Pattern.compile("(^in)(\\s*)(.*,.*){1,}").matcher(""));
         matchers.put(type.NOTINSTRINGPATTERN,Pattern.compile("(^not)(\\s*)(in)(\\s*)(.*,.*){1,}").matcher(""));
         matchers.put(type.EQUALSSTRINGPATTERN,Pattern.compile("(^=*)(\\s*)(.*)").matcher(""));
+        matchers.put(type.NOTLIKESTRINGPATTERN,Pattern.compile("(^!~+)(\\s*)(.*)").matcher(""));
+        matchers.put(type.LIKESTRINGPATTERN,Pattern.compile("(^~+)(\\s*)(.*)").matcher(""));
         matchers.put(type.EQUALSBOOLEANPATTERN,Pattern.compile("(^=*)(\\s*)(true|false)",Pattern.CASE_INSENSITIVE).matcher(""));
     }
 
