@@ -1,17 +1,18 @@
 package com.zemoso.zinteract.decisiontable;
 
-import groovy.util.Eval;
-
-import java.util.HashMap;
-
 public class DtAction{
 	private String action;
 
-    public void setVariables(HashMap<String, String> variables) {
-        this.variables = variables;
+    public String getType() {
+        return type;
     }
 
-    private HashMap<String,String> variables;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    private String type;
+
 
     public boolean isScripted() {
         return isScripted;
@@ -23,19 +24,9 @@ public class DtAction{
 
     private boolean isScripted=false;
 
+
     public String getAction() {
-        if(isScripted()==false){
-            return action;
-        } else {
-            String actionString=action;
-            for ( String var : variables.keySet() ){
-                if(actionString.contains(var)){
-                    actionString=actionString.replaceAll(var,variables.get(var));
-                }
-            }
-            actionString= Eval.me(actionString).toString();
-            return actionString;
-        }
+        return action;
     }
 
     public void setAction(String s){
@@ -44,17 +35,6 @@ public class DtAction{
 
     @Override
     public String toString(){
-        if(isScripted()==false){
             return action;
-        } else {
-            String actionString=action;
-            for ( String var : variables.keySet() ){
-                if(actionString.contains(var)){
-                    actionString=actionString.replaceAll(var,variables.get(var));
-                }
-            }
-            actionString= Eval.me(actionString).toString();
-            return actionString;
-        }
     }
 }

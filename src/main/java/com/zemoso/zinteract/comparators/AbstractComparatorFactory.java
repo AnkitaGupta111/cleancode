@@ -3,6 +3,7 @@ package com.zemoso.zinteract.comparators;
 import com.zemoso.zinteract.decisiontable.StringConstants;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Praveen on 24-Dec-14.
@@ -13,7 +14,7 @@ public abstract class AbstractComparatorFactory {
     private static final String DEFAULT_COMPARATORYFACTORY_CLASSNAME = "com.zemoso.zinteract.comparators.ComparatorFactory";
     public abstract Comparator getComparator(StringConstants keyword);
 
-    protected HashMap<Enum,Comparator> comparators = new HashMap<Enum, Comparator>();
+    protected Map<Enum,Comparator> comparators = new HashMap<Enum, Comparator>();
 
     private static AbstractComparatorFactory cFactory = null;
 

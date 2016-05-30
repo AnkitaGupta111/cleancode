@@ -1,6 +1,7 @@
 package com.zemoso.zinteract.decisiontable;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,7 +10,7 @@ import java.util.regex.Pattern;
  */
 public class PatternMatcher {
 
-    private static HashMap<Enum,Matcher> matchers = new HashMap<Enum, Matcher>();
+    private static Map<Enum,Matcher> matchers = new HashMap<Enum, Matcher>();
 
     public enum type{
         GREATERTHANLONGPATTERN,

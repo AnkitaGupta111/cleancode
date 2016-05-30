@@ -5,6 +5,5 @@ public abstract class DtCondition{
 	public abstract String getConditionName();
 	//public abstract String[] getConditionValue();
 	public abstract StringConstants getDataType();
-	public abstract boolean isScripted() ;
 
 }

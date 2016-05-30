@@ -2,6 +2,7 @@ package com.zemoso.zinteract.decisiontable;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DecisionTable {
 
@@ -16,7 +17,7 @@ public class DecisionTable {
 	private DtHeader header = new DtHeader();
 	//private HashMap<String,Enum> conditions = new HashMap<String, Enum>();
 
-	private ArrayList<DtRow> dT = new ArrayList<DtRow>();
+	private List<DtRow> dT = new ArrayList<DtRow>();
 
 	public DecisionTable() {
 
@@ -36,7 +37,7 @@ public class DecisionTable {
 
 	}
 
-	public void setDT(ArrayList<DtRow> dt) {
+	public void setDT(List<DtRow> dt) {
 		dT = dt;
 	}
 
@@ -48,7 +49,7 @@ public class DecisionTable {
 		return this.header;
 	}
 
-	public ArrayList<DtRow> getDt() {
+	public List<DtRow> getDt() {
 		return dT;
 	}
 

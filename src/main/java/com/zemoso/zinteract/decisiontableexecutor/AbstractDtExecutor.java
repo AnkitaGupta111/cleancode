@@ -1,14 +1,16 @@
 package com.zemoso.zinteract.decisiontableexecutor;
 
-import com.zemoso.zinteract.decisiontable.DtRow;
+import com.zemoso.zinteract.decisiontable.DtResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Praveen on 05-Jan-15.
  */
 public abstract class AbstractDtExecutor {
-    public abstract DtRow getFirstMatch(HashMap<String,String> value);
-    public abstract ArrayList<DtRow> getAllMatches(HashMap<String,String> value);
+    public abstract DtResult getFirstMatch(Map<String,String> value);
+    public abstract List<DtResult> getAllMatches(Map<String,String> value);
+    public abstract Map getFirstMatchActionResults(Map<String,String> value);
+    public abstract List<Map> getAllActionResults(Map<String,String> value);
 }

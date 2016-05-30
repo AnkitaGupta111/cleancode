@@ -1,17 +1,29 @@
 package com.zemoso.zinteract.decisiontable;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class DtRow{
-	private HashMap<String,DtCondition> conditionValues;
-	private HashMap<String,DtAction> actions;
+	private Map<String,DtCondition> conditionValues;
+	private Map<String,DtAction> actions;
+
+	public Map<String, DtScript> getScripts() {
+		return scripts;
+	}
+
+	public void setScripts(String a, DtScript script) {
+		this.scripts.put(a,script);
+	}
+
+	private Map<String,DtScript> scripts;
 
 	public DtRow() {
 		this.conditionValues = new HashMap<String, DtCondition>();
 		this.actions = new HashMap<String, DtAction>();
+		this.scripts=new HashMap<String, DtScript>();
 	}
 
-	public HashMap<String,DtCondition> getConditionValues() {
+	public Map<String,DtCondition> getConditionValues() {
 		return conditionValues;
 	}
 
@@ -19,7 +31,7 @@ public class DtRow{
 		this.conditionValues.put(condition,dtCondition);
 	}
 
-    public HashMap<String,DtAction> getActions(){
+    public Map<String,DtAction> getActions(){
         return actions;
     }
 	public void setActions(String a,DtAction s){

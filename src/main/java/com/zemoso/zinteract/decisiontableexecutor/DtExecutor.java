@@ -5,10 +5,7 @@ import com.zemoso.zinteract.comparators.Comparator;
 import com.zemoso.zinteract.decisiontable.*;
 import groovy.util.Eval;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class DtExecutor extends AbstractDtExecutor{
 
@@ -32,8 +29,31 @@ public class DtExecutor extends AbstractDtExecutor{
 	}
 
 
-	public DtRow getFirstMatch(HashMap<String,String> value) {
-		ArrayList<DtRow> allMatches = findMatches(value,true);
+//	public DtRow getFirstMatch(HashMap<String,String> value) {
+//		ArrayList<DtRow> allMatches = findMatches(value,true);
+//		if(allMatches.size() > 0){
+//			return allMatches.get(0);
+//		}
+//		else return null;
+//
+//	}
+
+	public Map getFirstMatchActionResults(Map<String,String> value){
+		DtResult result=getFirstMatch(value);
+		return result.getActionResults();
+	}
+
+	public List getAllActionResults(Map<String,String> value){
+		List actionResults=new ArrayList();
+		List<DtResult> results=getAllMatches(value);
+		for(DtResult result: results){
+			actionResults.add(result.getActionResults());
+		}
+		return actionResults;
+	}
+
+	public DtResult getFirstMatch(Map<String,String> value) {
+		List<DtResult> allMatches = findMatches(value,true);
 		if(allMatches.size() > 0){
 			return allMatches.get(0);
 		}
@@ -41,20 +61,22 @@ public class DtExecutor extends AbstractDtExecutor{
 
 	}
 
-	public ArrayList<DtRow> getAllMatches(HashMap<String,String> value) {
+	public List<DtResult> getAllMatches(Map<String,String> value) {
 		return findMatches(value,false);
 	}
 
-	private ArrayList<DtRow> findMatches(HashMap<String, String> value, Boolean firstOnly){
+	private List<DtResult> findMatches(Map<String, String> valueMap, Boolean firstOnly){
 		AbstractComparatorFactory cFactory = AbstractComparatorFactory.getComparatorFactory();
-		Iterator i;
+		Iterator i,j;
 		DtCondition dtCondition;
 		Comparator comparator;
 		Boolean match = false;
-		ArrayList<DtRow> rows = new ArrayList<DtRow>();
-		HashMap<String,ConditionValue> conditionValues = getConditionValues(value);
+
+		List<DtResult> results = new ArrayList<DtResult>();
+		Map<String,ConditionValue> conditionValues = getConditionValues(valueMap);
+		Map<String,Enum> headerConditions = getDecisionTable().getHeader().getConditions();
 		Boolean ignoreCase = getDecisionTable().getIgnoreCase();
-		HashMap<String,Enum> dtConditions = getDecisionTable().getHeader().getConditions();
+		Map<String,Enum> dtConditions = getDecisionTable().getHeader().getConditions();
 		for(DtRow row : getDecisionTable().getDt()) {
 			i = dtConditions.entrySet().iterator();
 			while(i.hasNext()) {
@@ -65,40 +87,39 @@ public class DtExecutor extends AbstractDtExecutor{
 				}
 				comparator = cFactory.getComparator(dtCondition.getComparatorName());
                 ConditionValue cV;
-                if(dtCondition.isScripted()){
-                    cV=solveScript( me.getKey().toString(),value);
-                } else {
-                    cV = conditionValues.get(me.getKey().toString());
-                }
-				if(cV ==null){
-					match=false;
-				} else {
-					match = comparator.satisfies(dtCondition,cV,ignoreCase);
-				}
+				String value=valueMap.get(me.getKey().toString());
+				Enum dataType = headerConditions.get(me.getKey().toString());
+				cV = getConditionValue(value,dataType);
+				match = comparator.satisfies(dtCondition,cV,ignoreCase);
 				if(!match) {
 					break;
 				}
 			}
-
-			if(match) {
-				Iterator it = row.getActions().entrySet().iterator();
-				while (it.hasNext()) {
-					Map.Entry pair = (Map.Entry)it.next();
-					DtAction action = (DtAction) pair.getValue();
-					if(action.isScripted()){
-						action.setVariables(value);
+			if(match && row.getScripts()!=null) {
+				j = row.getScripts().entrySet().iterator();
+				while (j.hasNext()) {
+					Map.Entry me = (Map.Entry) j.next();
+					DtScript script = (DtScript) me.getValue();
+					if(!script.solve(valueMap)){
+						match=false;
+						break;
 					}
 				}
-				rows.add(row);
+			}
+			if(match) {
+				DtResult result=new DtResult();
+				result.setVariables(valueMap);
+				result.setRow(row);
+				results.add(result);
 			}
 			if(match && firstOnly){
 				break;
 			}
 		}
-		return rows;
+		return results;
 	}
 
-    private ConditionValue solveScript(String key, HashMap<String, String> variables) {
+    private ConditionValue solveScript(String key, Map<String, String> variables) {
 		String keyCopy=key;
 		for ( String var : variables.keySet() ) {
 			if(keyCopy.contains(var)){
@@ -111,7 +132,7 @@ public class DtExecutor extends AbstractDtExecutor{
 		} catch (groovy.lang.MissingPropertyException e){
 			return null;
 		}
-		HashMap<String,Enum> headerConditions = getDecisionTable().getHeader().getConditions();
+		Map<String,Enum> headerConditions = getDecisionTable().getHeader().getConditions();
 		Enum dataType = headerConditions.get(key);
 		return getConditionValue(val,dataType);
     }
@@ -121,10 +142,10 @@ public class DtExecutor extends AbstractDtExecutor{
 		return dtCreater.createDtModel();
 	}
 
-	private HashMap<String,ConditionValue> getConditionValues(HashMap<String,String> value){
-		HashMap<String,ConditionValue> conditionValues = new HashMap<String, ConditionValue>();
+	private Map<String,ConditionValue> getConditionValues(Map<String,String> value){
+		Map<String,ConditionValue> conditionValues = new HashMap<String, ConditionValue>();
 		DtHeader header = getDecisionTable().getHeader();
-		HashMap<String,Enum> headerConditions = header.getConditions();
+		Map<String,Enum> headerConditions = header.getConditions();
 		Iterator i;
 		ConditionValue cValue;
 		i = value.entrySet().iterator();

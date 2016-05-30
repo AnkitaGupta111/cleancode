@@ -1,10 +1,12 @@
 package com.zemoso.zinteract.decisiontable;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
@@ -41,7 +43,6 @@ public class DtCreater {
         dT.setDescription(jObject.get(KEY_DT_DESCRIPTION).toString());
         dT.setArtifactId(jObject.get(KEY_DT_ARTIFACT_ID).toString());
 
-
         JsonObject headers = jObject.getAsJsonObject(KEY_DT_HEADER);
         JsonArray conditions = headers.getAsJsonArray("conditions");
 
@@ -52,15 +53,15 @@ public class DtCreater {
         DtCondition condition;
         DtAction dtAction;
         ConditionValue conditionValue;
-        ArrayList<DtRow> dtRows = new ArrayList<DtRow>();
+        List<DtRow> dtRows = new ArrayList<DtRow>();
         for(int i=0;i < rows.size(); i++) {
             row = new DtRow();
             JsonArray conds = rows.get(i).getAsJsonObject().getAsJsonArray("conditions");
-            JsonArray sConds = rows.get(i).getAsJsonObject().getAsJsonArray("scriptedConditions");
+            JsonArray scripts = rows.get(i).getAsJsonObject().getAsJsonArray("scripts");
             for(int j=0; j < conds.size();j++) {
                 String condValue = conds.get(j).getAsJsonObject().get("value").getAsString();
                 String condName = conds.get(j).getAsJsonObject().get("condition").getAsString();
-                condition = this.getCondition(condValue,false,condName);
+                condition = this.getCondition(condValue,"",condName);
                 row.setConditionValues(condName,condition);
                 if(i==0) {
                     dT.setHeaderConditions(condName, condition.getDataType());
@@ -69,28 +70,26 @@ public class DtCreater {
                         dT.setHeaderConditions(condName, condition.getDataType());
                     }
                 }
+
             }
-            if(sConds !=null) {
-                for (int j = 0; j < sConds.size(); j++) {
-                    String condValue = sConds.get(j).getAsJsonObject().get("value").getAsString();
-                    String condName = sConds.get(j).getAsJsonObject().get("condition").getAsString();
-                    condition = this.getCondition(condValue, true, condName);
-                    row.setConditionValues(condName, condition);
-                    if (i == 0) {
-                        dT.setHeaderConditions(condName, condition.getDataType());
-                    } else {
-                        if (!dT.getHeader().getConditions().containsKey(condName)) {
-                            dT.setHeaderConditions(condName, condition.getDataType());
-                        }
-                    }
+            if(scripts !=null) {
+                for (int j = 0; j < scripts.size(); j++) {
+                    String script = scripts.get(j).getAsJsonObject().get("script").getAsString();
+                    String scriptName = scripts.get(j).getAsJsonObject().get("name").getAsString();
+                    row.setScripts(scriptName, new DtScript(script));
                 }
             }
             JsonArray acs = rows.get(i).getAsJsonObject().getAsJsonArray("actions");
             for(int k=0;k < acs.size();k++){
                 dtAction = new DtAction();
                 String acName = acs.get(k).getAsJsonObject().get("action").getAsString();
+                for(JsonElement action: actions){
+                    if(action.getAsJsonObject().get("action").getAsString().equals(acName)){
+                        dtAction.setType(action.getAsJsonObject().has("type")?action.getAsJsonObject().get("type").getAsString():"");
+                    }
+                }
                 String acValue = acs.get(k).getAsJsonObject().get("value").getAsString();
-                if(acs.get(k).getAsJsonObject().has("scripted") && acs.get(k).getAsJsonObject().get("scripted").getAsBoolean()==true){
+                if(acs.get(k).getAsJsonObject().has("scripted") && acs.get(k).getAsJsonObject().get("scripted").getAsBoolean()){
                     dtAction.setScripted(true);
                 }
                 dtAction.setAction(acValue);
@@ -104,13 +103,12 @@ public class DtCreater {
         return dT;
     }
 
-    private GenericCondition createGenericCondition(String condName, String cValue, StringConstants dataType, StringConstants comparatorName, boolean isScripted){
+    private GenericCondition createGenericCondition(String condName, String cValue,StringConstants dataType, StringConstants comparatorName){
         ConditionValue conditionValue = new ConditionValue(cValue);
         GenericCondition genericCondition = new GenericCondition();
         genericCondition.setConditionName(condName);
         genericCondition.setComparatorName(comparatorName);
         genericCondition.setDataType(dataType);
-        genericCondition.setScripted(isScripted);
 
         if(StringConstants.DATATYPE_LONG == dataType){
             conditionValue = new ConditionValue(Long.valueOf(cValue).longValue());
@@ -130,7 +128,7 @@ public class DtCreater {
         return genericCondition;
     }
 
-    private DtCondition getCondition(String conValue, boolean isScripted, String condName) {
+    private DtCondition getCondition(String conValue,String dataType, String condName) {
         //String equalsPattern = "=*\\s*(\\d+|\\d*.\\d+|\w+))";
 
         PatternMatcher patternMatcher = new PatternMatcher();
@@ -141,7 +139,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_GREATERTHAN, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_GREATERTHAN);
             }
         }
 
@@ -151,7 +149,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN);
             }
         }
 
@@ -161,7 +159,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_EQUALS);
             }
         }
 
@@ -171,7 +169,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_NOT_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_NOT_EQUALS);
             }
         }
 
@@ -181,7 +179,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN_EQUALS);
             }
         }
 
@@ -191,7 +189,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN);
             }
         }
 
@@ -201,7 +199,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_EQUALS);
             }
         }
 
@@ -211,7 +209,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_NOT_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_NOT_EQUALS);
             }
         }
 
@@ -221,7 +219,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN_EQUALS);
             }
         }
 
@@ -232,7 +230,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN);
             }
         }
 
@@ -242,7 +240,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN_EQUALS);
             }
         }
 
@@ -252,7 +250,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN_EQUALS);
             }
         }
 
@@ -264,9 +262,9 @@ public class DtCreater {
             String group2 = m.group(2);
             if(group1 != null && m.group(3) != null && m.group(5) != null && m.group(7) != null) {
                 BetweenCondition bCondition = new BetweenCondition();
-                GenericCondition lessT = createGenericCondition(condName,m.group(7),StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN, isScripted);
+                GenericCondition lessT = createGenericCondition(condName,m.group(7),StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN);
 
-                GenericCondition greatT = createGenericCondition(condName,m.group(3),StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_GREATERTHAN, isScripted);
+                GenericCondition greatT = createGenericCondition(condName,m.group(3),StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_GREATERTHAN);
 
                 bCondition.setLessThanCondition(lessT);
                 bCondition.setGreaterThanCondition(greatT);
@@ -285,9 +283,9 @@ public class DtCreater {
             String group2 = m.group(2);
             if(group1 != null && m.group(3) != null && m.group(5) != null && m.group(7) != null) {
                 BetweenCondition bCondition = new BetweenCondition();
-                GenericCondition lessT = createGenericCondition(condName,m.group(7),StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN, isScripted);
+                GenericCondition lessT = createGenericCondition(condName,m.group(7),StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN);
 
-                GenericCondition greatT = createGenericCondition(condName,m.group(3),StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN, isScripted);
+                GenericCondition greatT = createGenericCondition(condName,m.group(3),StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN);
 
                 bCondition.setLessThanCondition(lessT);
                 bCondition.setGreaterThanCondition(greatT);
@@ -307,9 +305,9 @@ public class DtCreater {
                 InCondition inCondition = new InCondition();
 
                 String[] longs = m.group(3).split(",");
-                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                List<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_EQUALS, isScripted);
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_EQUALS);
                     list.add(finalCondition);
                 }
 
@@ -330,9 +328,9 @@ public class DtCreater {
                 InCondition inCondition = new InCondition();
 
                 String[] longs = m.group(5).split(",");
-                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                List<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_NOT_EQUALS, isScripted);
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_NOT_EQUALS);
                     list.add(finalCondition);
                 }
                 inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);
@@ -352,9 +350,9 @@ public class DtCreater {
                 InCondition inCondition = new InCondition();
 
                 String[] longs = m.group(3).split(",");
-                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                List<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_EQUALS, isScripted);
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_EQUALS);
                     list.add(finalCondition);
                 }
                 inCondition.setComparatorName(StringConstants.COMPARATOR_IN);
@@ -374,9 +372,9 @@ public class DtCreater {
                 InCondition inCondition = new InCondition();
 
                 String[] longs = m.group(5).split(",");
-                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                List<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_NOT_EQUALS, isScripted);
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_NOT_EQUALS);
                     list.add(finalCondition);
                 }
                 inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);
@@ -393,7 +391,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_EQUALS);
             }
         }
 
@@ -406,9 +404,9 @@ public class DtCreater {
                 InCondition inCondition = new InCondition();
 
                 String[] longs = m.group(3).split(",");
-                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                List<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_EQUALS, isScripted);
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_EQUALS);
                     list.add(finalCondition);
                 }
                 inCondition.setComparatorName(StringConstants.COMPARATOR_IN);
@@ -428,9 +426,9 @@ public class DtCreater {
                 InCondition inCondition = new InCondition();
 
                 String[] longs = m.group(5).split(",");
-                ArrayList<GenericCondition> list = new ArrayList<GenericCondition>();
+                List<GenericCondition> list = new ArrayList<GenericCondition>();
                 for(String s : longs){
-                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_EQUALS, isScripted);
+                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_EQUALS);
                     list.add(finalCondition);
                 }
                 inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);
@@ -447,7 +445,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_BOOLEAN,StringConstants.COMPARATOR_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_BOOLEAN,StringConstants.COMPARATOR_EQUALS);
             }
         }
 
@@ -458,7 +456,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_LIKE, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_LIKE);
             }
         }
         m = patternMatcher.getMatcher(PatternMatcher.type.LIKESTRINGPATTERN);
@@ -467,7 +465,7 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_LIKE, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_LIKE);
             }
         }
 
@@ -477,10 +475,9 @@ public class DtCreater {
             String group1 = m.group(1);
             String group2 = m.group(3);
             if(group1 != null && group2 != null) {
-                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_EQUALS, isScripted);
+                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_EQUALS);
             }
         }
-
 
         return null;
 

@@ -1,17 +1,17 @@
 package com.zemoso.zinteract.decisiontable;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Praveen on 19-Dec-14.
  */
 public class InCondition extends GenericCondition{
     private StringConstants comparatorName;
-    private ArrayList<GenericCondition> inCondition;
+    private List<GenericCondition> inCondition;
     private String conditionName;
     private StringConstants dataType;
 
-    public void setConditionValue(ArrayList<GenericCondition> l) {
+    public void setConditionValue(List<GenericCondition> l) {
         this.inCondition = l;
     }
 
@@ -19,11 +19,11 @@ public class InCondition extends GenericCondition{
         return this.dataType;
     }
 
-    public void setInCondition(ArrayList<GenericCondition> g){
+    public void setInCondition(List<GenericCondition> g){
         this.inCondition = g;
     }
 
-    public ArrayList<GenericCondition> getInCondition(){
+    public List<GenericCondition> getInCondition(){
         return this.inCondition;
     }
 
