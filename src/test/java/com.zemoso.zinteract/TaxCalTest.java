@@ -14,7 +14,6 @@ public class TaxCalTest {
         HashMap<String,String> value = new HashMap<String,String>();
         value.put("investment_80c","1000");
         value.put("income","249000");
-        value.put("tax_before_cess","0");
         Double tax=TaxCal.execute(value, json);
         assertTrue(tax==0);
     }
@@ -26,7 +25,6 @@ public class TaxCalTest {
         HashMap<String,String> value = new HashMap<String,String>();
         value.put("investment_80c","30000");
         value.put("income","310000");
-        value.put("tax_before_cess","0");
         Double tax=TaxCal.execute(value, json);
         assertTrue(tax==1030.20);
     }
@@ -37,7 +35,6 @@ public class TaxCalTest {
         HashMap<String,String> value = new HashMap<String,String>();
         value.put("investment_80c","10000");
         value.put("income","1000000");
-        value.put("tax_before_cess","0");
         Double tax=TaxCal.execute(value, json);
         assertTrue(tax==126714.60);
     }
@@ -47,7 +44,6 @@ public class TaxCalTest {
         HashMap<String,String> value = new HashMap<String,String>();
         value.put("investment_80c","10000");
         value.put("income","1100000");
-        value.put("tax_before_cess","0");
         Double tax=TaxCal.execute(value, json);
         assertTrue(tax==156590.40);
     }

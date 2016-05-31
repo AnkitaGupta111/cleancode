@@ -21,7 +21,6 @@ public class TaxCal {
         HashMap<String,String> value = new HashMap<String,String>();
         value.put("investment_80c","10000");
         value.put("income","510000");
-        value.put("tax_before_cess","0");
         Double tax=execute(value, dTString);
         System.out.println(tax);
     }
