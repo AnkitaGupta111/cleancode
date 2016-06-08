@@ -19,6 +19,12 @@ public class ComparatorUtils {
             if(eCondition.getConditionValue().getStringConditionValue().equals("*")){
                 return true;
             }
+            if(eCondition.getConditionValue().getStringConditionValue().equals("null")){
+                if(null ==rhs.getStringConditionValue() && !rhs.getBooleanConditionValue() && rhs.getDoubleConditionValue()==0.0 && rhs.getLongConditionValue()==0){
+                    return true;
+                }
+                return false;
+            }
             if(ignoreCase){
                 return eCondition.getConditionValue().getStringConditionValue().equalsIgnoreCase(rhs.getStringConditionValue());
             }

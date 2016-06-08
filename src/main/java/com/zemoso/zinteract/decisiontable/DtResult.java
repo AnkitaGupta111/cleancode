@@ -57,8 +57,9 @@ public class DtResult {
         } else {
             String actionString=action.getAction();
             for ( String var : variables.keySet() ){
-                if(actionString.contains(var)){
-                    actionString=actionString.replaceAll(var,variables.get(var));
+                String x="<"+var+">";
+                if(actionString.contains(x)){
+                    actionString=actionString.replaceAll(x,variables.get(var));
                 }
             }
             actionString= Eval.me(actionString).toString();
