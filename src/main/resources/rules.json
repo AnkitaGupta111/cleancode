@@ -1,0 +1,12 @@
+[{
+  "ruleId": 1,
+  "description" : "Buy 1 Get 1",
+  "orderQuantity" : 1,
+  "discountQuantity" : 1
+},
+{
+  "ruleId": 2,
+  "description" : "Buy 2 Get 1",
+  "orderQuantity" : 2,
+  "discountQuantity" : 1
+}]
