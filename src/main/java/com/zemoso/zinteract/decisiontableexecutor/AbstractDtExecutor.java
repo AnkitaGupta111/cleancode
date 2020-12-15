@@ -11,6 +11,5 @@ import java.util.Map;
 public abstract class AbstractDtExecutor {
     public abstract DtResult getFirstMatch(Map<String,String> value);
     public abstract List<DtResult> getAllMatches(Map<String,String> value);
-    public abstract Map getFirstMatchActionResults(Map<String,String> value);
-    public abstract List<Map> getAllActionResults(Map<String,String> value);
+    public abstract List<Map<String, Map<String, String>>> getAllActionResults(Map<String,String> value);
 }

@@ -1,50 +1,44 @@
 package com.zemoso.zinteract.decisiontableexecutor;
 
 
+import com.zemoso.zinteract.constants.Constant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractDtExecutorFactory {
-	private static AbstractDtExecutorFactory dtExecutorFactory = null;
-	private static final String PROPERTY_KEY_FOR_DTEXECUTORFACTORY_CLASSNAME = "dtexecutorfactory_class_name";
-	private static final String DEFAULT_DTEXECUTORFACTORY_CLASSNAME = "com.zemoso.zinteract.decisiontableexecutor.DtExecutorFactory";
+    private static final Logger logger = LoggerFactory.getLogger(AbstractDtExecutorFactory.class);
+    private static final String DEFAULT_DT_EXECUTOR_FACTORY_CLASS_NAME = Constant.EXECUTOR_FACTORY_CLASS_NAME;
+    private static AbstractDtExecutorFactory dtExecutorFactory = null;
+    protected Map<String, Object> hM = new HashMap<>();
 
-	protected Map<String,Object> hM = new HashMap();
+    protected AbstractDtExecutorFactory() {
 
-	protected AbstractDtExecutorFactory() {
+    }
 
-	}
+    public static AbstractDtExecutorFactory getDtExecutorFactory() {
+        if (dtExecutorFactory != null) {
+            return dtExecutorFactory;
+        } else {
+            synchronized (AbstractDtExecutorFactory.class) {
+                if (dtExecutorFactory != null) {
+                    return dtExecutorFactory;
+                }
 
-	public abstract AbstractDtExecutor getDtExecutor(String dT_id, String json);
+                try {
+                    Class<?> c = Class.forName(DEFAULT_DT_EXECUTOR_FACTORY_CLASS_NAME);
+                    dtExecutorFactory = (AbstractDtExecutorFactory) c.newInstance();
+                    return dtExecutorFactory;
+                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
+        return dtExecutorFactory;
+    }
 
-	public static AbstractDtExecutorFactory getDtExecutorFactory() {
-		if(dtExecutorFactory != null){
-			return dtExecutorFactory;
-		}
-		else {
-			synchronized (AbstractDtExecutorFactory.class){
-				if(dtExecutorFactory != null){
-					return dtExecutorFactory;
-				}
-
-				String className = System.getProperty(PROPERTY_KEY_FOR_DTEXECUTORFACTORY_CLASSNAME);
-				if(className == null){
-					className = DEFAULT_DTEXECUTORFACTORY_CLASSNAME;
-				}
-				try {
-					Class c = Class.forName(className);
-					dtExecutorFactory = (AbstractDtExecutorFactory)c.newInstance();
-					return dtExecutorFactory;
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return dtExecutorFactory;
-	}
+    public abstract AbstractDtExecutor getDtExecutor(String dT_id, String json);
 
 }
