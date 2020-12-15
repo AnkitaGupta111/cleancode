@@ -1,4 +1,4 @@
-name: Build
+name: Build for Clean Code PR.
 on:
   pull_request:
     branches:
