@@ -1,7 +1,7 @@
 package com.zemoso.zinteract.decisiontable;
 
 
-public class GenericCondition extends DtCondition{
+public class GenericCondition extends DtCondition {
     private StringConstants comparatorName;
 
     private String conditionName;
@@ -9,10 +9,14 @@ public class GenericCondition extends DtCondition{
     private StringConstants dataType;
     private ConditionValue conditionValue;
 
-    public ConditionValue getConditionValue(){
+    public ConditionValue getConditionValue() {
         return this.conditionValue;
     }
-    
+
+    public void setConditionValue(ConditionValue conditionValue) {
+        this.conditionValue = conditionValue;
+    }
+
     public StringConstants getDataType() {
         return dataType;
     }
@@ -21,20 +25,16 @@ public class GenericCondition extends DtCondition{
         this.dataType = dataType;
     }
 
-    public void setConditionValue(ConditionValue conditionValue) {
-        this.conditionValue = conditionValue;
-    }
-
     public StringConstants getComparatorName() {
         return comparatorName;
     }
 
-    public String getConditionName() {
-        return conditionName;
-    }
-
     public void setComparatorName(StringConstants s) {
         this.comparatorName = s;
+    }
+
+    public String getConditionName() {
+        return conditionName;
     }
 
     public void setConditionName(String s) {

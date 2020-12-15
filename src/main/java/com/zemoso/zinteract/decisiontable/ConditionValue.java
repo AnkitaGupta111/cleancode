@@ -9,19 +9,19 @@ public class ConditionValue {
     private double dConditionValue;
     private boolean bConditionValue;
 
-    public ConditionValue(long l){
+    public ConditionValue(long l) {
         this.lConditionValue = l;
     }
 
-    public ConditionValue(double d){
-        this.dConditionValue =d;
+    public ConditionValue(double d) {
+        this.dConditionValue = d;
     }
 
-    public ConditionValue(String s){
+    public ConditionValue(String s) {
         this.sConditionValue = s;
     }
 
-    public ConditionValue(boolean b){
+    public ConditionValue(boolean b) {
         this.bConditionValue = b;
     }
 
@@ -49,11 +49,11 @@ public class ConditionValue {
         this.dConditionValue = dConditionValue;
     }
 
-    public boolean getBooleanConditionValue(){
+    public boolean getBooleanConditionValue() {
         return this.bConditionValue;
     }
 
-    public void setBooleanConditionValue(boolean b){
+    public void setBooleanConditionValue(boolean b) {
         this.bConditionValue = b;
     }
 }

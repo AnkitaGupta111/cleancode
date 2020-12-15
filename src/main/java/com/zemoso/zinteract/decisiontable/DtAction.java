@@ -1,7 +1,9 @@
 package com.zemoso.zinteract.decisiontable;
 
-public class DtAction{
-	private String action;
+public class DtAction {
+    private String action;
+    private String type;
+    private boolean isScripted = false;
 
     public String getType() {
         return type;
@@ -11,9 +13,6 @@ public class DtAction{
         this.type = type;
     }
 
-    private String type;
-
-
     public boolean isScripted() {
         return isScripted;
     }
@@ -22,19 +21,16 @@ public class DtAction{
         isScripted = scripted;
     }
 
-    private boolean isScripted=false;
-
-
     public String getAction() {
         return action;
     }
 
-    public void setAction(String s){
+    public void setAction(String s) {
         this.action = s;
     }
 
     @Override
-    public String toString(){
-            return action;
+    public String toString() {
+        return action;
     }
 }
