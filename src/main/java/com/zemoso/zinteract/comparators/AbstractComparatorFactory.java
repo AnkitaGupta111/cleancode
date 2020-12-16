@@ -2,8 +2,7 @@ package com.zemoso.zinteract.comparators;
 
 import com.zemoso.zinteract.constants.Constant;
 import com.zemoso.zinteract.decisiontable.StringConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +10,8 @@ import java.util.Map;
 /**
  * Created by Praveen on 24-Dec-14.
  */
+@Slf4j
 public abstract class AbstractComparatorFactory {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractComparatorFactory.class);
 
     private static final String DEFAULT_COMPARATOR_FACTORY_CLASS_NAME = Constant.COMPARATOR_CLASS_NAME;
     private static AbstractComparatorFactory cFactory = null;
@@ -45,7 +44,7 @@ public abstract class AbstractComparatorFactory {
                     cFactory = (AbstractComparatorFactory) c.newInstance();
                     return cFactory;
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-                    logger.error(e.getMessage());
+                    log.error(e.getMessage());
                 }
             }
         }

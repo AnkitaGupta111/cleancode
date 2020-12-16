@@ -1,16 +1,15 @@
 package com.zemoso.zinteract.decisiontableexecutor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DtExecutorFactory extends AbstractDtExecutorFactory {
-    private static final Logger logger = LoggerFactory.getLogger(DtExecutorFactory.class);
 
     @Override
     public AbstractDtExecutor getDtExecutor(String dT_id, String json) {
         DtExecutor d = (DtExecutor) hM.get(dT_id);
         if (d == null) {
-            logger.info("Executor does not exist ..lets create it");
+            log.info("Executor does not exist ..lets create it");
             synchronized (this) {
                 d = (DtExecutor) hM.get(dT_id);
                 if (d == null)
@@ -19,7 +18,7 @@ public class DtExecutorFactory extends AbstractDtExecutorFactory {
             }
             return d;
         }
-        logger.info("Executor already exist...lets reuse it");
+        log.info("Executor already exist...lets reuse it");
         return d;
     }
 }

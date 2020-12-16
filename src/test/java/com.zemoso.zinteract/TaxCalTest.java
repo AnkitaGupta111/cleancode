@@ -3,9 +3,8 @@ package com.zemoso.zinteract;
 import com.zemoso.zinteract.constants.Constant;
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutor;
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutorFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,8 +16,8 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
+@Slf4j
 public class TaxCalTest {
-    private static final Logger logger = LoggerFactory.getLogger(TaxCalTest.class);
 
     @Test
     public void testTaxCalBelow25K() {
@@ -77,7 +76,7 @@ public class TaxCalTest {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    logger.error(e.getMessage());
+                    log.error(e.getMessage());
                 }
             }
         }
@@ -90,7 +89,7 @@ public class TaxCalTest {
         List<Map<String, Map<String, String>>> results = dtExecutor.getAllActionResults(s);
         for (Map<String, Map<String, String>> result : results) {
             if (result.containsKey("tax")) {
-                logger.info("tax---" + (result.get("tax")).get("value"));
+                log.info("tax---" + (result.get("tax")).get("value"));
                 return Double.parseDouble((result.get("tax")).get("value"));
             }
         }
