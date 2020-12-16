@@ -2,6 +2,7 @@ package com.zemoso.zinteract;
 
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutor;
 import com.zemoso.zinteract.decisiontableexecutor.AbstractDtExecutorFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.FileInputStream;
@@ -14,6 +15,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertTrue;
 
+@Slf4j
 public class TaxCalTest {
 
     @Test
@@ -87,7 +89,7 @@ public class TaxCalTest {
         List<Map> results = dtExecutor.getAllActionResults(s);
         for(Map result:results){
             if(result.containsKey("tax")){
-                System.out.println("tax---"+((HashMap) result.get("tax")).get("value"));
+                log.info("tax---"+((HashMap) result.get("tax")).get("value"));
                 return  Double.parseDouble(((HashMap) result.get("tax")).get("value").toString());
             }
         }

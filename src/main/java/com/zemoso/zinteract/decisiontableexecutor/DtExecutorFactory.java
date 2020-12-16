@@ -1,5 +1,8 @@
 package com.zemoso.zinteract.decisiontableexecutor;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class DtExecutorFactory extends AbstractDtExecutorFactory {
 
     @Override
@@ -8,10 +11,10 @@ public class DtExecutorFactory extends AbstractDtExecutorFactory {
 
         DtExecutor d = (DtExecutor) hM.get(dT_id);
         if (d != null) {
-            System.out.println("Executor already exist...lets reuse it");
+            log.info("Executor already exist...lets reuse it");
             return d;
         } else {
-            System.out.println("Executor does not exist ..lets create it");
+            log.info("Executor does not exist ..lets create it");
             synchronized (this) {
                 d = (DtExecutor) hM.get(dT_id);
                 if (d != null) {
@@ -23,6 +26,5 @@ public class DtExecutorFactory extends AbstractDtExecutorFactory {
                 }
             }
         }
-
     }
 }
