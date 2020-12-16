@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DecisionTableCreater.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ZinteractDT</a> &gt; <a href="index.source.html" class="el_package">com.zemoso.zinteract.decisiontable</a> &gt; <span class="el_source">DecisionTableCreater.java</span></div><h1>DecisionTableCreater.java</h1><pre class="source lang-java linenums">package com.zemoso.zinteract.decisiontable;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.zemoso.zinteract.decisiontable.condition.model.DecisionTableAction;
+import com.zemoso.zinteract.decisiontable.condition.DecisionTableCondition;
+import com.zemoso.zinteract.decisiontable.condition.GenericCondition;
+import com.zemoso.zinteract.decisiontable.condition.impl.BetweenCondition;
+import com.zemoso.zinteract.decisiontable.condition.impl.InCondition;
+import com.zemoso.zinteract.decisiontable.condition.model.ConditionValue;
+import com.zemoso.zinteract.decisiontable.condition.model.DecisionTable;
+import com.zemoso.zinteract.decisiontable.condition.model.DecisionTableRow;
+import com.zemoso.zinteract.decisiontable.condition.model.DeccisionTableScript;
+import com.zemoso.zinteract.util.PatternMatcher;
+import com.zemoso.zinteract.util.StringConstants;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+
+/**
+ * Created by Praveen on 18-Dec-14.
+ */
+public class DecisionTableCreater {
+<span class="fc" id="L27">    private final String KEY_DT_NAME = &quot;name&quot;;</span>
+<span class="fc" id="L28">    private final String KEY_DT_DESCRIPTION = &quot;description&quot;;</span>
+<span class="fc" id="L29">    private final String KEY_DT_ARTIFACT_ID = &quot;artifact_id&quot;;</span>
+<span class="fc" id="L30">    private final String KEY_DT_HEADER = &quot;headers&quot;;</span>
+<span class="fc" id="L31">    private final String KEY_DT_OPTIONS = &quot;options&quot;;</span>
+<span class="fc" id="L32">    private final String KEY_OPTION_IGNORECASE = &quot;ignore_case&quot;;</span>
+
+
+    private String dTJson;
+<span class="fc" id="L36">    public DecisionTableCreater(String s) {</span>
+<span class="fc" id="L37">        this.dTJson = s;</span>
+<span class="fc" id="L38">    }</span>
+
+    public DecisionTable createDtModel() {
+<span class="fc" id="L41">        String dTJson = this.dTJson;</span>
+        //format and transform dT properly
+<span class="fc" id="L43">        DecisionTable dT = new DecisionTable();</span>
+<span class="fc" id="L44">        JsonObject jObject = (JsonObject)new JsonParser().parse(dTJson);</span>
+<span class="fc" id="L45">        JsonArray options = jObject.getAsJsonArray(KEY_DT_OPTIONS);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for(int o=0; o &lt; options.size();o++){</span>
+<span class="fc" id="L47">            JsonObject option = options.get(o).getAsJsonObject();</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            if(option.get(&quot;propname&quot;).getAsString().equals(KEY_OPTION_IGNORECASE)){</span>
+<span class="fc" id="L49">                Boolean ignoreCase = option.get(&quot;propvalue&quot;).getAsBoolean();</span>
+<span class="fc" id="L50">                dT.setIgnoreCase(ignoreCase);</span>
+            }
+        }
+<span class="fc" id="L53">        dT.setName(jObject.get(KEY_DT_NAME).toString());</span>
+<span class="fc" id="L54">        dT.setDescription(jObject.get(KEY_DT_DESCRIPTION).toString());</span>
+<span class="fc" id="L55">        dT.setArtifactId(jObject.get(KEY_DT_ARTIFACT_ID).toString());</span>
+
+<span class="fc" id="L57">        JsonObject headers = jObject.getAsJsonObject(KEY_DT_HEADER);</span>
+<span class="fc" id="L58">        JsonArray conditions = headers.getAsJsonArray(&quot;conditions&quot;);</span>
+
+<span class="fc" id="L60">        JsonArray actions = headers.getAsJsonArray(&quot;actions&quot;);</span>
+
+<span class="fc" id="L62">        JsonArray rows = jObject.getAsJsonArray(&quot;rows&quot;);</span>
+        DecisionTableRow row;
+        DecisionTableCondition condition;
+        DecisionTableAction decisionTableAction;
+        ConditionValue conditionValue;
+<span class="fc" id="L67">        List&lt;DecisionTableRow&gt; decisionTableRows = new ArrayList&lt;DecisionTableRow&gt;();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for(int i=0;i &lt; rows.size(); i++) {</span>
+<span class="fc" id="L69">            row = new DecisionTableRow();</span>
+<span class="fc" id="L70">            JsonArray conds = rows.get(i).getAsJsonObject().getAsJsonArray(&quot;conditions&quot;);</span>
+<span class="fc" id="L71">            JsonArray scripts = rows.get(i).getAsJsonObject().getAsJsonArray(&quot;scripts&quot;);</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            for(int j=0; j &lt; conds.size();j++) {</span>
+<span class="fc" id="L73">                String condValue = conds.get(j).getAsJsonObject().get(&quot;value&quot;).getAsString();</span>
+<span class="fc" id="L74">                String condName = conds.get(j).getAsJsonObject().get(&quot;condition&quot;).getAsString();</span>
+<span class="fc" id="L75">                condition = this.getCondition(condValue,&quot;&quot;,condName);</span>
+<span class="fc" id="L76">                row.setConditionValues(condName,condition);</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">                if(i==0) {</span>
+<span class="fc" id="L78">                    dT.setHeaderConditions(condName, condition.getDataType());</span>
+                } else {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">                    if(!dT.getHeader().getConditions().containsKey(condName)){</span>
+<span class="fc" id="L81">                        dT.setHeaderConditions(condName, condition.getDataType());</span>
+                    }
+                }
+
+            }
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">            if(scripts !=null) {</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                for (int j = 0; j &lt; scripts.size(); j++) {</span>
+<span class="nc" id="L88">                    String script = scripts.get(j).getAsJsonObject().get(&quot;script&quot;).getAsString();</span>
+<span class="nc" id="L89">                    String scriptName = scripts.get(j).getAsJsonObject().get(&quot;name&quot;).getAsString();</span>
+<span class="nc" id="L90">                    row.setScripts(scriptName, new DeccisionTableScript(script));</span>
+                }
+            }
+<span class="fc" id="L93">            JsonArray acs = rows.get(i).getAsJsonObject().getAsJsonArray(&quot;actions&quot;);</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            for(int k=0;k &lt; acs.size();k++){</span>
+<span class="fc" id="L95">                decisionTableAction = new DecisionTableAction();</span>
+<span class="fc" id="L96">                String acName = acs.get(k).getAsJsonObject().get(&quot;action&quot;).getAsString();</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">                for(JsonElement action: actions){</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">                    if(action.getAsJsonObject().get(&quot;action&quot;).getAsString().equals(acName)){</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">                        decisionTableAction.setType(action.getAsJsonObject().has(&quot;type&quot;)?action.getAsJsonObject().get(&quot;type&quot;).getAsString():&quot;&quot;);</span>
+                    }
+<span class="fc" id="L101">                }</span>
+<span class="fc" id="L102">                String acValue = acs.get(k).getAsJsonObject().get(&quot;value&quot;).getAsString();</span>
+<span class="pc bpc" id="L103" title="1 of 4 branches missed.">                if(acs.get(k).getAsJsonObject().has(&quot;scripted&quot;) &amp;&amp; acs.get(k).getAsJsonObject().get(&quot;scripted&quot;).getAsBoolean()){</span>
+<span class="fc" id="L104">                    decisionTableAction.setScripted(true);</span>
+                }
+<span class="fc" id="L106">                decisionTableAction.setAction(acValue);</span>
+<span class="fc" id="L107">                row.setActions(acName, decisionTableAction);</span>
+               // String fg = &quot;{\&quot;name\&quot;:\&quot; The table to decide\&quot;,\&quot;description\&quot;:\&quot; blah, blah ,,,,,....\&quot;,\&quot;artifact_id\&quot;:235,\&quot;options\&quot;:[{\&quot;propname\&quot;:\&quot;exit_on_first_match\&quot;,\&quot;propvalue\&quot;:\&quot;true\&quot;}],\&quot;headers\&quot;:{\&quot;conditions\&quot;:[{\&quot;condition\&quot;:\&quot;purchase\&quot;},{\&quot;condition\&quot;:\&quot;puchase_quantity\&quot;}],\&quot;actions\&quot;:[{\&quot;action\&quot;:\&quot;Segment\&quot;}]},\&quot;rows\&quot;:[{\&quot;conditions\&quot;:[{\&quot;value\&quot;:\&quot;&gt;=1\&quot;},{\&quot;value\&quot;:\&quot;&gt;=0\&quot;}],\&quot;actions\&quot;:[{\&quot;value\&quot;:\&quot;purchase_in_last_year\&quot;}]},{\&quot;conditions\&quot;:[{\&quot;value\&quot;:\&quot;&gt;=1\&quot;},{\&quot;value\&quot;:\&quot;&gt;=30\&quot;}],\&quot;actions\&quot;:[{\&quot;value\&quot;:\&quot;big_purchaser\&quot;}]}]}&quot;
+            }
+<span class="fc" id="L110">            decisionTableRows.add(row);</span>
+        }
+<span class="fc" id="L112">        dT.setDT(decisionTableRows);</span>
+
+<span class="fc" id="L114">        return dT;</span>
+    }
+
+    private GenericCondition createGenericCondition(String condName, String cValue, StringConstants dataType, StringConstants comparatorName){
+<span class="fc" id="L118">        ConditionValue conditionValue = new ConditionValue(cValue);</span>
+<span class="fc" id="L119">        GenericCondition genericCondition = new GenericCondition();</span>
+<span class="fc" id="L120">        genericCondition.setConditionName(condName);</span>
+<span class="fc" id="L121">        genericCondition.setComparatorName(comparatorName);</span>
+<span class="fc" id="L122">        genericCondition.setDataType(dataType);</span>
+
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if(StringConstants.DATATYPE_LONG == dataType){</span>
+<span class="fc" id="L125">            conditionValue = new ConditionValue(Long.valueOf(cValue).longValue());</span>
+
+        }
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        else if(StringConstants.DATATYPE_DOUBLE == dataType){</span>
+<span class="fc" id="L129">            conditionValue = new ConditionValue(Double.valueOf(cValue).doubleValue());</span>
+        }
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        else if(StringConstants.DATATYPE_BOOLEAN == dataType){</span>
+<span class="nc" id="L132">            conditionValue = new ConditionValue(Boolean.valueOf(cValue).booleanValue());</span>
+        }
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        else if(StringConstants.DATATYPE_STRING == dataType){</span>
+<span class="nc" id="L135">            conditionValue = new ConditionValue(cValue);</span>
+        }
+<span class="fc" id="L137">        genericCondition.setConditionValue(conditionValue);</span>
+
+<span class="fc" id="L139">        return genericCondition;</span>
+    }
+
+    private DecisionTableCondition getCondition(String conValue, String dataType, String condName) {
+        //String equalsPattern = &quot;=*\\s*(\\d+|\\d*.\\d+|\w+))&quot;;
+
+<span class="fc" id="L145">        PatternMatcher patternMatcher = new PatternMatcher();</span>
+        GenericCondition finalCondition;
+<span class="fc" id="L147">        Matcher m = patternMatcher.getMatcher(PatternMatcher.type.GREATERTHANLONGPATTERN);</span>
+<span class="fc" id="L148">        m.reset(conValue);</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (m.find()) {</span>
+<span class="fc" id="L150">            String group1 = m.group(1);</span>
+<span class="fc" id="L151">            String group2 = m.group(3);</span>
+<span class="pc bpc" id="L152" title="2 of 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="fc" id="L153">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_GREATERTHAN);</span>
+            }
+        }
+
+<span class="fc" id="L157">        m = patternMatcher.getMatcher(PatternMatcher.type.LESSTHANLONGPATTERN);</span>
+<span class="fc" id="L158">        m.reset(conValue);</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L160">            String group1 = m.group(1);</span>
+<span class="nc" id="L161">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L162" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L163">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN);</span>
+            }
+        }
+
+<span class="fc" id="L167">        m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSLONGPATTERN);</span>
+<span class="fc" id="L168">        m.reset(conValue);</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L170">            String group1 = m.group(1);</span>
+<span class="nc" id="L171">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L172" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L173">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_EQUALS);</span>
+            }
+        }
+
+<span class="fc" id="L177">        m = patternMatcher.getMatcher(PatternMatcher.type.NOTEQUALSLONGPATTERN);</span>
+<span class="fc" id="L178">        m.reset(conValue);</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L180">            String group1 = m.group(1);</span>
+<span class="nc" id="L181">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L182" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L183">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_NOT_EQUALS);</span>
+            }
+        }
+
+<span class="fc" id="L187">        m = patternMatcher.getMatcher(PatternMatcher.type.LESSTHANEQUALSLONGPATTERN);</span>
+<span class="fc" id="L188">        m.reset(conValue);</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (m.find( )) {</span>
+<span class="fc" id="L190">            String group1 = m.group(1);</span>
+<span class="fc" id="L191">            String group2 = m.group(3);</span>
+<span class="pc bpc" id="L192" title="2 of 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="fc" id="L193">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN_EQUALS);</span>
+            }
+        }
+
+<span class="fc" id="L197">        m = patternMatcher.getMatcher(PatternMatcher.type.GREATERTHANDOUBLEPATTERN);</span>
+<span class="fc" id="L198">        m.reset(conValue);</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        if (m.find( )) {</span>
+<span class="fc" id="L200">            String group1 = m.group(1);</span>
+<span class="fc" id="L201">            String group2 = m.group(3);</span>
+<span class="pc bpc" id="L202" title="2 of 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="fc" id="L203">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN);</span>
+            }
+        }
+
+<span class="fc" id="L207">        m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSDOUBLEPATTERN);</span>
+<span class="fc" id="L208">        m.reset(conValue);</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L210">            String group1 = m.group(1);</span>
+<span class="nc" id="L211">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L212" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L213">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_EQUALS);</span>
+            }
+        }
+
+<span class="fc" id="L217">        m = patternMatcher.getMatcher(PatternMatcher.type.NOTEQUALSDOUBLEPATTERN);</span>
+<span class="fc" id="L218">        m.reset(conValue);</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L220">            String group1 = m.group(1);</span>
+<span class="nc" id="L221">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L222" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L223">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_NOT_EQUALS);</span>
+            }
+        }
+
+<span class="fc" id="L227">        m = patternMatcher.getMatcher(PatternMatcher.type.GREATERTHANEQUALSDOUBLEPATTERN);</span>
+<span class="fc" id="L228">        m.reset(conValue);</span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L230">            String group1 = m.group(1);</span>
+<span class="nc" id="L231">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L232" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L233">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN_EQUALS);</span>
+            }
+        }
+
+
+<span class="fc" id="L238">        m = patternMatcher.getMatcher(PatternMatcher.type.LESSTHANDOUBLEPATTERN);</span>
+<span class="fc" id="L239">        m.reset(conValue);</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L241">            String group1 = m.group(1);</span>
+<span class="nc" id="L242">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L243" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L244">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN);</span>
+            }
+        }
+
+<span class="fc" id="L248">        m = patternMatcher.getMatcher(PatternMatcher.type.LESSTHANEQUALSDOUBLEPATTERN);</span>
+<span class="fc" id="L249">        m.reset(conValue);</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L251">            String group1 = m.group(1);</span>
+<span class="nc" id="L252">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L253" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L254">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN_EQUALS);</span>
+            }
+        }
+
+<span class="fc" id="L258">        m = patternMatcher.getMatcher(PatternMatcher.type.GREATERTHANEQUALSLONGPATTERN);</span>
+<span class="fc" id="L259">        m.reset(conValue);</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L261">            String group1 = m.group(1);</span>
+<span class="nc" id="L262">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L263" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L264">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN_EQUALS);</span>
+            }
+        }
+
+
+<span class="fc" id="L269">        m = patternMatcher.getMatcher(PatternMatcher.type.BETWEENLONGPATTERN);</span>
+<span class="fc" id="L270">        m.reset(conValue);</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">        if (m.find( )) {</span>
+<span class="fc" id="L272">            String group1 = m.group(1);</span>
+<span class="fc" id="L273">            String group2 = m.group(2);</span>
+<span class="pc bpc" id="L274" title="4 of 8 branches missed.">            if(group1 != null &amp;&amp; m.group(3) != null &amp;&amp; m.group(5) != null &amp;&amp; m.group(7) != null) {</span>
+<span class="fc" id="L275">                BetweenCondition bCondition = new BetweenCondition();</span>
+<span class="fc" id="L276">                GenericCondition lessT = createGenericCondition(condName,m.group(7),StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_LESSTHAN);</span>
+
+<span class="fc" id="L278">                GenericCondition greatT = createGenericCondition(condName,m.group(3),StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_GREATERTHAN);</span>
+
+<span class="fc" id="L280">                bCondition.setLessThanCondition(lessT);</span>
+<span class="fc" id="L281">                bCondition.setGreaterThanCondition(greatT);</span>
+<span class="fc" id="L282">                bCondition.setDataType(StringConstants.DATATYPE_LONG);</span>
+<span class="fc" id="L283">                bCondition.setConditionName(condName);</span>
+<span class="fc" id="L284">                bCondition.setComparatorName(StringConstants.COMPARATOR_BETWEEN);</span>
+<span class="fc" id="L285">                return bCondition;</span>
+            }
+        }
+
+
+<span class="nc" id="L290">        m = patternMatcher.getMatcher(PatternMatcher.type.BETWEENDOUBLEPATTERN);</span>
+<span class="nc" id="L291">        m.reset(conValue);</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L293">            String group1 = m.group(1);</span>
+<span class="nc" id="L294">            String group2 = m.group(2);</span>
+<span class="nc bnc" id="L295" title="All 8 branches missed.">            if(group1 != null &amp;&amp; m.group(3) != null &amp;&amp; m.group(5) != null &amp;&amp; m.group(7) != null) {</span>
+<span class="nc" id="L296">                BetweenCondition bCondition = new BetweenCondition();</span>
+<span class="nc" id="L297">                GenericCondition lessT = createGenericCondition(condName,m.group(7),StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_LESSTHAN);</span>
+
+<span class="nc" id="L299">                GenericCondition greatT = createGenericCondition(condName,m.group(3),StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_GREATERTHAN);</span>
+
+<span class="nc" id="L301">                bCondition.setLessThanCondition(lessT);</span>
+<span class="nc" id="L302">                bCondition.setGreaterThanCondition(greatT);</span>
+<span class="nc" id="L303">                bCondition.setDataType(StringConstants.DATATYPE_DOUBLE);</span>
+<span class="nc" id="L304">                bCondition.setConditionName(condName);</span>
+<span class="nc" id="L305">                bCondition.setComparatorName(StringConstants.COMPARATOR_BETWEEN);</span>
+<span class="nc" id="L306">                return bCondition;</span>
+            }
+        }
+
+<span class="nc" id="L310">        m = patternMatcher.getMatcher(PatternMatcher.type.INLONGPATTERN);</span>
+<span class="nc" id="L311">        m.reset(conValue);</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L313">            String group1 = m.group(1);</span>
+<span class="nc" id="L314">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L315" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L316">                InCondition inCondition = new InCondition();</span>
+
+<span class="nc" id="L318">                String[] longs = m.group(3).split(&quot;,&quot;);</span>
+<span class="nc" id="L319">                List&lt;GenericCondition&gt; list = new ArrayList&lt;GenericCondition&gt;();</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">                for(String s : longs){</span>
+<span class="nc" id="L321">                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_EQUALS);</span>
+<span class="nc" id="L322">                    list.add(finalCondition);</span>
+                }
+
+<span class="nc" id="L325">                inCondition.setComparatorName(StringConstants.COMPARATOR_IN);</span>
+<span class="nc" id="L326">                inCondition.setConditionName(condName);</span>
+<span class="nc" id="L327">                inCondition.setDataType(StringConstants.DATATYPE_LONG);</span>
+<span class="nc" id="L328">                inCondition.setConditionValue(list);</span>
+<span class="nc" id="L329">                return inCondition;</span>
+            }
+        }
+
+<span class="nc" id="L333">        m = patternMatcher.getMatcher(PatternMatcher.type.NOTINLONGPATTERN);</span>
+<span class="nc" id="L334">        m.reset(conValue);</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L336">            String group1 = m.group(1);</span>
+<span class="nc" id="L337">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L338" title="All 6 branches missed.">            if(group1 != null &amp;&amp; group2 != null &amp;&amp; m.group(5) != null) {</span>
+<span class="nc" id="L339">                InCondition inCondition = new InCondition();</span>
+
+<span class="nc" id="L341">                String[] longs = m.group(5).split(&quot;,&quot;);</span>
+<span class="nc" id="L342">                List&lt;GenericCondition&gt; list = new ArrayList&lt;GenericCondition&gt;();</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">                for(String s : longs){</span>
+<span class="nc" id="L344">                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_LONG,StringConstants.COMPARATOR_NOT_EQUALS);</span>
+<span class="nc" id="L345">                    list.add(finalCondition);</span>
+                }
+<span class="nc" id="L347">                inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);</span>
+<span class="nc" id="L348">                inCondition.setConditionName(condName);</span>
+<span class="nc" id="L349">                inCondition.setDataType(StringConstants.DATATYPE_LONG);</span>
+<span class="nc" id="L350">                inCondition.setConditionValue(list);</span>
+<span class="nc" id="L351">                return inCondition;</span>
+            }
+        }
+
+<span class="nc" id="L355">        m = patternMatcher.getMatcher(PatternMatcher.type.INDOUBLEPATTERN);</span>
+<span class="nc" id="L356">        m.reset(conValue);</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L358">            String group1 = m.group(1);</span>
+<span class="nc" id="L359">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L360" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L361">                InCondition inCondition = new InCondition();</span>
+
+<span class="nc" id="L363">                String[] longs = m.group(3).split(&quot;,&quot;);</span>
+<span class="nc" id="L364">                List&lt;GenericCondition&gt; list = new ArrayList&lt;GenericCondition&gt;();</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">                for(String s : longs){</span>
+<span class="nc" id="L366">                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_EQUALS);</span>
+<span class="nc" id="L367">                    list.add(finalCondition);</span>
+                }
+<span class="nc" id="L369">                inCondition.setComparatorName(StringConstants.COMPARATOR_IN);</span>
+<span class="nc" id="L370">                inCondition.setConditionName(condName);</span>
+<span class="nc" id="L371">                inCondition.setDataType(StringConstants.DATATYPE_DOUBLE);</span>
+<span class="nc" id="L372">                inCondition.setConditionValue(list);</span>
+<span class="nc" id="L373">                return inCondition;</span>
+            }
+        }
+
+<span class="nc" id="L377">        m = patternMatcher.getMatcher(PatternMatcher.type.NOTINDOUBLEPATTERN);</span>
+<span class="nc" id="L378">        m.reset(conValue);</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L380">            String group1 = m.group(1);</span>
+<span class="nc" id="L381">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L382" title="All 6 branches missed.">            if(group1 != null &amp;&amp; group2 != null &amp;&amp; m.group(5) !=null) {</span>
+<span class="nc" id="L383">                InCondition inCondition = new InCondition();</span>
+
+<span class="nc" id="L385">                String[] longs = m.group(5).split(&quot;,&quot;);</span>
+<span class="nc" id="L386">                List&lt;GenericCondition&gt; list = new ArrayList&lt;GenericCondition&gt;();</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">                for(String s : longs){</span>
+<span class="nc" id="L388">                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_DOUBLE,StringConstants.COMPARATOR_NOT_EQUALS);</span>
+<span class="nc" id="L389">                    list.add(finalCondition);</span>
+                }
+<span class="nc" id="L391">                inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);</span>
+<span class="nc" id="L392">                inCondition.setConditionName(condName);</span>
+<span class="nc" id="L393">                inCondition.setDataType(StringConstants.DATATYPE_DOUBLE);</span>
+<span class="nc" id="L394">                inCondition.setConditionValue(list);</span>
+<span class="nc" id="L395">                return inCondition;</span>
+            }
+        }
+
+<span class="nc" id="L399">        m = patternMatcher.getMatcher(PatternMatcher.type.NOTEQUALSSTRINGPATTERN);</span>
+<span class="nc" id="L400">        m.reset(conValue);</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L402">            String group1 = m.group(1);</span>
+<span class="nc" id="L403">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L404" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L405">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_EQUALS);</span>
+            }
+        }
+
+<span class="nc" id="L409">        m = patternMatcher.getMatcher(PatternMatcher.type.INSTRINGPATTERN);</span>
+<span class="nc" id="L410">        m.reset(conValue);</span>
+<span class="nc bnc" id="L411" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L412">            String group1 = m.group(1);</span>
+<span class="nc" id="L413">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L414" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L415">                InCondition inCondition = new InCondition();</span>
+
+<span class="nc" id="L417">                String[] longs = m.group(3).split(&quot;,&quot;);</span>
+<span class="nc" id="L418">                List&lt;GenericCondition&gt; list = new ArrayList&lt;GenericCondition&gt;();</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                for(String s : longs){</span>
+<span class="nc" id="L420">                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_EQUALS);</span>
+<span class="nc" id="L421">                    list.add(finalCondition);</span>
+                }
+<span class="nc" id="L423">                inCondition.setComparatorName(StringConstants.COMPARATOR_IN);</span>
+<span class="nc" id="L424">                inCondition.setConditionName(condName);</span>
+<span class="nc" id="L425">                inCondition.setDataType(StringConstants.DATATYPE_STRING);</span>
+<span class="nc" id="L426">                inCondition.setConditionValue(list);</span>
+<span class="nc" id="L427">                return inCondition;</span>
+            }
+        }
+
+<span class="nc" id="L431">        m = patternMatcher.getMatcher(PatternMatcher.type.NOTINSTRINGPATTERN);</span>
+<span class="nc" id="L432">        m.reset(conValue);</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L434">            String group1 = m.group(1);</span>
+<span class="nc" id="L435">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L436" title="All 6 branches missed.">            if(group1 != null &amp;&amp; group2 != null &amp;&amp; m.group(5) != null) {</span>
+<span class="nc" id="L437">                InCondition inCondition = new InCondition();</span>
+
+<span class="nc" id="L439">                String[] longs = m.group(5).split(&quot;,&quot;);</span>
+<span class="nc" id="L440">                List&lt;GenericCondition&gt; list = new ArrayList&lt;GenericCondition&gt;();</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">                for(String s : longs){</span>
+<span class="nc" id="L442">                    finalCondition = createGenericCondition(condName,s,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_EQUALS);</span>
+<span class="nc" id="L443">                    list.add(finalCondition);</span>
+                }
+<span class="nc" id="L445">                inCondition.setComparatorName(StringConstants.COMPARATOR_NOTIN);</span>
+<span class="nc" id="L446">                inCondition.setConditionName(condName);</span>
+<span class="nc" id="L447">                inCondition.setDataType(StringConstants.DATATYPE_STRING);</span>
+<span class="nc" id="L448">                inCondition.setConditionValue(list);</span>
+<span class="nc" id="L449">                return inCondition;</span>
+            }
+        }
+
+<span class="nc" id="L453">        m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSBOOLEANPATTERN);</span>
+<span class="nc" id="L454">        m.reset(conValue);</span>
+<span class="nc bnc" id="L455" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L456">            String group1 = m.group(1);</span>
+<span class="nc" id="L457">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L458" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L459">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_BOOLEAN,StringConstants.COMPARATOR_EQUALS);</span>
+            }
+        }
+
+        //TODO add Not equals boolean condition
+<span class="nc" id="L464">        m = patternMatcher.getMatcher(PatternMatcher.type.NOTLIKESTRINGPATTERN);</span>
+<span class="nc" id="L465">        m.reset(conValue);</span>
+<span class="nc bnc" id="L466" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L467">            String group1 = m.group(1);</span>
+<span class="nc" id="L468">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L469" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L470">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_NOT_LIKE);</span>
+            }
+        }
+<span class="nc" id="L473">        m = patternMatcher.getMatcher(PatternMatcher.type.LIKESTRINGPATTERN);</span>
+<span class="nc" id="L474">        m.reset(conValue);</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L476">            String group1 = m.group(1);</span>
+<span class="nc" id="L477">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L478" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L479">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_LIKE);</span>
+            }
+        }
+
+<span class="nc" id="L483">        m = patternMatcher.getMatcher(PatternMatcher.type.EQUALSSTRINGPATTERN);</span>
+<span class="nc" id="L484">        m.reset(conValue);</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">        if (m.find( )) {</span>
+<span class="nc" id="L486">            String group1 = m.group(1);</span>
+<span class="nc" id="L487">            String group2 = m.group(3);</span>
+<span class="nc bnc" id="L488" title="All 4 branches missed.">            if(group1 != null &amp;&amp; group2 != null) {</span>
+<span class="nc" id="L489">                return createGenericCondition(condName,group2,StringConstants.DATATYPE_STRING,StringConstants.COMPARATOR_EQUALS);</span>
+            }
+        }
+
+<span class="nc" id="L493">        return null;</span>
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

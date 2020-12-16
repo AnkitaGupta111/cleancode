@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DecisionTable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ZinteractDT</a> &gt; <a href="index.source.html" class="el_package">com.zemoso.zinteract.decisiontable.condition.model</a> &gt; <span class="el_source">DecisionTable.java</span></div><h1>DecisionTable.java</h1><pre class="source lang-java linenums">package com.zemoso.zinteract.decisiontable.condition.model;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DecisionTable {
+
+	private String options[];
+
+	private String name;
+	private String description;
+	private String artifact_id;
+<span class="fc" id="L14">	private Boolean ignoreCase = true;</span>
+
+
+<span class="fc" id="L17">	private DecisionTableHeader header = new DecisionTableHeader();</span>
+	//private HashMap&lt;String,Enum&gt; conditions = new HashMap&lt;String, Enum&gt;();
+
+<span class="fc" id="L20">	private List&lt;DecisionTableRow&gt; dT = new ArrayList&lt;DecisionTableRow&gt;();</span>
+
+<span class="fc" id="L22">	public DecisionTable() {</span>
+
+<span class="fc" id="L24">	}</span>
+
+	public void setIgnoreCase(Boolean ignoreCase){
+<span class="fc" id="L27">		this.ignoreCase = ignoreCase;</span>
+<span class="fc" id="L28">	}</span>
+
+	public Boolean getIgnoreCase(){
+<span class="fc" id="L31">		return this.ignoreCase;</span>
+	}
+
+	public void setOptions(String options[]) {
+		//filter options and set default options
+<span class="nc" id="L36">		options = new String[3];</span>
+
+<span class="nc" id="L38">	}</span>
+
+	public void setDT(List&lt;DecisionTableRow&gt; dt) {
+<span class="fc" id="L41">		dT = dt;</span>
+<span class="fc" id="L42">	}</span>
+
+	public void setHeaderConditions(String s,Enum e) {
+<span class="fc" id="L45">		this.header.addConditions(s,e);</span>
+<span class="fc" id="L46">	}</span>
+
+	public DecisionTableHeader getHeader() {
+<span class="fc" id="L49">		return this.header;</span>
+	}
+
+	public List&lt;DecisionTableRow&gt; getDt() {
+<span class="fc" id="L53">		return dT;</span>
+	}
+
+	public void setName(String s){
+<span class="fc" id="L57">		this.name = s;</span>
+<span class="fc" id="L58">	}</span>
+
+	public void setDescription(String s) {
+<span class="fc" id="L61">		this.description = s;</span>
+<span class="fc" id="L62">	}</span>
+
+	public void setArtifactId(String s) {
+<span class="fc" id="L65">		this.artifact_id = s;</span>
+<span class="fc" id="L66">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,15 @@
+# Created at 2020-12-16T15:02:47.966
+WARNING: An illegal reflective access operation has occurred
+
+# Created at 2020-12-16T15:02:47.966
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/home/zadmin/.m2/repository/org/codehaus/groovy/groovy/2.5.13/groovy-2.5.13.jar) to constructor java.math.BigDecimal(java.math.BigInteger,long,int,int)
+
+# Created at 2020-12-16T15:02:47.966
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+
+# Created at 2020-12-16T15:02:47.967
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+
+# Created at 2020-12-16T15:02:47.967
+WARNING: All illegal access operations will be denied in a future release
+

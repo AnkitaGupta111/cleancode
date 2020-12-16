@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractComparatorFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ZinteractDT</a> &gt; <a href="index.source.html" class="el_package">com.zemoso.zinteract.comparators.abstractfactory</a> &gt; <span class="el_source">AbstractComparatorFactory.java</span></div><h1>AbstractComparatorFactory.java</h1><pre class="source lang-java linenums">package com.zemoso.zinteract.comparators.abstractfactory;
+
+import com.zemoso.zinteract.comparators.abstractfactory.factory.Comparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.ComparatorFactory;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.BetweenComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.EqualsComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.GreaterThanComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.GreaterThanEqualsComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.InComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.LessThanComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.LessThanEqualsComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.LikeComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.NotEqualsComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.NotInComparator;
+import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.NotLikeComparator;
+import com.zemoso.zinteract.util.StringConstants;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by Praveen on 24-Dec-14.
+ */
+public abstract class AbstractComparatorFactory {
+
+	private static final String PROPERTY_KEY_FOR_COMPARATORYFACTORY_CLASSNAME = &quot;comparatorfactory_class_name&quot;;
+
+	private static final String DEFAULT_COMPARATORYFACTORY_CLASSNAME = &quot;com.zemoso.zinteract.comparators.abstractfactory.factory.ComparatorFactory&quot;;
+
+	public abstract Comparator getComparator(StringConstants keyword);
+
+<span class="fc" id="L31">	protected Map&lt;Enum, Comparator&gt; comparators = new HashMap&lt;Enum, Comparator&gt;();</span>
+
+<span class="fc" id="L33">	private static AbstractComparatorFactory cFactory = null;</span>
+
+<span class="fc" id="L35">	protected AbstractComparatorFactory() {</span>
+<span class="fc" id="L36">		comparators.put(StringConstants.COMPARATOR_GREATERTHAN, new GreaterThanComparator());</span>
+<span class="fc" id="L37">		comparators.put(StringConstants.COMPARATOR_GREATERTHAN_EQUALS, new GreaterThanEqualsComparator());</span>
+<span class="fc" id="L38">		comparators.put(StringConstants.COMPARATOR_BETWEEN, new BetweenComparator());</span>
+<span class="fc" id="L39">		comparators.put(StringConstants.COMPARATOR_LESSTHAN, new LessThanComparator());</span>
+<span class="fc" id="L40">		comparators.put(StringConstants.COMPARATOR_LESSTHAN_EQUALS, new LessThanEqualsComparator());</span>
+<span class="fc" id="L41">		comparators.put(StringConstants.COMPARATOR_EQUALS, new EqualsComparator());</span>
+<span class="fc" id="L42">		comparators.put(StringConstants.COMPARATOR_NOT_EQUALS, new NotEqualsComparator());</span>
+<span class="fc" id="L43">		comparators.put(StringConstants.COMPARATOR_IN, new InComparator());</span>
+<span class="fc" id="L44">		comparators.put(StringConstants.COMPARATOR_NOTIN, new NotInComparator());</span>
+<span class="fc" id="L45">		comparators.put(StringConstants.COMPARATOR_LIKE, new LikeComparator());</span>
+<span class="fc" id="L46">		comparators.put(StringConstants.COMPARATOR_NOT_LIKE, new NotLikeComparator());</span>
+<span class="fc" id="L47">	}</span>
+
+	public static AbstractComparatorFactory getComparatorFactory() {
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		if (cFactory != null) {</span>
+<span class="fc" id="L51">			return cFactory;</span>
+		}
+		else {
+<span class="fc" id="L54">			synchronized (AbstractComparatorFactory.class) {</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">				if (cFactory != null) {</span>
+<span class="nc" id="L56">					return cFactory;</span>
+				}
+<span class="fc" id="L58">				String className = System.getProperty(PROPERTY_KEY_FOR_COMPARATORYFACTORY_CLASSNAME);</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">				if (className == null) {</span>
+<span class="fc" id="L60">					className = DEFAULT_COMPARATORYFACTORY_CLASSNAME;</span>
+				}
+				try {
+<span class="fc" id="L63">					Class c = Class.forName(className);</span>
+<span class="fc" id="L64">					cFactory = (AbstractComparatorFactory) c.newInstance();</span>
+<span class="fc" id="L65">					return cFactory;</span>
+				}
+<span class="nc" id="L67">				catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L68">					e.printStackTrace();</span>
+<span class="nc" id="L69">					return new ComparatorFactory();// Default</span>
+				}
+<span class="nc" id="L71">				catch (InstantiationException e) {</span>
+<span class="nc" id="L72">					e.printStackTrace();</span>
+				}
+<span class="nc" id="L74">				catch (IllegalAccessException e) {</span>
+<span class="nc" id="L75">					e.printStackTrace();</span>
+<span class="nc" id="L76">				}</span>
+<span class="nc" id="L77">			}</span>
+		}
+<span class="nc" id="L79">		return cFactory;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,13 @@
+com.zemoso.zinteract
+com.zemoso.zinteract.comparators.abstractfactory
+com.zemoso.zinteract.comparators.abstractfactory.factory
+com.zemoso.zinteract.comparators.abstractfactory.factory.impl
+com.zemoso.zinteract.comparators.util
+com.zemoso.zinteract.decisiontable
+com.zemoso.zinteract.decisiontable.condition
+com.zemoso.zinteract.decisiontable.condition.impl
+com.zemoso.zinteract.decisiontable.condition.model
+com.zemoso.zinteract.decisiontableexecutor.abstractfactory
+com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory
+com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.impl
+com.zemoso.zinteract.util
