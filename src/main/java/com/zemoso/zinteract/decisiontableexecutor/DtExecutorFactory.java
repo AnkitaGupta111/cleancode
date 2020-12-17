@@ -1,8 +1,5 @@
 package com.zemoso.zinteract.decisiontableexecutor;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class DtExecutorFactory extends AbstractDtExecutorFactory{
 
 	@Override
