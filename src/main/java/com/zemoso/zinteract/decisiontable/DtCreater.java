@@ -30,7 +30,7 @@ public class DtCreater {
         String dTJson = this.dTJson;
         //format and transform dT properly
         DecisionTable dT = new DecisionTable();
-        JsonObject jObject = (JsonObject)new JsonParser().parse(dTJson);
+        JsonObject jObject = (JsonObject) JsonParser.parseString(dTJson);
         JsonArray options = jObject.getAsJsonArray(KEY_DT_OPTIONS);
         for(int o=0; o < options.size();o++){
             JsonObject option = options.get(o).getAsJsonObject();
