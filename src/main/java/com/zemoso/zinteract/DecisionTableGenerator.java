@@ -10,9 +10,9 @@ public class DecisionTableGenerator {
 
 	private static Logger LOGGER = Logger.getLogger(DecisionTableGenerator.class);
 
-	public static DecisionTableResult execute(HashMap<String, String> s, String json) {
+	public static DecisionTableResult execute(HashMap<String, String> s, String rules) {
 		AbstractDecisionTableExecutorFactory Factory = AbstractDecisionTableExecutorFactory.getDtExecutorFactory();
-		AbstractDecisionTableExecutor decisionTableExecutor = Factory.getDecisionTableExecutor("dT_id1", json);
+		AbstractDecisionTableExecutor decisionTableExecutor = Factory.getDecisionTableExecutor("dT_id1", rules);
 		DecisionTableResult result = decisionTableExecutor.getFirstMatch(s);
 		System.out.println(result.getActionResults());
 		return result;

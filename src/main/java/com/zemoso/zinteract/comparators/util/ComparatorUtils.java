@@ -19,12 +19,9 @@ public class ComparatorUtils {
 				return true;
 			}
 			if (eCondition.getConditionValue().getStringConditionValue().equals("null")) {
-				if (null == conditionValue.getStringConditionValue() && !conditionValue.getBooleanConditionValue()
+				return null == conditionValue.getStringConditionValue() && !conditionValue.getBooleanConditionValue()
 						&& conditionValue.getDoubleConditionValue() == 0.0
-						&& conditionValue.getLongConditionValue() == 0) {
-					return true;
-				}
-				return false;
+						&& conditionValue.getLongConditionValue() == 0;
 			}
 			if (ignoreCase) {
 				return eCondition.getConditionValue().getStringConditionValue()

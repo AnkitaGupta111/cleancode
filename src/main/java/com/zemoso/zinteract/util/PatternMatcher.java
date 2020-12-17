@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  */
 public class PatternMatcher {
 
-	private static Map<Enum, Matcher> matchers = new HashMap<Enum, Matcher>();
+	private static final Map<Enum<?>, Matcher> matchers = new HashMap<>();
 
 	public enum type {
 

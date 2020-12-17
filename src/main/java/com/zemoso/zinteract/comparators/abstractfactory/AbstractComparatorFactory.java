@@ -28,7 +28,7 @@ public abstract class AbstractComparatorFactory {
 
 	public abstract Comparator getComparator(StringConstants keyword);
 
-	protected Map<Enum, Comparator> comparators = new HashMap<Enum, Comparator>();
+	protected Map<Enum<?>, Comparator> comparators = new HashMap<>();
 
 	private static AbstractComparatorFactory cFactory = null;
 
@@ -60,7 +60,7 @@ public abstract class AbstractComparatorFactory {
 					className = DEFAULT_COMPARATOR_FACTORY_CLASSNAME;
 				}
 				try {
-					Class c = Class.forName(className);
+					Class<?> c = Class.forName(className);
 					cFactory = (AbstractComparatorFactory) c.newInstance();
 					return cFactory;
 				}
@@ -68,10 +68,7 @@ public abstract class AbstractComparatorFactory {
 					e.printStackTrace();
 					return new ComparatorFactory();// Default
 				}
-				catch (InstantiationException e) {
-					e.printStackTrace();
-				}
-				catch (IllegalAccessException e) {
+				catch (InstantiationException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
 			}

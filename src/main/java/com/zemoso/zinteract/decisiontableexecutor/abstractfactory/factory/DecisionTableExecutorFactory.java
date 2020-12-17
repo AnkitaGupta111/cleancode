@@ -6,7 +6,7 @@ import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.impl.D
 public class DecisionTableExecutorFactory extends AbstractDecisionTableExecutorFactory {
 
 	@Override
-	public AbstractDecisionTableExecutor getDecisionTableExecutor(String dT_id, String json) {
+	public AbstractDecisionTableExecutor getDecisionTableExecutor(String dT_id, String rules) {
 
 		DecisionTableExecutor d = (DecisionTableExecutor) hM.get(dT_id);
 		if (d != null) {
@@ -21,7 +21,7 @@ public class DecisionTableExecutorFactory extends AbstractDecisionTableExecutorF
 					return d;
 				}
 				else {
-					d = new DecisionTableExecutor(new String[] { "" }, json);
+					d = new DecisionTableExecutor(new String[] { "" }, rules);
 					hM.put(dT_id, d);
 					return d;
 				}

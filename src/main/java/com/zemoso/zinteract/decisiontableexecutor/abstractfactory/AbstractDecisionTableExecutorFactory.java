@@ -10,13 +10,13 @@ public abstract class AbstractDecisionTableExecutorFactory {
 	private static final String PROPERTY_KEY_FOR_DTEXECUTORFACTORY_CLASSNAME = "dtexecutorfactory_class_name";
 	private static final String DEFAULT_DTEXECUTORFACTORY_CLASSNAME = "com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.DecisionTableExecutorFactory";
 
-	protected Map<String,Object> hM = new HashMap();
+	protected Map<String,Object> hM = new HashMap<>();
 
 	protected AbstractDecisionTableExecutorFactory() {
 
 	}
 
-	public abstract AbstractDecisionTableExecutor getDecisionTableExecutor(String dT_id, String json);
+	public abstract AbstractDecisionTableExecutor getDecisionTableExecutor(String dT_id, String rules);
 
 	public static AbstractDecisionTableExecutorFactory getDtExecutorFactory() {
 		if(dtExecutorFactory != null){
@@ -33,14 +33,10 @@ public abstract class AbstractDecisionTableExecutorFactory {
 					className = DEFAULT_DTEXECUTORFACTORY_CLASSNAME;
 				}
 				try {
-					Class c = Class.forName(className);
+					Class<?> c = Class.forName(className);
 					dtExecutorFactory = (AbstractDecisionTableExecutorFactory)c.newInstance();
 					return dtExecutorFactory;
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
+				} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
 					e.printStackTrace();
 				}
 			}
