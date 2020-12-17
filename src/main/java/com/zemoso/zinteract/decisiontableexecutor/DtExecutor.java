@@ -43,7 +43,7 @@ public class DtExecutor extends AbstractDtExecutor{
 		return result.getActionResults();
 	}
 
-	public List getAllActionResults(Map<String,String> value){
+	public List<Map<String, Map<String, String>>> getAllActionResults(Map<String,String> value){
 		List actionResults=new ArrayList();
 		List<DtResult> results=getAllMatches(value);
 		for(DtResult result: results){

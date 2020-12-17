@@ -86,11 +86,11 @@ public class TaxCalTest {
     public static double execute(Map<String, String> s, String json){
         AbstractDtExecutorFactory Factory = AbstractDtExecutorFactory.getDtExecutorFactory();
         AbstractDtExecutor dtExecutor = Factory.getDtExecutor("dT_id1",json);
-        List<Map> results = dtExecutor.getAllActionResults(s);
-        for(Map result:results){
+        List<Map<String, Map<String, String>>> results = dtExecutor.getAllActionResults(s);
+        for(Map<String, Map<String, String>> result:results){
             if(result.containsKey("tax")){
-                log.info("tax---"+((HashMap) result.get("tax")).get("value"));
-                return  Double.parseDouble(((HashMap) result.get("tax")).get("value").toString());
+                log.info("tax---"+(result.get("tax")).get("value"));
+                return  Double.parseDouble(( result.get("tax")).get("value"));
             }
         }
         return -1.00;
