@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 @Slf4j
 public class TaxCalTest {
@@ -21,42 +21,42 @@ public class TaxCalTest {
     @Test
     public void testTaxCalBelow25K(){
         String json= getRulesJson();
-        HashMap<String,String> value = new HashMap<>();
+        Map<String,String> value = new HashMap<>();
         value.put("investment_80c","1000");
         value.put("income","249000");
-        Double tax = execute(value, json);
-        assertTrue(tax==0);
+        double tax = execute(value, json);
+        assertEquals(0, tax, 0.0);
     }
 
 
     @Test
     public void testTaxCal25KTo50K(){
         String json= getRulesJson();
-        HashMap<String,String> value = new HashMap<>();
+        Map<String,String> value = new HashMap<>();
         value.put("investment_80c","30000");
         value.put("income","310000");
-        Double tax = execute(value, json);
-        assertTrue(tax==1030.20);
+        double tax = execute(value, json);
+        assertEquals(1030.20, tax, 0.0);
     }
 
     @Test
     public void testTaxCal50kTo100K(){
         String json= getRulesJson();
-        HashMap<String,String> value = new HashMap<>();
+        Map<String,String> value = new HashMap<>();
         value.put("investment_80c","10000");
         value.put("income","1000000");
-        Double tax = execute(value, json);
-        assertTrue(tax==126714.60);
+        double tax = execute(value, json);
+        assertEquals(126714.60, tax, 0.0);
     }
 
     @Test
     public void testTaxCalAbove100K(){
         String json= getRulesJson();
-        HashMap<String,String> value = new HashMap<String,String>();
+        Map<String,String> value = new HashMap<String,String>();
         value.put("investment_80c","10000");
         value.put("income","1100000");
-        Double tax = execute(value, json);
-        assertTrue(tax==156590.40);
+        double tax = execute(value, json);
+        assertEquals(156590.40, tax, 0.0);
     }
 
     public static String getRulesJson() {
@@ -70,20 +70,20 @@ public class TaxCalTest {
             prop.load(input);
             dTString = prop.getProperty("incomeTaxJson");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.error(ex.getMessage());
         } finally {
             if (input != null) {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage());
                 }
             }
         }
         return dTString;
     }
 
-    public static double execute(HashMap<String, String> s, String json){
+    public static double execute(Map<String, String> s, String json){
         AbstractDtExecutorFactory Factory = AbstractDtExecutorFactory.getDtExecutorFactory();
         AbstractDtExecutor dtExecutor = Factory.getDtExecutor("dT_id1",json);
         List<Map> results = dtExecutor.getAllActionResults(s);
