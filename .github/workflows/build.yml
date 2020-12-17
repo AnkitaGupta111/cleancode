@@ -2,8 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - master
-      - mahidhar-springboot-conversion
+      - dev
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
