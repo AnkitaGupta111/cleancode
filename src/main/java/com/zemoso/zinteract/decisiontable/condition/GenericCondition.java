@@ -1,47 +1,48 @@
 package com.zemoso.zinteract.decisiontable.condition;
 
-
 import com.zemoso.zinteract.decisiontable.condition.model.ConditionValue;
 import com.zemoso.zinteract.util.StringConstants;
 
 public class GenericCondition extends DecisionTableCondition {
-    private StringConstants comparatorName;
 
-    private String conditionName;
+	private StringConstants comparatorName;
 
-    private StringConstants dataType;
-    private ConditionValue conditionValue;
+	private String conditionName;
 
-    public ConditionValue getConditionValue(){
-        return this.conditionValue;
-    }
-    
-    public StringConstants getDataType() {
-        return dataType;
-    }
+	private StringConstants dataType;
 
-    public void setDataType(StringConstants dataType) {
-        this.dataType = dataType;
-    }
+	private ConditionValue conditionValue;
 
-    public void setConditionValue(ConditionValue conditionValue) {
-        this.conditionValue = conditionValue;
-    }
+	public ConditionValue getConditionValue() {
+		return this.conditionValue;
+	}
 
-    public StringConstants getComparatorName() {
-        return comparatorName;
-    }
+	public StringConstants getDataType() {
+		return dataType;
+	}
 
-    public String getConditionName() {
-        return conditionName;
-    }
+	public void setDataType(StringConstants dataType) {
+		this.dataType = dataType;
+	}
 
-    public void setComparatorName(StringConstants s) {
-        this.comparatorName = s;
-    }
+	public void setConditionValue(ConditionValue conditionValue) {
+		this.conditionValue = conditionValue;
+	}
 
-    public void setConditionName(String s) {
-        this.conditionName = s;
-    }
+	public StringConstants getComparatorName() {
+		return comparatorName;
+	}
+
+	public String getConditionName() {
+		return conditionName;
+	}
+
+	public void setComparatorName(StringConstants s) {
+		this.comparatorName = s;
+	}
+
+	public void setConditionName(String s) {
+		this.conditionName = s;
+	}
 
 }

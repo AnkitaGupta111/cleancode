@@ -4,56 +4,61 @@ package com.zemoso.zinteract.decisiontable.condition.model;
  * Created by Praveen on 23-Dec-14.
  */
 public class ConditionValue {
-    private String sConditionValue;
-    private long lConditionValue;
-    private double dConditionValue;
-    private boolean bConditionValue;
 
-    public ConditionValue(long l){
-        this.lConditionValue = l;
-    }
+	private String stringConditionValue;
 
-    public ConditionValue(double d){
-        this.dConditionValue =d;
-    }
+	private long longConditionValue;
 
-    public ConditionValue(String s){
-        this.sConditionValue = s;
-    }
+	private double doubleConditionValue;
 
-    public ConditionValue(boolean b){
-        this.bConditionValue = b;
-    }
+	private boolean booleanConditionValue;
 
-    public String getStringConditionValue() {
-        return sConditionValue;
-    }
+	public ConditionValue(long value) {
+		this.longConditionValue = value;
+	}
 
-    public void setStringConditionValue(String sConditionValue) {
-        this.sConditionValue = sConditionValue;
-    }
+	public ConditionValue(double value) {
+		this.doubleConditionValue = value;
+	}
 
-    public long getLongConditionValue() {
-        return lConditionValue;
-    }
+	public ConditionValue(String value) {
+		this.stringConditionValue = value;
+	}
 
-    public void setLongConditionValue(long lConditionValue) {
-        this.lConditionValue = lConditionValue;
-    }
+	public ConditionValue(boolean value) {
+		this.booleanConditionValue = value;
+	}
 
-    public double getDoubleConditionValue() {
-        return dConditionValue;
-    }
+	public String getStringConditionValue() {
+		return stringConditionValue;
+	}
 
-    public void setDoubleConditionValue(double dConditionValue) {
-        this.dConditionValue = dConditionValue;
-    }
+	public void setStringConditionValue(String stringConditionValue) {
+		this.stringConditionValue = stringConditionValue;
+	}
 
-    public boolean getBooleanConditionValue(){
-        return this.bConditionValue;
-    }
+	public long getLongConditionValue() {
+		return longConditionValue;
+	}
 
-    public void setBooleanConditionValue(boolean b){
-        this.bConditionValue = b;
-    }
+	public void setLongConditionValue(long longConditionValue) {
+		this.longConditionValue = longConditionValue;
+	}
+
+	public double getDoubleConditionValue() {
+		return doubleConditionValue;
+	}
+
+	public void setDoubleConditionValue(double doubleConditionValue) {
+		this.doubleConditionValue = doubleConditionValue;
+	}
+
+	public boolean getBooleanConditionValue() {
+		return this.booleanConditionValue;
+	}
+
+	public void setBooleanConditionValue(boolean booleanConditionValue) {
+		this.booleanConditionValue = booleanConditionValue;
+	}
+
 }

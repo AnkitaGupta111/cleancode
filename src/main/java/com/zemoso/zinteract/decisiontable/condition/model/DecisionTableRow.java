@@ -8,20 +8,20 @@ public class DecisionTableRow {
 	private Map<String, DecisionTableCondition> conditionValues;
 	private Map<String, DecisionTableAction> actions;
 
-	public Map<String, DeccisionTableScript> getScripts() {
+	public Map<String, DecisionTableScript> getScripts() {
 		return scripts;
 	}
 
-	public void setScripts(String a, DeccisionTableScript script) {
+	public void setScripts(String a, DecisionTableScript script) {
 		this.scripts.put(a,script);
 	}
 
-	private Map<String, DeccisionTableScript> scripts;
+	private Map<String, DecisionTableScript> scripts;
 
 	public DecisionTableRow() {
 		this.conditionValues = new HashMap<String, DecisionTableCondition>();
 		this.actions = new HashMap<String, DecisionTableAction>();
-		this.scripts=new HashMap<String, DeccisionTableScript>();
+		this.scripts=new HashMap<String, DecisionTableScript>();
 	}
 
 	public Map<String, DecisionTableCondition> getConditionValues() {

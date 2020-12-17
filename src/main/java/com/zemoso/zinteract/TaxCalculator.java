@@ -1,7 +1,7 @@
 package com.zemoso.zinteract;
 
-import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.AbstractDtExecutorFactory;
-import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.AbstractDtExecutor;
+import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.AbstractDecisionTableExecutorFactory;
+import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.AbstractDecisionTableExecutor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,8 +43,8 @@ public class TaxCalculator {
 	}
 
 	public static double execute(HashMap<String, String> s, String json) {
-		AbstractDtExecutorFactory Factory = AbstractDtExecutorFactory.getDtExecutorFactory();
-		AbstractDtExecutor dtExecutor = Factory.getDtExecutor("dT_id1", json);
+		AbstractDecisionTableExecutorFactory Factory = AbstractDecisionTableExecutorFactory.getDtExecutorFactory();
+		AbstractDecisionTableExecutor dtExecutor = Factory.getDecisionTableExecutor("dT_id1", json);
 		List<Map> results = dtExecutor.getAllActionResults(s);
 		for (Map result : results) {
 			if (result.containsKey("tax")) {

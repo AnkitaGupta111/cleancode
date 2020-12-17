@@ -22,9 +22,9 @@ import java.util.Map;
  */
 public abstract class AbstractComparatorFactory {
 
-	private static final String PROPERTY_KEY_FOR_COMPARATORYFACTORY_CLASSNAME = "comparatorfactory_class_name";
+	private static final String COMPARATOR_FACTORY_CLASS_NAME = "comparatorfactory_class_name";
 
-	private static final String DEFAULT_COMPARATORYFACTORY_CLASSNAME = "com.zemoso.zinteract.comparators.abstractfactory.factory.ComparatorFactory";
+	private static final String DEFAULT_COMPARATOR_FACTORY_CLASSNAME = "com.zemoso.zinteract.comparators.abstractfactory.factory.ComparatorFactory";
 
 	public abstract Comparator getComparator(StringConstants keyword);
 
@@ -33,15 +33,15 @@ public abstract class AbstractComparatorFactory {
 	private static AbstractComparatorFactory cFactory = null;
 
 	protected AbstractComparatorFactory() {
-		comparators.put(StringConstants.COMPARATOR_GREATERTHAN, new GreaterThanComparator());
-		comparators.put(StringConstants.COMPARATOR_GREATERTHAN_EQUALS, new GreaterThanEqualsComparator());
+		comparators.put(StringConstants.COMPARATOR_GREATER_THAN, new GreaterThanComparator());
+		comparators.put(StringConstants.COMPARATOR_GREATER_THAN_EQUALS, new GreaterThanEqualsComparator());
 		comparators.put(StringConstants.COMPARATOR_BETWEEN, new BetweenComparator());
-		comparators.put(StringConstants.COMPARATOR_LESSTHAN, new LessThanComparator());
-		comparators.put(StringConstants.COMPARATOR_LESSTHAN_EQUALS, new LessThanEqualsComparator());
+		comparators.put(StringConstants.COMPARATOR_LESS_THAN, new LessThanComparator());
+		comparators.put(StringConstants.COMPARATOR_LESS_THAN_EQUALS, new LessThanEqualsComparator());
 		comparators.put(StringConstants.COMPARATOR_EQUALS, new EqualsComparator());
 		comparators.put(StringConstants.COMPARATOR_NOT_EQUALS, new NotEqualsComparator());
 		comparators.put(StringConstants.COMPARATOR_IN, new InComparator());
-		comparators.put(StringConstants.COMPARATOR_NOTIN, new NotInComparator());
+		comparators.put(StringConstants.COMPARATOR_NOT_IN, new NotInComparator());
 		comparators.put(StringConstants.COMPARATOR_LIKE, new LikeComparator());
 		comparators.put(StringConstants.COMPARATOR_NOT_LIKE, new NotLikeComparator());
 	}
@@ -55,9 +55,9 @@ public abstract class AbstractComparatorFactory {
 				if (cFactory != null) {
 					return cFactory;
 				}
-				String className = System.getProperty(PROPERTY_KEY_FOR_COMPARATORYFACTORY_CLASSNAME);
+				String className = System.getProperty(COMPARATOR_FACTORY_CLASS_NAME);
 				if (className == null) {
-					className = DEFAULT_COMPARATORYFACTORY_CLASSNAME;
+					className = DEFAULT_COMPARATOR_FACTORY_CLASSNAME;
 				}
 				try {
 					Class c = Class.forName(className);
