@@ -13,7 +13,7 @@
     <artifactId>ZinteractDT</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
         <sonar.projectKey>cleancode</sonar.projectKey>
         <sonar.organization>zemoso-int</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -39,9 +39,16 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.3.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
         <dependency>
@@ -60,7 +67,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
+            <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
 
@@ -123,8 +130,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -180,7 +187,12 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludes>**/*</excludes>
+                    <excludes>**/*
+                        <!--                        **/src/test/java/**/*,-->
+                        <!--                        **/src/main/java/com/zemoso/zinteract/decisiontable/**/*,-->
+                        <!--                        **/src/main/java/com/zemoso/zinteract/comparators/**/*,-->
+                    </excludes>
+                    <!--                    <sourceDirectories>${project.build.sourceDirectory}</sourceDirectories>-->
                 </configuration>
             </plugin>
         </plugins>

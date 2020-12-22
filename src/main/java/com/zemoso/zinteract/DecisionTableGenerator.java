@@ -3,19 +3,27 @@ package com.zemoso.zinteract;
 import com.zemoso.zinteract.decisiontable.DecisionTableResult;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.AbstractDecisionTableExecutorFactory;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.AbstractDecisionTableExecutor;
-import java.util.HashMap;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
+
+/**
+ *
+ */
+@Slf4j
 public class DecisionTableGenerator {
 
-	private static Logger LOGGER = Logger.getLogger(DecisionTableGenerator.class);
-
-	public static DecisionTableResult execute(HashMap<String, String> s, String json) {
-		AbstractDecisionTableExecutorFactory Factory = AbstractDecisionTableExecutorFactory.getDtExecutorFactory();
-		AbstractDecisionTableExecutor decisionTableExecutor = Factory.getDecisionTableExecutor("dT_id1", json);
-		DecisionTableResult result = decisionTableExecutor.getFirstMatch(s);
-		System.out.println(result.getActionResults());
-		return result;
-	}
+    /**
+     * @param valueMap
+     * @param rules
+     * @return
+     */
+    public static DecisionTableResult execute(Map<String, String> valueMap, String rules) {
+        AbstractDecisionTableExecutorFactory Factory = AbstractDecisionTableExecutorFactory.getExecutorFactory();
+        AbstractDecisionTableExecutor decisionTableExecutor = Factory.getDecisionTableExecutor("dT_id1", rules);
+        DecisionTableResult result = decisionTableExecutor.getFirstMatch(valueMap);
+        log.info("result.getActionResults() ->", result.getActionResults());
+        return result;
+    }
 
 }

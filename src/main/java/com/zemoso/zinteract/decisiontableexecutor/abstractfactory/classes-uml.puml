@@ -1,0 +1,34 @@
+@startuml
+class DecisionTableExecutor {
+- String rules
+- DecisionTable decisionTable
++ DecisionTable getDecisionTable()
++ List<Map<String,Map<String,String>>> getAllActionResults(Map<String,String>)
++ DecisionTableResult getFirstMatch(Map<String,String>)
++ List<DecisionTableResult> getAllMatches(Map<String,String>)
+- List<DecisionTableResult> findMatches(Map<String,String>,Boolean)
+- DecisionTableResult createResult(Map<String,String>,DecisionTableRow)
+- boolean solveTheScript(DecisionTableRow,Map<String,String>)
+- boolean compareValueWithRules(DecisionTableRow,Map<String,String>)
+- DecisionTable createDT()
+- ConditionValue getConditionValue(String,Enum<?>)
+}
+abstract class AbstractDecisionTableExecutor {
++ {abstract}DecisionTableResult getFirstMatch(Map<String,String>)
++ {abstract}List<DecisionTableResult> getAllMatches(Map<String,String>)
++ {abstract}List<Map<String,Map<String,String>>> getAllActionResults(Map<String,String>)
+}
+class DecisionTableExecutorFactory {
++ AbstractDecisionTableExecutor getDecisionTableExecutor(String,String)
+}
+abstract class AbstractDecisionTableExecutorFactory {
+- {static} AbstractDecisionTableExecutorFactory executorFactory
+# Map<String,Object> mapOfIdAndExecutor
++ {static} AbstractDecisionTableExecutorFactory getExecutorFactory()
++ {abstract}AbstractDecisionTableExecutor getDecisionTableExecutor(String,String)
+}
+
+
+AbstractDecisionTableExecutor <|-- DecisionTableExecutor
+AbstractDecisionTableExecutorFactory <|-- DecisionTableExecutorFactory
+@enduml

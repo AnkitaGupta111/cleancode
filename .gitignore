@@ -70,3 +70,7 @@ mnvw.cmd
 .classpath
 .project
 /target
+HELP.md
+mvnw
+mvnw.cmd
+*.env

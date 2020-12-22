@@ -1,51 +1,50 @@
 package com.zemoso.zinteract.decisiontableexecutor.abstractfactory;
 
-
+import com.zemoso.zinteract.constants.Constants;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.AbstractDecisionTableExecutor;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Abstract Factory Design Pattern is used to implement DecisionTableExecutorFactory.
+ */
+@Slf4j
 public abstract class AbstractDecisionTableExecutorFactory {
-	private static AbstractDecisionTableExecutorFactory dtExecutorFactory = null;
-	private static final String PROPERTY_KEY_FOR_DTEXECUTORFACTORY_CLASSNAME = "dtexecutorfactory_class_name";
-	private static final String DEFAULT_DTEXECUTORFACTORY_CLASSNAME = "com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.DecisionTableExecutorFactory";
+    private static AbstractDecisionTableExecutorFactory executorFactory = null;
+    protected Map<String, Object> mapOfIdAndExecutor = new HashMap<>();
 
-	protected Map<String,Object> hM = new HashMap();
+    protected AbstractDecisionTableExecutorFactory() {
+    }
 
-	protected AbstractDecisionTableExecutorFactory() {
 
-	}
+    /**
+     * Instantiates the DecisionTableExecutorFactory, if not exists.
+     *
+     * @return DecisionTableExecutorFactory instantiation
+     */
+    public static AbstractDecisionTableExecutorFactory getExecutorFactory() {
+        if (executorFactory == null) {
+            synchronized (AbstractDecisionTableExecutorFactory.class) {
+                try {
+                    Class<?> c = Class.forName(Constants.DEFAULT_DT_EXECUTOR_FACTORY_CLASS_NAME);
+                    executorFactory = (AbstractDecisionTableExecutorFactory) c.newInstance();
+                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+                    log.error("Error -->", e);
+                }
+            }
+        }
+        return executorFactory;
+    }
 
-	public abstract AbstractDecisionTableExecutor getDecisionTableExecutor(String dT_id, String json);
-
-	public static AbstractDecisionTableExecutorFactory getDtExecutorFactory() {
-		if(dtExecutorFactory != null){
-			return dtExecutorFactory;
-		}
-		else {
-			synchronized (AbstractDecisionTableExecutorFactory.class){
-				if(dtExecutorFactory != null){
-					return dtExecutorFactory;
-				}
-
-				String className = System.getProperty(PROPERTY_KEY_FOR_DTEXECUTORFACTORY_CLASSNAME);
-				if(className == null){
-					className = DEFAULT_DTEXECUTORFACTORY_CLASSNAME;
-				}
-				try {
-					Class c = Class.forName(className);
-					dtExecutorFactory = (AbstractDecisionTableExecutorFactory)c.newInstance();
-					return dtExecutorFactory;
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return dtExecutorFactory;
-	}
+    /**
+     * This abstract method implementation will instantiates the DecisionTableExecutor,
+     *
+     * @param decisionTableId, Unique Id of the Decision Table
+     * @param rules,           Rules of the Decision Table
+     * @return AbstractDecisionTableExecutor
+     */
+    public abstract AbstractDecisionTableExecutor getDecisionTableExecutor(String decisionTableId, String rules);
 
 }

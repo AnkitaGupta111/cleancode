@@ -7,187 +7,144 @@ import com.zemoso.zinteract.decisiontable.DecisionTableResult;
 import com.zemoso.zinteract.decisiontable.condition.DecisionTableCondition;
 import com.zemoso.zinteract.decisiontable.condition.model.ConditionValue;
 import com.zemoso.zinteract.decisiontable.condition.model.DecisionTable;
-import com.zemoso.zinteract.decisiontable.condition.model.DecisionTableHeader;
 import com.zemoso.zinteract.decisiontable.condition.model.DecisionTableRow;
 import com.zemoso.zinteract.decisiontable.condition.model.DecisionTableScript;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.AbstractDecisionTableExecutor;
 import com.zemoso.zinteract.util.StringConstants;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import groovy.util.Eval;
+import java.util.stream.Collectors;
 
+/**
+ * DecisionTableExecutor, will give the Actions results based on the rules configured and the values passed.
+ */
 public class DecisionTableExecutor extends AbstractDecisionTableExecutor {
 
-	private DecisionTable dT = null;
+    private final String rules;
+    private DecisionTable decisionTable = null;
 
-	private String[] options;
+    public DecisionTableExecutor(String rules) {
+        this.rules = rules;
+    }
 
-	private String dT_json;
+    public DecisionTable getDecisionTable() {
+        if (decisionTable == null) {
+            decisionTable = createDT();
+        }
+        return decisionTable;
+    }
 
-	public DecisionTableExecutor(String[] options, String dt) {
-		this.options = options;
-		this.dT_json = dt;
-	}
+    /**
+     * To get all the Matched Action Results, based on the given value.
+     * @param value to find in the decision table
+     * @return <i>List</i> of Action Results
+     */
+    public List<Map<String, Map<String, String>>> getAllActionResults(Map<String, String> value) {
+        return getAllMatches(value).stream()
+                .map(DecisionTableResult::getActionResults)
+                .collect(Collectors.toList());
+    }
 
-	public DecisionTable getDecisionTable() {
-		if (dT != null) {
-			return dT;
-		}
-		else {
-			dT = createDT();
-		}
-		return dT;
-	}
+    /**
+     * To get the FirstMatch from the Action Results, based on the given value.
+     * @param value to find in the decision table
+     * @return
+     */
+    public DecisionTableResult getFirstMatch(Map<String, String> value) {
+        List<DecisionTableResult> allMatches = findMatches(value, true);
+        return (allMatches.size() > 0) ? allMatches.get(0) : null;
+    }
 
-	public Map getFirstMatchActionResults(Map<String, String> value) {
-		DecisionTableResult result = getFirstMatch(value);
-		return result.getActionResults();
-	}
+    /**
+     * To get all the matched values based on the given value.
+     * @param value to find in the decision table
+     * @return
+     */
+    public List<DecisionTableResult> getAllMatches(Map<String, String> value) {
+        return findMatches(value, false);
+    }
 
-	public List getAllActionResults(Map<String, String> value) {
-		List actionResults = new ArrayList();
-		List<DecisionTableResult> results = getAllMatches(value);
-		for (DecisionTableResult result : results) {
-			actionResults.add(result.getActionResults());
-		}
-		return actionResults;
-	}
+    private List<DecisionTableResult> findMatches(Map<String, String> valueMap, Boolean firstOnly) {
+        boolean match;
+        List<DecisionTableResult> results = new ArrayList<>();
+        for (DecisionTableRow decisionTableRow : getDecisionTable().getDt()) {
+            match = compareValueWithRules(decisionTableRow, valueMap);
+            if (match && decisionTableRow.getScripts() != null) {
+                match = solveTheScript(decisionTableRow, valueMap);
+            }
+            if (match) {
+                results.add(createResult(valueMap, decisionTableRow));
+                if (firstOnly) {
+                    break;
+                }
+            }
+        }
+        return results;
+    }
 
-	public DecisionTableResult getFirstMatch(Map<String, String> value) {
-		List<DecisionTableResult> allMatches = findMatches(value, true);
-		if (allMatches.size() > 0) {
-			return allMatches.get(0);
-		}
-		else
-			return null;
+    private DecisionTableResult createResult(Map<String, String> valueMap, DecisionTableRow decisionTableRow) {
+        DecisionTableResult result = new DecisionTableResult();
+        result.setVariables(valueMap);
+        result.setRow(decisionTableRow);
+        return result;
+    }
 
-	}
+    private boolean solveTheScript(DecisionTableRow decisionTableRow, Map<String, String> valueMap) {
+        for (Map.Entry<String, DecisionTableScript> decisionTableScriptsEntry : decisionTableRow.getScripts().entrySet()) {
+            DecisionTableScript script = decisionTableScriptsEntry.getValue();
+            if (!script.solve(valueMap)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	public List<DecisionTableResult> getAllMatches(Map<String, String> value) {
-		return findMatches(value, false);
-	}
+    private boolean compareValueWithRules(DecisionTableRow decisionTableRow, Map<String, String> valueMap) {
+        AbstractComparatorFactory abstractComparatorFactory = AbstractComparatorFactory.getComparatorFactory();
+        Comparator comparator;
+        Boolean ignoreCase = getDecisionTable().getIgnoreCase();
+        Map<String, Enum<?>> headersWithDatatype = getDecisionTable().getHeader().getConditions();
+        DecisionTableCondition decisionTableCondition;
+        boolean match = false;
+        for (Map.Entry<String, Enum<?>> headerWithDatatypeEntry : headersWithDatatype.entrySet()) {
+            decisionTableCondition = decisionTableRow.getConditionValues().get(headerWithDatatypeEntry.getKey());
+            if (decisionTableCondition != null) {
+                comparator = abstractComparatorFactory.getComparator(decisionTableCondition.getComparatorName());
+                String value = valueMap.get(headerWithDatatypeEntry.getKey());
+                Enum<?> dataType = headersWithDatatype.get(headerWithDatatypeEntry.getKey());
+                match = comparator.satisfies(decisionTableCondition, getConditionValue(value, dataType), ignoreCase);
+                if (!match) {
+                    return match;
+                }
+            }
+        }
+        return match;
+    }
 
-	private List<DecisionTableResult> findMatches(Map<String, String> valueMap, Boolean firstOnly) {
-		AbstractComparatorFactory cFactory = AbstractComparatorFactory.getComparatorFactory();
-		Iterator i, j;
-		DecisionTableCondition decisionTableCondition;
-		Comparator comparator;
-		Boolean match = false;
+    private DecisionTable createDT() {
+        DecisionTableCreater decisionTableCreater = new DecisionTableCreater(rules);
+        return decisionTableCreater.createDecisionTable();
+    }
 
-		List<DecisionTableResult> results = new ArrayList<DecisionTableResult>();
-		Map<String, ConditionValue> conditionValues = getConditionValues(valueMap);
-		Map<String, Enum> headerConditions = getDecisionTable().getHeader().getConditions();
-		Boolean ignoreCase = getDecisionTable().getIgnoreCase();
-		Map<String, Enum> dtConditions = getDecisionTable().getHeader().getConditions();
-		for (DecisionTableRow row : getDecisionTable().getDt()) {
-			i = dtConditions.entrySet().iterator();
-			while (i.hasNext()) {
-				Map.Entry me = (Map.Entry) i.next();
-				decisionTableCondition = row.getConditionValues().get(me.getKey().toString());
-				if (decisionTableCondition == null) {
-					continue;
-				}
-				comparator = cFactory.getComparator(decisionTableCondition.getComparatorName());
-				ConditionValue cV;
-				String value = valueMap.get(me.getKey().toString());
-				Enum dataType = headerConditions.get(me.getKey().toString());
-				cV = getConditionValue(value, dataType);
-				match = comparator.satisfies(decisionTableCondition, cV, ignoreCase);
-				if (!match) {
-					break;
-				}
-			}
-			if (match && row.getScripts() != null) {
-				j = row.getScripts().entrySet().iterator();
-				while (j.hasNext()) {
-					Map.Entry me = (Map.Entry) j.next();
-					DecisionTableScript script = (DecisionTableScript) me.getValue();
-					if (!script.solve(valueMap)) {
-						match = false;
-						break;
-					}
-				}
-			}
-			if (match) {
-				DecisionTableResult result = new DecisionTableResult();
-				result.setVariables(valueMap);
-				result.setRow(row);
-				results.add(result);
-			}
-			if (match && firstOnly) {
-				break;
-			}
-		}
-		return results;
-	}
-
-	private ConditionValue solveScript(String key, Map<String, String> variables) {
-		String keyCopy = key;
-		for (String var : variables.keySet()) {
-			if (keyCopy.contains(var)) {
-				keyCopy = keyCopy.replaceAll(var, variables.get(var));
-			}
-		}
-		String val = "";
-		try {
-			val = Eval.me(keyCopy).toString();
-		}
-		catch (groovy.lang.MissingPropertyException e) {
-			return null;
-		}
-		Map<String, Enum> headerConditions = getDecisionTable().getHeader().getConditions();
-		Enum dataType = headerConditions.get(key);
-		return getConditionValue(val, dataType);
-	}
-
-	private DecisionTable createDT() {
-		DecisionTableCreater decisionTableCreater = new DecisionTableCreater(dT_json);
-		return decisionTableCreater.createDecisionTable();
-	}
-
-	private Map<String, ConditionValue> getConditionValues(Map<String, String> value) {
-		Map<String, ConditionValue> conditionValues = new HashMap<String, ConditionValue>();
-		DecisionTableHeader header = getDecisionTable().getHeader();
-		Map<String, Enum> headerConditions = header.getConditions();
-		Iterator i;
-		ConditionValue cValue;
-		i = value.entrySet().iterator();
-		while (i.hasNext()) {
-			Map.Entry me = (Map.Entry) i.next();
-			Enum dataType = headerConditions.get(me.getKey());
-			if (dataType == null) {
-				continue;
-			}
-			cValue = getConditionValue(me.getValue().toString(), dataType);
-			conditionValues.put(me.getKey().toString(), cValue);
-		}
-		return conditionValues;
-	}
-
-	private ConditionValue getConditionValue(String value, Enum dataType) {
-		ConditionValue cValue;
-		if (dataType == null) {
-			return null;
-		}
-		if (dataType.equals(StringConstants.DATATYPE_STRING)) {
-			cValue = new ConditionValue(value);
-		}
-		else if (dataType.equals(StringConstants.DATATYPE_LONG)) {
-			cValue = new ConditionValue(Long.valueOf(value).longValue());
-		}
-		else if (dataType.equals(StringConstants.DATATYPE_DOUBLE)) {
-			cValue = new ConditionValue(Double.valueOf(value).doubleValue());
-		}
-		else if (dataType.equals(StringConstants.DATATYPE_BOOLEAN)) {
-			cValue = new ConditionValue(Boolean.valueOf(value).booleanValue());
-		}
-		else {
-			cValue = new ConditionValue(value);
-		}
-		return cValue;
-	}
+    private ConditionValue getConditionValue(String value, Enum<?> dataType) {
+        ConditionValue cValue;
+        if (dataType == null) {
+            return null;
+        }
+        if (dataType.equals(StringConstants.DATATYPE_STRING)) {
+            cValue = new ConditionValue(value);
+        } else if (dataType.equals(StringConstants.DATATYPE_LONG)) {
+            cValue = new ConditionValue(Long.parseLong(value));
+        } else if (dataType.equals(StringConstants.DATATYPE_DOUBLE)) {
+            cValue = new ConditionValue(Double.parseDouble(value));
+        } else if (dataType.equals(StringConstants.DATATYPE_BOOLEAN)) {
+            cValue = new ConditionValue(Boolean.parseBoolean(value));
+        } else {
+            cValue = new ConditionValue(value);
+        }
+        return cValue;
+    }
 
 }

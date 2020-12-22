@@ -2,32 +2,33 @@ package com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory;
 
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.AbstractDecisionTableExecutorFactory;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.impl.DecisionTableExecutor;
+import lombok.extern.slf4j.Slf4j;
 
+/**
+ * One of the Factory implementations of @see AbstractDecisionTableExecutorFactory, Which instantiate @see DecisionTableExecutor
+ */
+@Slf4j
 public class DecisionTableExecutorFactory extends AbstractDecisionTableExecutorFactory {
 
-	@Override
-	public AbstractDecisionTableExecutor getDecisionTableExecutor(String dT_id, String json) {
-
-		DecisionTableExecutor d = (DecisionTableExecutor) hM.get(dT_id);
-		if (d != null) {
-			System.out.println("Executor already exist...lets reuse it");
-			return d;
-		}
-		else {
-			System.out.println("Executor does not exist ..lets create it");
-			synchronized (this) {
-				d = (DecisionTableExecutor) hM.get(dT_id);
-				if (d != null) {
-					return d;
-				}
-				else {
-					d = new DecisionTableExecutor(new String[] { "" }, json);
-					hM.put(dT_id, d);
-					return d;
-				}
-			}
-		}
-
-	}
+    /**
+     * Concrete method, returns the new instance for the @see DecisionTableExecutor, if not exists.
+     * @param decisionTableId, Unique Id of the Decision Table
+     * @param rules,           Rules of the Decision Table
+     * @return AbstractDecisionTableExecutor
+     */
+    @Override
+    public AbstractDecisionTableExecutor getDecisionTableExecutor(String decisionTableId, String rules) {
+        DecisionTableExecutor decisionTableExecutor = (DecisionTableExecutor) mapOfIdAndExecutor.get(decisionTableId);
+        if (decisionTableExecutor == null) {
+            log.info("Executor does not exist ..lets create it");
+            synchronized (this) {
+                decisionTableExecutor = new DecisionTableExecutor(rules);
+                mapOfIdAndExecutor.put(decisionTableId, decisionTableExecutor);
+            }
+            return decisionTableExecutor;
+        }
+        log.info("Executor already exist...lets reuse it");
+        return decisionTableExecutor;
+    }
 
 }
