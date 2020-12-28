@@ -1,8 +1,13 @@
 package com.zemoso.zinteract.decisiontable.condition.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Created by Praveen on 23-Dec-14.
  */
+@Getter
+@Setter
 public class ConditionValue {
 
 	private String stringConditionValue;
@@ -27,38 +32,6 @@ public class ConditionValue {
 
 	public ConditionValue(boolean value) {
 		this.booleanConditionValue = value;
-	}
-
-	public String getStringConditionValue() {
-		return stringConditionValue;
-	}
-
-	public void setStringConditionValue(String stringConditionValue) {
-		this.stringConditionValue = stringConditionValue;
-	}
-
-	public long getLongConditionValue() {
-		return longConditionValue;
-	}
-
-	public void setLongConditionValue(long longConditionValue) {
-		this.longConditionValue = longConditionValue;
-	}
-
-	public double getDoubleConditionValue() {
-		return doubleConditionValue;
-	}
-
-	public void setDoubleConditionValue(double doubleConditionValue) {
-		this.doubleConditionValue = doubleConditionValue;
-	}
-
-	public boolean getBooleanConditionValue() {
-		return this.booleanConditionValue;
-	}
-
-	public void setBooleanConditionValue(boolean booleanConditionValue) {
-		this.booleanConditionValue = booleanConditionValue;
 	}
 
 }

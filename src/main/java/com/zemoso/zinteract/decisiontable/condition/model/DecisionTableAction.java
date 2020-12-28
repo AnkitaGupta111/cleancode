@@ -1,40 +1,21 @@
 package com.zemoso.zinteract.decisiontable.condition.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class DecisionTableAction {
+
 	private String action;
 
-    public String getType() {
-        return type;
-    }
+	private String type;
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	private boolean isScripted = false;
 
-    private String type;
+	@Override
+	public String toString() {
+		return action;
+	}
 
-
-    public boolean isScripted() {
-        return isScripted;
-    }
-
-    public void setScripted(boolean scripted) {
-        isScripted = scripted;
-    }
-
-    private boolean isScripted=false;
-
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String s){
-        this.action = s;
-    }
-
-    @Override
-    public String toString(){
-            return action;
-    }
 }

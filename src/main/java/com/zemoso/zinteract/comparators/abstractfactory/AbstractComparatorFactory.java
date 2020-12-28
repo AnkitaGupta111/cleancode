@@ -13,37 +13,44 @@ import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.LikeCompara
 import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.NotEqualsComparator;
 import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.NotInComparator;
 import com.zemoso.zinteract.comparators.abstractfactory.factory.impl.NotLikeComparator;
-import com.zemoso.zinteract.util.StringConstants;
-import java.util.HashMap;
-import java.util.Map;
+import com.zemoso.zinteract.util.ComparatorType;
+import java.lang.reflect.InvocationTargetException;
+import java.util.EnumMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Created by Praveen on 24-Dec-14.
  */
 public abstract class AbstractComparatorFactory {
 
-	private static final String COMPARATOR_FACTORY_CLASS_NAME = "comparatorfactory_class_name";
+	private static final Logger log = LoggerFactory.getLogger(AbstractComparatorFactory.class);
 
-	private static final String DEFAULT_COMPARATOR_FACTORY_CLASSNAME = "com.zemoso.zinteract.comparators.abstractfactory.factory.ComparatorFactory";
+	@Value("${comparatorFactory.class}")
+	private static String comparatorFactoryClass;
 
-	public abstract Comparator getComparator(StringConstants keyword);
+	@Value("${default.comparatorFactory.class}")
+	private static String defaultComparatorFactoryClass;
 
-	protected Map<Enum, Comparator> comparators = new HashMap<Enum, Comparator>();
+	public abstract Comparator getComparator(ComparatorType keyword);
+
+	protected EnumMap<ComparatorType, Comparator> comparators = new EnumMap<>(ComparatorType.class);
 
 	private static AbstractComparatorFactory cFactory = null;
 
 	protected AbstractComparatorFactory() {
-		comparators.put(StringConstants.COMPARATOR_GREATER_THAN, new GreaterThanComparator());
-		comparators.put(StringConstants.COMPARATOR_GREATER_THAN_EQUALS, new GreaterThanEqualsComparator());
-		comparators.put(StringConstants.COMPARATOR_BETWEEN, new BetweenComparator());
-		comparators.put(StringConstants.COMPARATOR_LESS_THAN, new LessThanComparator());
-		comparators.put(StringConstants.COMPARATOR_LESS_THAN_EQUALS, new LessThanEqualsComparator());
-		comparators.put(StringConstants.COMPARATOR_EQUALS, new EqualsComparator());
-		comparators.put(StringConstants.COMPARATOR_NOT_EQUALS, new NotEqualsComparator());
-		comparators.put(StringConstants.COMPARATOR_IN, new InComparator());
-		comparators.put(StringConstants.COMPARATOR_NOT_IN, new NotInComparator());
-		comparators.put(StringConstants.COMPARATOR_LIKE, new LikeComparator());
-		comparators.put(StringConstants.COMPARATOR_NOT_LIKE, new NotLikeComparator());
+		comparators.put(ComparatorType.GREATER_THAN, new GreaterThanComparator());
+		comparators.put(ComparatorType.GREATER_THAN_EQUALS, new GreaterThanEqualsComparator());
+		comparators.put(ComparatorType.BETWEEN, new BetweenComparator());
+		comparators.put(ComparatorType.LESS_THAN, new LessThanComparator());
+		comparators.put(ComparatorType.LESS_THAN_EQUALS, new LessThanEqualsComparator());
+		comparators.put(ComparatorType.EQUALS, new EqualsComparator());
+		comparators.put(ComparatorType.NOT_EQUALS, new NotEqualsComparator());
+		comparators.put(ComparatorType.IN, new InComparator());
+		comparators.put(ComparatorType.NOT_IN, new NotInComparator());
+		comparators.put(ComparatorType.LIKE, new LikeComparator());
+		comparators.put(ComparatorType.NOT_LIKE, new NotLikeComparator());
 	}
 
 	public static AbstractComparatorFactory getComparatorFactory() {
@@ -55,24 +62,21 @@ public abstract class AbstractComparatorFactory {
 				if (cFactory != null) {
 					return cFactory;
 				}
-				String className = System.getProperty(COMPARATOR_FACTORY_CLASS_NAME);
-				if (className == null) {
-					className = DEFAULT_COMPARATOR_FACTORY_CLASSNAME;
+				if (comparatorFactoryClass == null) {
+					comparatorFactoryClass = defaultComparatorFactoryClass;
 				}
 				try {
-					Class c = Class.forName(className);
-					cFactory = (AbstractComparatorFactory) c.newInstance();
+					Class<?> c = Class.forName(comparatorFactoryClass);
+					cFactory = (AbstractComparatorFactory) c.getDeclaredConstructor().newInstance();
 					return cFactory;
 				}
 				catch (ClassNotFoundException e) {
-					e.printStackTrace();
+					log.info("Could not found any class, Initializing default class");
 					return new ComparatorFactory();// Default
 				}
-				catch (InstantiationException e) {
-					e.printStackTrace();
-				}
-				catch (IllegalAccessException e) {
-					e.printStackTrace();
+				catch (InstantiationException | IllegalAccessException | InvocationTargetException
+						| NoSuchMethodException e) {
+					log.error("Unable to initialize class");
 				}
 			}
 		}

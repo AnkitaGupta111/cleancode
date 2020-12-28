@@ -1,19 +1,16 @@
 package com.zemoso.zinteract.decisiontable.condition.model;
 
 import java.util.Map;
+import groovy.lang.MissingPropertyException;
 import groovy.util.Eval;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class DecisionTableScript {
 
 	private String script;
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
 
 	private String type;
 
@@ -21,30 +18,24 @@ public class DecisionTableScript {
 		this.script = script;
 	}
 
-	public String getScript() {
-		return script;
-	}
-
-	public void setScript(String script) {
-		this.script = script;
-	}
-
 	public Boolean solve(Map<String, String> variables) {
 
-		for (String var : variables.keySet()) {
-			String x = "<" + var + ">";
-			if (script.contains(x)) {
-				script = script.replaceAll(x, variables.get(var));
+		for (Map.Entry<String, String> var : variables.entrySet()) {
+			String key = var.getKey();
+			String value = var.getValue();
+			String scriptValue = "<" + key + ">";
+			if (script.contains(scriptValue)) {
+				script = script.replaceAll(scriptValue, value);
 			}
 		}
-		boolean scriptConditionMatched;
+		boolean val;
 		try {
-			scriptConditionMatched = Boolean.parseBoolean(Eval.me(script).toString());
+			val = Boolean.parseBoolean(Eval.me(script).toString());
 		}
-		catch (groovy.lang.MissingPropertyException e) {
+		catch (MissingPropertyException e) {
 			return false;
 		}
-		return scriptConditionMatched;
+		return val;
 	}
 
 }

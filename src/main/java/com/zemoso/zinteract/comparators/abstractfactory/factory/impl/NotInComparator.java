@@ -15,19 +15,13 @@ public class NotInComparator extends Comparator {
 	@Override
 	public Boolean satisfies(DecisionTableCondition condition, ConditionValue conditionValue, boolean ignoreCase) {
 		InCondition inCondition = (InCondition) condition;
-		Boolean matches = true;
-		for (GenericCondition genericCondition : inCondition.getInCondition()) {
+		for (GenericCondition genericCondition : inCondition.getConditions()) {
 			Boolean isEqual = ComparatorUtils.isEqual(genericCondition, conditionValue, ignoreCase);
-			if (isEqual == null) {
-				matches = false;
-				break;
-			}
 			if (isEqual) {
-				matches = false;
-				break;
+				return false;
 			}
 		}
-		return matches;
+		return true;
 	}
 
 }

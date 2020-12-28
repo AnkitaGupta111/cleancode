@@ -3,41 +3,33 @@ package com.zemoso.zinteract;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.AbstractDecisionTableExecutorFactory;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.AbstractDecisionTableExecutor;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by deepak on 30/5/16.
  */
 public class TaxCalculator {
 
+	private static Logger log = LoggerFactory.getLogger(TaxCalculator.class);
+
 	public static String getRulesJson() {
 		String dTString = "";
 		Properties prop = new Properties();
-		InputStream input = null;
-		try {
-
-			input = new FileInputStream("config.properties");
-			// load a properties file
+		try (InputStream input = new FileInputStream("config.properties");) {
 			prop.load(input);
 			dTString = prop.getProperty("incomeTaxJson");
-		}
-		catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		finally {
-			if (input != null) {
-				try {
-					input.close();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+		} catch (FileNotFoundException e) {
+			log.error("Cannot load properties");
+		} catch (IOException e) {
+			log.error("Cannot load properties");
 		}
 		return dTString;
 	}
@@ -48,7 +40,7 @@ public class TaxCalculator {
 		List<Map> results = dtExecutor.getAllActionResults(s);
 		for (Map result : results) {
 			if (result.containsKey("tax")) {
-				System.out.println("tax---" + ((HashMap) result.get("tax")).get("value"));
+				log.debug("tax---" + ((HashMap) result.get("tax")).get("value"));
 				return Double.parseDouble(((HashMap) result.get("tax")).get("value").toString());
 			}
 		}

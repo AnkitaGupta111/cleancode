@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DecisionTableRow {
+
 	private Map<String, DecisionTableCondition> conditionValues;
+
 	private Map<String, DecisionTableAction> actions;
 
 	public Map<String, DecisionTableScript> getScripts() {
@@ -13,15 +15,15 @@ public class DecisionTableRow {
 	}
 
 	public void setScripts(String a, DecisionTableScript script) {
-		this.scripts.put(a,script);
+		this.scripts.put(a, script);
 	}
 
 	private Map<String, DecisionTableScript> scripts;
 
 	public DecisionTableRow() {
-		this.conditionValues = new HashMap<String, DecisionTableCondition>();
-		this.actions = new HashMap<String, DecisionTableAction>();
-		this.scripts=new HashMap<String, DecisionTableScript>();
+		this.conditionValues = new HashMap<>();
+		this.actions = new HashMap<>();
+		this.scripts = new HashMap<>();
 	}
 
 	public Map<String, DecisionTableCondition> getConditionValues() {
@@ -32,10 +34,12 @@ public class DecisionTableRow {
 		this.conditionValues.put(condition, decisionTableCondition);
 	}
 
-    public Map<String, DecisionTableAction> getActions(){
-        return actions;
-    }
-	public void setActions(String a, DecisionTableAction s){
-		this.actions.put(a,s);
+	public Map<String, DecisionTableAction> getActions() {
+		return actions;
 	}
+
+	public void setActions(String actionName, DecisionTableAction action) {
+		this.actions.put(actionName, action);
+	}
+
 }

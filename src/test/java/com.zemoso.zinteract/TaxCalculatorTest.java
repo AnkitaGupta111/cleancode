@@ -1,10 +1,19 @@
 package com.zemoso.zinteract;
 
+import com.zemoso.zinteract.comparators.abstractfactory.AbstractComparatorFactory;
 import java.util.HashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.Assert.assertTrue;
 
 public class TaxCalculatorTest {
+
+	@BeforeEach
+	void setUp()
+	{
+		org.springframework.test.util.ReflectionTestUtils.setField(AbstractComparatorFactory.class,
+				"comparatorFactoryClass", "com.zemoso.zinteract.comparators.abstractfactory.factory.ComparatorFactory");
+	}
 
 	@Test
 	public void testTaxCalBelow25K() {
@@ -20,7 +29,7 @@ public class TaxCalculatorTest {
 	@Test
 	public void testTaxCal25KTo50K() {
 		String json = TaxCalculator.getRulesJson();
-		HashMap<String, String> value = new HashMap<String, String>();
+		HashMap<String, String> value = new HashMap<>();
 		value.put("investment_80c", "30000");
 		value.put("income", "310000");
 		Double tax = TaxCalculator.execute(value, json);

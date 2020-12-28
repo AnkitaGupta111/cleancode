@@ -12,19 +12,13 @@ public class InComparator extends Comparator {
 	@Override
 	public Boolean satisfies(DecisionTableCondition condition, ConditionValue conditionValue, boolean ignoreCase) {
 		InCondition con = (InCondition) condition;
-		Boolean matches = false;
-		for (GenericCondition gC : con.getInCondition()) {
+		for (GenericCondition gC : con.getConditions()) {
 			Boolean isEqual = ComparatorUtils.isEqual(gC, conditionValue, ignoreCase);
-			if (isEqual == null) {
-				matches = false;
-				break;
-			}
-			else if (isEqual) {
-				matches = true;
-				break;
+			if (isEqual) {
+				return true;
 			}
 		}
-		return matches;
+		return false;
 	}
 
 }

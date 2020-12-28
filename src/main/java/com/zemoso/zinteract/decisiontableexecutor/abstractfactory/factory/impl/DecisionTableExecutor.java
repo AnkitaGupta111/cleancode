@@ -2,7 +2,7 @@ package com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.impl;
 
 import com.zemoso.zinteract.comparators.abstractfactory.AbstractComparatorFactory;
 import com.zemoso.zinteract.comparators.abstractfactory.factory.Comparator;
-import com.zemoso.zinteract.decisiontable.DecisionTableCreater;
+import com.zemoso.zinteract.decisiontable.DecisionTableCreator;
 import com.zemoso.zinteract.decisiontable.DecisionTableResult;
 import com.zemoso.zinteract.decisiontable.condition.DecisionTableCondition;
 import com.zemoso.zinteract.decisiontable.condition.model.ConditionValue;
@@ -11,7 +11,7 @@ import com.zemoso.zinteract.decisiontable.condition.model.DecisionTableHeader;
 import com.zemoso.zinteract.decisiontable.condition.model.DecisionTableRow;
 import com.zemoso.zinteract.decisiontable.condition.model.DecisionTableScript;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.AbstractDecisionTableExecutor;
-import com.zemoso.zinteract.util.StringConstants;
+import com.zemoso.zinteract.util.DataType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -79,10 +79,10 @@ public class DecisionTableExecutor extends AbstractDecisionTableExecutor {
 
 		List<DecisionTableResult> results = new ArrayList<DecisionTableResult>();
 		Map<String, ConditionValue> conditionValues = getConditionValues(valueMap);
-		Map<String, Enum> headerConditions = getDecisionTable().getHeader().getConditions();
+		Map<String, DataType> headerConditions = getDecisionTable().getHeader().getConditions();
 		Boolean ignoreCase = getDecisionTable().getIgnoreCase();
-		Map<String, Enum> dtConditions = getDecisionTable().getHeader().getConditions();
-		for (DecisionTableRow row : getDecisionTable().getDt()) {
+		Map<String, DataType> dtConditions = getDecisionTable().getHeader().getConditions();
+		for (DecisionTableRow row : getDecisionTable().getDecisionTableRows()) {
 			i = dtConditions.entrySet().iterator();
 			while (i.hasNext()) {
 				Map.Entry me = (Map.Entry) i.next();
@@ -93,6 +93,9 @@ public class DecisionTableExecutor extends AbstractDecisionTableExecutor {
 				comparator = cFactory.getComparator(decisionTableCondition.getComparatorName());
 				ConditionValue cV;
 				String value = valueMap.get(me.getKey().toString());
+				if(value==null){
+					System.out.println("hi");
+				}
 				Enum dataType = headerConditions.get(me.getKey().toString());
 				cV = getConditionValue(value, dataType);
 				match = comparator.satisfies(decisionTableCondition, cV, ignoreCase);
@@ -138,20 +141,20 @@ public class DecisionTableExecutor extends AbstractDecisionTableExecutor {
 		catch (groovy.lang.MissingPropertyException e) {
 			return null;
 		}
-		Map<String, Enum> headerConditions = getDecisionTable().getHeader().getConditions();
+		Map<String, DataType> headerConditions = getDecisionTable().getHeader().getConditions();
 		Enum dataType = headerConditions.get(key);
 		return getConditionValue(val, dataType);
 	}
 
 	private DecisionTable createDT() {
-		DecisionTableCreater decisionTableCreater = new DecisionTableCreater(dT_json);
-		return decisionTableCreater.createDecisionTable();
+		DecisionTableCreator decisionTableCreator = new DecisionTableCreator(dT_json);
+		return decisionTableCreator.createDecisionTable();
 	}
 
 	private Map<String, ConditionValue> getConditionValues(Map<String, String> value) {
 		Map<String, ConditionValue> conditionValues = new HashMap<String, ConditionValue>();
 		DecisionTableHeader header = getDecisionTable().getHeader();
-		Map<String, Enum> headerConditions = header.getConditions();
+		Map<String, DataType> headerConditions = header.getConditions();
 		Iterator i;
 		ConditionValue cValue;
 		i = value.entrySet().iterator();
@@ -172,16 +175,16 @@ public class DecisionTableExecutor extends AbstractDecisionTableExecutor {
 		if (dataType == null) {
 			return null;
 		}
-		if (dataType.equals(StringConstants.DATATYPE_STRING)) {
+		if (dataType.equals(DataType.STRING)) {
 			cValue = new ConditionValue(value);
 		}
-		else if (dataType.equals(StringConstants.DATATYPE_LONG)) {
+		else if (dataType.equals(DataType.LONG)) {
 			cValue = new ConditionValue(Long.valueOf(value).longValue());
 		}
-		else if (dataType.equals(StringConstants.DATATYPE_DOUBLE)) {
+		else if (dataType.equals(DataType.DOUBLE)) {
 			cValue = new ConditionValue(Double.valueOf(value).doubleValue());
 		}
-		else if (dataType.equals(StringConstants.DATATYPE_BOOLEAN)) {
+		else if (dataType.equals(DataType.BOOLEAN)) {
 			cValue = new ConditionValue(Boolean.valueOf(value).booleanValue());
 		}
 		else {

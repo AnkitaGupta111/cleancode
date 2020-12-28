@@ -12,8 +12,8 @@ public class BetweenComparator extends Comparator {
 	public Boolean satisfies(DecisionTableCondition condition, ConditionValue conditionValue, boolean ignoreCase) {
 
 		BetweenCondition betweenCondition = (BetweenCondition) condition;
-		Boolean lessThan = ComparatorUtils.isGreaterThan(betweenCondition.getLessThanConditionValue(), conditionValue);
-		Boolean greaterThan = ComparatorUtils.isLessThan(betweenCondition.getGreaterThanConditionValue(), conditionValue);
+		Boolean lessThan = ComparatorUtils.isGreaterThan(betweenCondition.getLessThanCondition(), conditionValue);
+		Boolean greaterThan = ComparatorUtils.isLessThan(betweenCondition.getGreaterThanCondition(), conditionValue);
 		if (lessThan == null || greaterThan == null) {
 			return false;
 		}
