@@ -5,8 +5,21 @@ import com.zemoso.zinteract.comparators.util.ComparatorUtils;
 import com.zemoso.zinteract.decisiontable.condition.DecisionTableCondition;
 import com.zemoso.zinteract.decisiontable.condition.model.ConditionValue;
 
+/**
+ * This class is responsible for validating conditions
+ * if the condition script is calculating the Greater than operation.
+ */
 public class GreaterThanComparator extends Comparator {
 
+	/**
+	 * Responsible for validating condition value
+	 * (input conditionValue) against
+	 * the pre defined condition (rules).
+	 * @param condition
+	 * @param conditionValue
+	 * @param ignoreCase
+	 * @return
+	 */
 	@Override
 	public Boolean satisfies(DecisionTableCondition condition, ConditionValue conditionValue, boolean ignoreCase) {
 
