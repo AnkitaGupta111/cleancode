@@ -47,3 +47,6 @@ implementations:
 3. Different kind`s of comparators are like EqualsComparator GreaterThanComparator etc.. available to evaluate the conditions defined using PatternMatcher.
 4. DecisionTableExecutor getAllMatches will give the all matching rows which satisfies the given condition
 
+# Relational
+ For Database design,
+ visit:<link>https://dbdiagram.io/d/5fe4778d9a6c525a03bc3652</link>
