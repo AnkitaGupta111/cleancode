@@ -7,23 +7,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CheckoutSystem implements ICheckoutSystem {
-    Map<Item,Integer> cart=new HashMap<>();
+    Map<Item, Integer> cart = new HashMap<>();
     Map<Item, IOffer> priceRules;
 
-    public CheckoutSystem(Map priceRules){
-        this.priceRules=priceRules;
+    public CheckoutSystem(Map priceRules) {
+        this.priceRules = priceRules;
     }
 
     /**
      * add item to cart
+     *
      * @param item scanned
      */
 
     @Override
     public void scanItem(Item item) {
         if (cart.containsKey(item)) {
-            int currQuantity=cart.get(item) + 1;
-            cart.put(item,currQuantity);
+            int currQuantity = cart.get(item) + 1;
+            cart.put(item, currQuantity);
         } else {
             cart.put(item, 1);
         }
@@ -31,6 +32,7 @@ public class CheckoutSystem implements ICheckoutSystem {
 
     /**
      * calculate total price of the items in cart
+     *
      * @return total price
      */
     @Override

@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class Item {
-     private String name;
-     private double price;
+    private String name;
+    private double price;
 
 
 }
