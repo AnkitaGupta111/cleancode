@@ -42,7 +42,7 @@ public class TaxCalculator {
 		return dTString;
 	}
 
-	public static double execute(HashMap<String, String> s, String json) {
+	public static double execute(Map<String, String> s, String json) {
 		AbstractDecisionTableExecutorFactory Factory = AbstractDecisionTableExecutorFactory.getDtExecutorFactory();
 		AbstractDecisionTableExecutor dtExecutor = Factory.getDecisionTableExecutor("dT_id1", json);
 		List<Map> results = dtExecutor.getAllActionResults(s);
