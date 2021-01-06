@@ -12,4 +12,6 @@ public interface IRuleService {
   Rule saveRule(Rule rule);
 
   Rule updateRule(Rule rule);
+
+  String deleteRule(String ruleId);
 }

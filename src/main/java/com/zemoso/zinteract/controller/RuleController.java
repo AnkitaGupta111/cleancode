@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rules")
 public class RuleController {
 
-	private IRuleService ruleService;
+	private final IRuleService ruleService;
 
-	public RuleController(IRuleService ruleService) {
+	public RuleController(final IRuleService ruleService) {
 		this.ruleService = ruleService;
 	}
 
@@ -46,8 +46,8 @@ public class RuleController {
 	}
 
 	@DeleteMapping("/{ruleId}")
-	public ResponseEntity<Rule> updateRule(@PathVariable String ruleId) {
-		return ResponseEntity.ok(new Rule());
+	public ResponseEntity<String> deleteRule(@PathVariable String ruleId) {
+		return ResponseEntity.ok(ruleService.deleteRule(ruleId));
 	}
 
 }

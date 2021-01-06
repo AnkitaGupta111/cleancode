@@ -10,35 +10,64 @@ import org.springframework.stereotype.Service;
 @Service
 public class RuleService implements IRuleService {
 
-	private RuleRepository ruleRepository;
+  private RuleRepository ruleRepository;
 
-	public RuleService(RuleRepository ruleRepository) {
-		this.ruleRepository = ruleRepository;
-	}
+  public RuleService(RuleRepository ruleRepository) {
+    this.ruleRepository = ruleRepository;
+  }
 
-	@Override
-	public Rule getRule(String ruleId) throws DataNotFoundException {
-		try {
-			return ruleRepository.findById(ruleId)
-					.orElseThrow(() -> new DataNotFoundException("No record with rule Id:" + ruleId));
-		}
-		catch (MongoSecurityException e) {
-			throw new DataNotFoundException("No record with rule Id:" + ruleId, e);
-		}
-	}
+  /**
+   * Get rule returns the rule based on Id
+   *
+   * @param ruleId unique identifier for rule
+   * @return rule
+   * @throws DataNotFoundException if no data found
+   */
+  @Override
+  public Rule getRule(String ruleId) throws DataNotFoundException {
+    try {
+      return ruleRepository.findById(ruleId)
+          .orElseThrow(() -> new DataNotFoundException("No record with rule Id:" + ruleId));
+    } catch (MongoSecurityException e) {
+      throw new DataNotFoundException("No record with rule Id:" + ruleId, e);
+    }
+  }
 
-	@Override
-	public List<Rule> getAllRules() {
-		return ruleRepository.findAll();
-	}
+  /**
+   * Returns all the rules in the system
+   *
+   * @return all the rules
+   */
+  @Override
+  public List<Rule> getAllRules() {
+    return ruleRepository.findAll();
+  }
 
+  /**
+   * Save the new rule
+   *
+   * @param rule definition
+   * @return saved rule
+   */
   @Override
   public Rule saveRule(Rule rule) {
     return ruleRepository.save(rule);
   }
 
+  /**
+   * Update or patch the exisiting rule
+   *
+   * @param rule definition
+   * @return updated rule
+   */
+  @Override
+  public Rule updateRule(Rule rule) {
+    return ruleRepository.save(rule);
+  }
+
 	@Override
-	public Rule updateRule(Rule rule) {
-		return ruleRepository.save(rule);
+	public String deleteRule(String ruleId) {
+		ruleRepository.deleteById(ruleId);
+		return ruleId;
 	}
 }

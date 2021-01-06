@@ -12,6 +12,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class ApplicationConfiguration {
 
+  /**
+   * Standard Swagger docket configuration which reads all the controllers.
+   *
+   * @return docket object
+   */
   @Bean
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2)
