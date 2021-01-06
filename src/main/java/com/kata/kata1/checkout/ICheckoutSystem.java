@@ -4,6 +4,6 @@ import com.kata.kata1.Item;
 
 interface  ICheckoutSystem {
     void scanItem(Item item);
-    float totalPrice();
+    double totalPrice();
     void emptyCart();
 }

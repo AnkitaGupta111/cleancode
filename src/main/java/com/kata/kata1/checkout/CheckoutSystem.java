@@ -14,6 +14,11 @@ public class CheckoutSystem implements ICheckoutSystem {
         this.priceRules=priceRules;
     }
 
+    /**
+     * add item to cart
+     * @param item scanned
+     */
+
     @Override
     public void scanItem(Item item) {
         if (cart.containsKey(item)) {
@@ -24,13 +29,17 @@ public class CheckoutSystem implements ICheckoutSystem {
         }
     }
 
+    /**
+     * calculate total price of the items in cart
+     * @return total price
+     */
     @Override
-    public float totalPrice() {
-        float total = 0;
+    public double totalPrice() {
+        double total = 0;
 
-        for (Map.Entry mapEntry : cart.entrySet()) {
-            Item item = (Item) mapEntry.getKey();
-            int quantity = (int) mapEntry.getValue();
+        for (Map.Entry cartEntry : cart.entrySet()) {
+            Item item = (Item) cartEntry.getKey();
+            int quantity = (int) cartEntry.getValue();
             if (priceRules.containsKey(item)) {
                 IOffer priceRule = priceRules.get(item);
                 total = total + priceRule.calculatePrice(item, quantity);
@@ -40,6 +49,9 @@ public class CheckoutSystem implements ICheckoutSystem {
         return total;
     }
 
+    /**
+     * remove all the items from cart
+     */
     @Override
     public void emptyCart() {
         cart.clear();
