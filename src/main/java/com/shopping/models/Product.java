@@ -1,5 +1,8 @@
 package com.shopping.models;
 
+/**
+ * This class has the properties of an Item into a cart
+ */
 public class Product {
     private final String name;
     private final float unitPrice;
