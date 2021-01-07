@@ -2,6 +2,7 @@ package com.katas.kata1;
 
 import com.katas.kata1.approach1.Item;
 import com.katas.kata1.approach1.PriceRule;
+import com.katas.kata1.approach1.ShoppingCart.IShoppingCartBilling;
 import com.katas.kata1.approach1.ShoppingCart.ShoppingCartBilling;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +31,7 @@ class SuperMarketBillingApproach1Test {
         return priceRules;
     }
 
-    ShoppingCartBilling shoppingCart = new ShoppingCartBilling(getPriceRules());
+    IShoppingCartBilling shoppingCart = new ShoppingCartBilling(getPriceRules());
 
     @AfterEach
     void clear() {

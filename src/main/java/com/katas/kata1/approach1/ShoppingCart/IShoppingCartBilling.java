@@ -5,7 +5,7 @@ import com.katas.kata1.approach1.Item;
 /**
  * declares methods ,which are needed to perform basic actions like adding item to the cart ,calculating total bill,clearing the cart
  */
-interface IShoppingCartBilling {
+public interface IShoppingCartBilling {
 
     /**
      * adds item to the cart

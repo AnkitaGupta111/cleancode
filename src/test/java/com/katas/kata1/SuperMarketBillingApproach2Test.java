@@ -1,5 +1,6 @@
 package com.katas.kata1;
 
+import com.katas.kata1.approach2.ISuperMarketBilling;
 import com.katas.kata1.approach2.SuperMarketBilling;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import java.util.List;
 @RunWith(JUnit4.class)
 class SuperMarketBillingApproach2Test {
 
-    private final SuperMarketBilling superMarketBilling = new SuperMarketBilling();
+    private final ISuperMarketBilling superMarketBilling = new SuperMarketBilling();
 
     @Test
     void testBilling() {

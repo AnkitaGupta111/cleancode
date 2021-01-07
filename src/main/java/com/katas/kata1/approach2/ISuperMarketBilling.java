@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * declares methods to scans pricing rules and calculate the total bill
  */
-interface ISuperMarketBilling {
+public interface ISuperMarketBilling {
     /**
      * scans pricing rules
      * @param pricingRules pricing rules assosciated with items
