@@ -1,6 +1,6 @@
 /.idea/
 /target/
-kata1.iml
+*.iml
 mvnw
 mvnw.cmd
 HELP.md
