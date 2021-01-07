@@ -23,12 +23,12 @@ public class PricingSchemes implements Checkout{
      */
     public Map<String,Integer> countOfEachItem(List<String> orderedItems){
         Map<String,Integer> itemsCountMap=new HashMap<>();
-        for(String item:orderedItems){
+        orderedItems.stream().forEach(item->{
             if(itemsCountMap.containsKey(item))
                 itemsCountMap.put(item,itemsCountMap.get(item)+1);
             else
                 itemsCountMap.put(item,1);
-        }
+        });
         return  itemsCountMap;
     }
 
@@ -37,11 +37,11 @@ public class PricingSchemes implements Checkout{
      * @return total amount
      */
     @Override
-    public double total() {
+    public double calculateTotalPrice() {
         double totalPrice=0;
         Map<String,Integer> itemsCountMap=countOfEachItem(orderedItems);
         for(String rule: pricingRules){
-            String [] itemRules=rule.split(" ");
+            String [] itemRules=rule.split("-");
             String item=itemRules[0];
             int singleItemPrice=Integer.parseInt(itemRules[1]);
             int countOfItemInOffer=Integer.parseInt(itemRules[2]);

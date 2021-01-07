@@ -22,9 +22,8 @@ public class PricingSchemesTest {
         pricingSchemes.scanItem("A");
         pricingSchemes.scanItem("A");
 
-        pricingSchemes.scanRules("A 50 3 130");
-        double totalPrice= pricingSchemes.total();
-        Assert.assertEquals(260,pricingSchemes.total(),0);
+        pricingSchemes.scanRules("A-50-3-130");
+        Assert.assertEquals(260,pricingSchemes.calculateTotalPrice(),0);
 
     }
 }
