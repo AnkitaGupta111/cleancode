@@ -20,7 +20,6 @@ class PriceCalculatorTest {
     Product cProduct = new Product('C', 20);
     Product dProduct = new Product('D', 15);
 
-
     Map<Product, Price> productPriceMap() {
         Map<Product, Price> productPriceMap = new HashMap<>();
         productPriceMap.put(aProduct, new OfferPrice(3, 130));
@@ -44,9 +43,9 @@ class PriceCalculatorTest {
         productList.add(bProduct);
         productList.add(aProduct);
         productList.add(dProduct);
-        priceCalculator.addProductList(productList);
+        Map<Product, Integer> productIntegerMap = addProductListToProductMap(productList);
         // AAABBCBAD => 130+50+45+30+20
-        assertEquals(290, priceCalculator.calculatePrice(), 0);
+        assertEquals(290, priceCalculator.calculatePrice(productIntegerMap), 0);
     }
 
     @Test
@@ -57,22 +56,40 @@ class PriceCalculatorTest {
         productList.add(aProduct);
         productList.add(aProduct);
         productList.add(aProduct);
-        priceCalculator.addProductList(productList);
+
+        Map<Product, Integer> productIntegerMap = addProductListToProductMap(productList);
         // AAA => Offer price of 130. Actual price is 150.
-        assertEquals(130, priceCalculator.calculatePrice(), 0);
+        double priceOfThreeA = priceCalculator.calculatePrice(productIntegerMap);
+        assertEquals(130, priceOfThreeA, 0);
     }
 
     @Test
     void testPriceForOneProductOfEachType() {
         Map<Product, Price> productPriceMap = productPriceMap();
         PriceCalculator priceCalculator = new PriceCalculatorImpl(productPriceMap);
-        priceCalculator.addProduct(aProduct);
-        priceCalculator.addProduct(bProduct);
+
+        List<Product> productList = new ArrayList<>();
+        productList.add(aProduct);
+        productList.add(bProduct);
+        Map<Product, Integer> productIntegerMap = addProductListToProductMap(productList);
+
         // A => 50, B => 30
-        assertEquals(80, priceCalculator.calculatePrice(), 0);
-        priceCalculator.addProduct(cProduct);
-        priceCalculator.addProduct(dProduct);
+        assertEquals(80, priceCalculator.calculatePrice(productIntegerMap), 0);
+
+        productList.add(cProduct);
+        productList.add(dProduct);
+        productIntegerMap = addProductListToProductMap(productList);
+
         // A => 50, B => 30, C => 20, D=>15
-        assertEquals(115, priceCalculator.calculatePrice(), 0);
+        assertEquals(115, priceCalculator.calculatePrice(productIntegerMap), 0);
+    }
+
+    private Map<Product, Integer> addProductListToProductMap(List<Product> productList) {
+        Map<Product, Integer> productIntegerMap = new HashMap<>();
+        productList.forEach(product -> {
+            int productSize = productIntegerMap.containsKey(product) ? productIntegerMap.get(product) + 1 : 1;
+            productIntegerMap.put(product, productSize);
+        });
+        return productIntegerMap;
     }
 }
