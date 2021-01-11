@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.katas</groupId>
-    <artifactId>kata1</artifactId>
+    <artifactId>kata2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>kata1</name>
+    <name>kata2</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -35,11 +35,7 @@
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
+
     </dependencies>
 
     <build>
