@@ -4,13 +4,13 @@ import com.katas.kata1.approach2.ISuperMarketBilling;
 import com.katas.kata1.approach2.SuperMarketBilling;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(JUnit4.class)
+@ExtendWith(SpringExtension.class)
 class SuperMarketBillingApproach2Test {
 
     private final ISuperMarketBilling superMarketBilling = new SuperMarketBilling();

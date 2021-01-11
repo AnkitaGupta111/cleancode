@@ -1,6 +1,9 @@
 /target/
-/target/
+/.idea/
 /HELP.md
 /kata1.iml
 /mvnw
 /mvnw.cmd
+/src/.idea/
+/src/main/main.iml
+/src/test/test.iml

@@ -7,13 +7,13 @@ import com.katas.kata1.approach1.ShoppingCart.ShoppingCartBilling;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@RunWith(JUnit4.class)
+@ExtendWith(SpringExtension.class)
 class SuperMarketBillingApproach1Test {
 
 
