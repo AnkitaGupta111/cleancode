@@ -20,7 +20,6 @@ public class Application {
 
 
     public static int getWeatherSpread() {
-        ClassLoader classLoader = Application.class.getClassLoader();
         File weatherFile = new File(classLoader.getResource("weather.dat").getFile());
         dataService.importData(weatherFile,
                 weatherList,
