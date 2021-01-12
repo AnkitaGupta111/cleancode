@@ -2,17 +2,14 @@ package FileHandler;
 
 import soccer_league.SoccerLeague;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.stream.Collectors;
 
 public class SoccerLeagueFileHandler implements IFileHandler<SoccerLeague> {
-    private final String fileName;
+    private final String filePath;
 
-    public SoccerLeagueFileHandler(String fileName) {
-        this.fileName = fileName;
+    public SoccerLeagueFileHandler(String filePath) {
+        this.filePath = filePath;
     }
 
     /**
@@ -22,14 +19,25 @@ public class SoccerLeagueFileHandler implements IFileHandler<SoccerLeague> {
      */
     @Override
     public List<SoccerLeague> getData() {
-        List<SoccerLeague> socerLeagues = new ArrayList<>();
-        AtomicReference<AtomicReferenceArray<String>> chars = new AtomicReference<>(new AtomicReferenceArray<>(new String[0]));
-        Arrays.stream(readFile(fileName)).forEach(line -> {
-            chars.set(new AtomicReferenceArray<>(line.split("\\s+")));
-            if (!line.contains("----------") && !line.contains("Team")) {
-                socerLeagues.add(new SoccerLeague(Integer.parseInt(chars.get().get(7)), Integer.parseInt(chars.get().get(9)), chars.get().get(2)));
-            }
-        });
+        List<SoccerLeague> socerLeagues = readFile(filePath)
+                .stream()
+                .filter(line -> (!line.contains("----------") && !line.contains("Team")))
+                .map(line -> getSoccerLeagueObjectFromFileLine(line))
+                .collect(Collectors.toList());
         return socerLeagues;
+    }
+
+    /**
+     * method to get the soccerLeague object from particular line
+     *
+     * @param line
+     * @return soccer league object
+     */
+    private SoccerLeague getSoccerLeagueObjectFromFileLine(String line) {
+        String[] lineSubStrings = line.split("\\s+");
+        int goalsScoredFor = Integer.parseInt(lineSubStrings[7]);
+        int goalsScoredAgainst = Integer.parseInt(lineSubStrings[9]);
+        String teamName = lineSubStrings[2];
+        return new SoccerLeague(goalsScoredFor, goalsScoredAgainst, teamName);
     }
 }

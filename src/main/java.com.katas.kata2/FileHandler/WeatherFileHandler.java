@@ -2,17 +2,14 @@ package FileHandler;
 
 import weather.Weather;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.stream.Collectors;
 
 public class WeatherFileHandler implements IFileHandler<Weather> {
-    private final String fileName;
+    private final String filePath;
 
-    public WeatherFileHandler(String fileName) {
-        this.fileName = fileName;
+    public WeatherFileHandler(String filePath) {
+        this.filePath = filePath;
     }
 
     /**
@@ -22,13 +19,25 @@ public class WeatherFileHandler implements IFileHandler<Weather> {
      */
     @Override
     public List<Weather> getData() {
-        List<Weather> weatherObjects = new ArrayList<>();
-        AtomicReference<AtomicReferenceArray<String>> chars = new AtomicReference<>(new AtomicReferenceArray<>(new String[0]));
-        Arrays.stream(readFile(fileName)).forEach(line -> {
-            chars.set(new AtomicReferenceArray<>(line.replaceAll("[*]", "").split("\\s+")));
-            if (!line.isBlank() && !line.contains("Dy"))
-                weatherObjects.add(new Weather(Double.parseDouble(chars.get().get(2)), Double.parseDouble(chars.get().get(3)), chars.get().get(1)));
-        });
+        List<Weather> weatherObjects = readFile(filePath)
+                .stream()
+                .filter(line -> (!line.isBlank() && !line.contains("Dy")))
+                .map(line -> getWeatherObjectFromFileLine(line))
+                .collect(Collectors.toList());
         return weatherObjects;
+    }
+
+    /**
+     * method to get the weather object from particular line
+     *
+     * @param line
+     * @return weather object
+     */
+    private Weather getWeatherObjectFromFileLine(String line) {
+        String[] lineSubStrings = line.replaceAll("[]*]", "").split("\\s+");
+        double minTemperature = Double.parseDouble(lineSubStrings[3]);
+        double maxTemperature = Double.parseDouble(lineSubStrings[2]);
+        String day = lineSubStrings[1];
+        return new Weather(maxTemperature, minTemperature, day);
     }
 }

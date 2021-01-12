@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,14 +30,14 @@ public interface IFileHandler<T> {
      * @param filePath file path
      * @return lines in the given file in the form of string array
      */
-    default String[] readFile(String filePath) {
+    default List<String> readFile(String filePath) {
         Path path = Paths.get(filePath);
         Logger log = LoggerFactory.getLogger(IFileHandler.class);
         try {
-            return Files.readAllLines(path).toArray(new String[0]);
+            return Files.readAllLines(path);
         } catch (IOException ioException) {
             log.error(ioException.getMessage());
         }
-        return null;
+        return new ArrayList<>();
     }
 }
