@@ -62,7 +62,7 @@ public class FileDataHandler {
     }
 
     /**
-     * it gives required col list for a particular row
+     * it gives required column list for a particular row
      *
      * @param row        data row whose column to return
      * @param colIndexes list of column indexes required
