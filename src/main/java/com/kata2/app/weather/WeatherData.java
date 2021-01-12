@@ -26,17 +26,4 @@ public class WeatherData {
     public float getTempDifference() {
         return maxTemp - minTemp;
     }
-
-
-    /*private WeatherData getWeatherDataWithSmallestTempSpread() throws Exception {
-        int smallestTemp = 150;
-        WeatherData minWeatherData = new WeatherData(1, "80", "40", 60);
-        for(WeatherData weatherData : changeTextDataToListData()) {
-            if(weatherData.getAvgTemp() <= smallestTemp) {
-                smallestTemp = weatherData.getAvgTemp();
-                minWeatherData = weatherData;
-            }
-        }
-        return minWeatherData;
-    }*/
 }

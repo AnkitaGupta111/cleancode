@@ -14,9 +14,9 @@ public class FootballFileReader extends FileHandler {
     private List<FootballData> getRequiredTeamData(final String fileName, final String[] skipLineWithStartingWords) throws Exception {
         List<FootballData> data = new ArrayList<>();
         for(String rowData : getFileData(fileName, skipLineWithStartingWords)) {
-            String teamName = rowData.trim().substring(3,18).trim();
-            int goalScoredFor = Integer.parseInt(rowData.trim().substring(39,42).trim());
-            int goalScoredAgainst = Integer.parseInt(rowData.trim().substring(46,49).trim());
+            String teamName = rowData.split(" +")[2];
+            int goalScoredFor = Integer.parseInt(rowData.split(" +")[7]);
+            int goalScoredAgainst = Integer.parseInt(rowData.split(" +")[9]);
             data.add(new FootballData(teamName, goalScoredFor, goalScoredAgainst));
         }
         return data;
