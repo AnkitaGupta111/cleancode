@@ -33,6 +33,12 @@ public class FootballMatchDataProcessor {
         br.close();
     }
 
+    /**
+     * find team name having min diff in the total number of goals scored for(F col) and against each team in that season(A col)
+     *
+     * @return team name having min diff in the total number of goals scored for(F col) and against each team in that season(A col)
+     * @throws IOException when file provided to read not found
+     */
     String getMinDiffInFandATeam() throws IOException {
         readDataFile();
         String teamNameWithMinFAndADiff = null;

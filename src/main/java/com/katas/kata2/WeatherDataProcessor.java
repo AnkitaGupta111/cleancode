@@ -31,6 +31,12 @@ public class WeatherDataProcessor {
         br.close();
     }
 
+    /**
+     * find day number having minimum Temp spread
+     *
+     * @return day number having minimum Temp spread
+     * @throws IOException when file provided to read not found
+     */
     int getSmallestTempSpreadDayNumber() throws IOException {
         readDataFile();
         int dayNumberWithSmallestTempDiff = 0;

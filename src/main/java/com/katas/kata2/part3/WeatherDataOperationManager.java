@@ -15,18 +15,16 @@ public class WeatherDataOperationManager {
     }
 
     /**
-     * gives day number having min Temp spread
+     * gives day number having minimum Temp spread
      *
-     * @return day number having min Temp spread
+     * @return day number having minimum Temp spread
      */
     public String getSmallestTempSpreadDayNumber() {
         int noOfRows = fileDataHandler.getDataRows().size();
         List<Integer> rowNumberToSkip = Arrays.asList(1, noOfRows);
         List<Integer> colNumberToInclude = Arrays.asList(0, 1, 2);
         List<String[]> requiredDataSet = fileDataHandler.getRequiredDataSet(rowNumberToSkip, colNumberToInclude);
-
         return requiredDataSet.stream().min(DataOperationHelper::getComparatorForMinDiff).get()[0];
-
     }
 
 

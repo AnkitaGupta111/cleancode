@@ -24,7 +24,7 @@ public class FileDataHandler {
         try {
             readDataFile();
         } catch (IOException ioException) {
-            log.error(ioException.getMessage());
+            log.error(ioException.getMessage(), ioException);
             throw new IOException(ioException.getMessage());
 
         }
@@ -65,7 +65,7 @@ public class FileDataHandler {
      * it gives required col list for a particular row
      *
      * @param row        data row whose column to return
-     * @param colIndexes list of col indexes required
+     * @param colIndexes list of column indexes required
      * @return required col list bases on list of col indexes
      */
     private String[] getRequiredColArray(String[] row, List colIndexes) {
