@@ -25,7 +25,7 @@ public class WeatherDataOperationManager {
         List<Integer> colNumberToInclude = Arrays.asList(0, 1, 2);
         List<String[]> requiredDataSet = fileDataHandler.getRequiredDataSet(rowNumberToSkip, colNumberToInclude);
 
-        return requiredDataSet.stream().min(Helper::getComparatorForMinDiff).get()[0];
+        return requiredDataSet.stream().min(DataOperationHelper::getComparatorForMinDiff).get()[0];
 
     }
 

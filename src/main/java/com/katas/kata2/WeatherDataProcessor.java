@@ -10,27 +10,20 @@ import java.util.List;
 
 @Slf4j
 public class WeatherDataProcessor {
-    String fileName;
+    private String fileName;
+    private List<String[]> dataRows = new ArrayList<>();
 
-    List<String[]> dataRows = new ArrayList<>();
-
-    WeatherDataProcessor() throws IOException {
-        fileName = "weather.dat";
-        try {
-            readDataFile();
-        } catch (IOException ioException) {
-            log.error(ioException.getMessage());
-            throw new IOException(ioException.getMessage());
-        }
+    WeatherDataProcessor(String fileName) {
+        this.fileName = fileName;
     }
 
-    void readDataFile() throws IOException {
+    private void readDataFile() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String fileLine;
 
         while ((fileLine = br.readLine()) != null) {
-            if (!fileLine.trim().equals("")) {
-                String line = fileLine.trim();
+            String line = fileLine.trim();
+            if (!line.equals("") && !line.startsWith("mo") && !line.startsWith("Dy")) {
                 String[] colData = line.split("\\s+");
                 dataRows.add(colData);
             }
@@ -38,9 +31,8 @@ public class WeatherDataProcessor {
         br.close();
     }
 
-    int getSmallestTempSpreadDayNumber() {
-        dataRows.remove(0);
-        dataRows.remove(dataRows.size() - 1);
+    int getSmallestTempSpreadDayNumber() throws IOException {
+        readDataFile();
         int dayNumberWithSmallestTempDiff = 0;
         int smallestTempSpread = Integer.MAX_VALUE;
         int minTempIndex = 2;

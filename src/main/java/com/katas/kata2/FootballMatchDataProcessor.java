@@ -10,44 +10,40 @@ import java.util.List;
 
 @Slf4j
 public class FootballMatchDataProcessor {
-    String fileName;
+    private String fileName;
+    private List<String[]> dataRows = new ArrayList<>();
 
-    List<String[]> dataRows = new ArrayList<>();
-
-    FootballMatchDataProcessor() {
-        fileName = "football.dat";
-        try {
-            readDataFile();
-        } catch (IOException ioException) {
-            log.error(ioException.getMessage());
-        }
+    FootballMatchDataProcessor(String fileName) {
+        this.fileName = fileName;
     }
 
-    void readDataFile() throws IOException {
+
+    private void readDataFile() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String fileLine;
 
         while ((fileLine = br.readLine()) != null) {
-            if (!fileLine.trim().equals("") && !fileLine.contains("--------")) {
-                String line = fileLine.trim();
+            String line = fileLine.trim();
+            if (!line.trim().equals("") && !line.contains("--------") && !line.startsWith("Team")) {
                 String[] colData = line.split("\\s+-*\\s*");
                 dataRows.add(colData);
             }
         }
+
         br.close();
     }
 
-    String getMinDiffInFandATeam() {
-        dataRows.remove(0);
+    String getMinDiffInFandATeam() throws IOException {
+        readDataFile();
         String teamNameWithMinFAndADiff = null;
         int smallestDiff = Integer.MAX_VALUE;
-        int FIndex = 6;
-        int AIndex = 7;
+        int colFIndex = 6;
+        int colAIndex = 7;
         int teamNameIndex = 1;
 
         for (String[] row : dataRows) {
-            String forGoalData = row[FIndex];
-            String againstGoalData = row[AIndex];
+            String forGoalData = row[colFIndex];
+            String againstGoalData = row[colAIndex];
 
             int numberOfForGoal = Integer.parseInt(forGoalData);
             int numberOfAgainstGoal = Integer.parseInt(againstGoalData);

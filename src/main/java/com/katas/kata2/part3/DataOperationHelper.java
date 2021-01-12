@@ -3,8 +3,8 @@ package com.katas.kata2.part3;
 /**
  * provide common helper methods in  operations over data
  */
-class Helper {
-    
+class DataOperationHelper {
+
     static int getComparatorForMinDiff(String[] row1, String[] row2) {
         int value1Index = 2;
         int value2Index = 1;

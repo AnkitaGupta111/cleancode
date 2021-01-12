@@ -23,4 +23,18 @@ public class MinDiffTest {
         Assertions.assertEquals("Aston_Villa", fm.getMinDiffInFandATeam());
 
     }
+
+    @Test
+    void testSmallestTempSpreadDayNumberPart1() throws IOException {
+        WeatherDataProcessor wm = new WeatherDataProcessor("weather.dat");
+        Assertions.assertEquals(14, wm.getSmallestTempSpreadDayNumber());
+
+    }
+
+    @Test
+    void testgetMinDiffInFandATeamPart2() throws IOException {
+        FootballMatchDataProcessor fm = new FootballMatchDataProcessor("football.dat");
+        Assertions.assertEquals("Aston_Villa", fm.getMinDiffInFandATeam());
+
+    }
 }
