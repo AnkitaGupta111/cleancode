@@ -69,6 +69,8 @@ public class Main {
 //            }
 //
 //        }
+        System.out.println(dtExecutor);
+
         DtResult result=dtExecutor.getFirstMatch(s);
         System.out.println(result.getActionResults());
 
