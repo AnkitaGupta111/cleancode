@@ -3,7 +3,7 @@ package com.katas.kata1.approach1.Price;
 import com.katas.kata1.approach1.PriceRule;
 
 public class PriceCalculation implements IPriceCalculation {
-    PriceRule priceRule;
+    private PriceRule priceRule;
 
     public PriceCalculation(PriceRule priceRule) {
         this.priceRule = priceRule;

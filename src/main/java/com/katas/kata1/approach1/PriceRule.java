@@ -6,6 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class PriceRule {
-    double offerPrice;
-    int ItemsWithOfferCount;
+    private double offerPrice;
+    private int ItemsWithOfferCount;
 }
