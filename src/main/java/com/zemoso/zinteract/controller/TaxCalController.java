@@ -8,17 +8,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
+/**
+ * Tax Calculator Controller, to calculate the tax.
+ */
 @RestController
-public class TaxController {
+public class TaxCalController {
     private ITaxCalService iTaxCalService;
 
-    public TaxController(ITaxCalService iTaxCalService) {
+    public TaxCalController(ITaxCalService iTaxCalService) {
         this.iTaxCalService = iTaxCalService;
     }
 
+    /**
+     *  To calculate the tax based on the rules, values defined as a @param taxCalculatorDTO and
+     * @return The tax to be paid
+     */
     @PostMapping("/calculate-tax")
     public ResponseEntity<String> calculateTax(@RequestBody TaxCalDTO taxCalculatorDTO) {
-        System.out.println(taxCalculatorDTO);
         Double taxToBePaid = iTaxCalService.calculateTaxToBePaid(taxCalculatorDTO);
         if (taxToBePaid == null)
             return ResponseEntity.ok("Please provide valid data " + taxCalculatorDTO);

@@ -1,58 +1,57 @@
 package com.zemoso.zinteract;
 
+import com.zemoso.zinteract.constants.Constants;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.AbstractDecisionTableExecutorFactory;
 import com.zemoso.zinteract.decisiontableexecutor.abstractfactory.factory.AbstractDecisionTableExecutor;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 /**
- * Created by deepak on 30/5/16.
+ * To Calculate the Tax income, by excluding the rebates under different sections.
  */
+@Slf4j
 public class TaxCalculator {
 
-	public static String getRulesJson() {
-		String dTString = "";
-		Properties prop = new Properties();
-		InputStream input = null;
-		try {
+    /**
+     * To get the rules from the persistent file.
+     *
+     * @return rules json
+     */
+    public static String getRulesJson() {
+        String dTString = "";
+        Properties prop = new Properties();
+        try (InputStream input = new FileInputStream(Constants.CONFIG_FILE_NAME)) {
+            prop.load(input);
+            dTString = prop.getProperty(Constants.INCOME_TAX_JSON);
+        } catch (IOException ex) {
+            log.error("Error -->", ex.getMessage());
+        }
+        return dTString;
+    }
 
-			input = new FileInputStream("config.properties");
-			// load a properties file
-			prop.load(input);
-			dTString = prop.getProperty("incomeTaxJson");
-		}
-		catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		finally {
-			if (input != null) {
-				try {
-					input.close();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return dTString;
-	}
-
-	public static double execute(Map<String, String> s, String json) {
-		AbstractDecisionTableExecutorFactory Factory = AbstractDecisionTableExecutorFactory.getDtExecutorFactory();
-		AbstractDecisionTableExecutor dtExecutor = Factory.getDecisionTableExecutor("dT_id1", json);
-		List<Map> results = dtExecutor.getAllActionResults(s);
-		for (Map result : results) {
-			if (result.containsKey("tax")) {
-				System.out.println("tax---" + ((HashMap) result.get("tax")).get("value"));
-				return Double.parseDouble(((HashMap) result.get("tax")).get("value").toString());
-			}
-		}
-		return -1.00;
-	}
+    /**
+     * Execute the decision table based on the
+     * @param valueMap the value map
+     * @param rules    the rules
+     * and @return double double the tax to be paid.
+     */
+    public static double execute(Map<String, String> valueMap, String rules) {
+        AbstractDecisionTableExecutorFactory abstractDecisionTableExecutorFactory = AbstractDecisionTableExecutorFactory.getExecutorFactory();
+        AbstractDecisionTableExecutor dtExecutor = abstractDecisionTableExecutorFactory.getDecisionTableExecutor("dT_id1", rules);
+        List<Map<String, Map<String, String>>> results = dtExecutor.getAllActionResults(valueMap);
+        for (Map<String, Map<String, String>> result : results) {
+            if (result.containsKey("tax")) {
+                log.info("tax -->", (result.get("tax")).get("value"));
+                return Double.parseDouble((result.get("tax")).get("value"));
+            }
+        }
+        return -1.00;
+    }
 
 }

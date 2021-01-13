@@ -8,11 +8,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * The type Rule service.
+ */
 @Service
 public class RuleService implements IRuleService {
 
 	private RuleRepository ruleRepository;
 
+	/**
+	 * Instantiates a new Rule service.
+	 *
+	 * @param ruleRepository the rule repository
+	 */
 	public RuleService(RuleRepository ruleRepository) {
 		this.ruleRepository = ruleRepository;
 	}
