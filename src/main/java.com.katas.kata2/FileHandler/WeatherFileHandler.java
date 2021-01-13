@@ -30,7 +30,7 @@ public class WeatherFileHandler implements IFileHandler<Weather> {
     /**
      * method to get the weather object from particular line
      *
-     * @param line
+     * @param line line in the file
      * @return weather object
      */
     private Weather getWeatherObjectFromFileLine(String line) {

@@ -30,7 +30,7 @@ public class SoccerLeagueFileHandler implements IFileHandler<SoccerLeague> {
     /**
      * method to get the soccerLeague object from particular line
      *
-     * @param line
+     * @param line  line in the file
      * @return soccer league object
      */
     private SoccerLeague getSoccerLeagueObjectFromFileLine(String line) {
