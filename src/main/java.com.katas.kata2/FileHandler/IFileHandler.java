@@ -17,6 +17,8 @@ import java.util.List;
  * @param <T> data type
  */
 public interface IFileHandler<T> {
+    Logger log = LoggerFactory.getLogger(IFileHandler.class);
+
     /**
      * method to get data from the given file
      *
@@ -32,7 +34,6 @@ public interface IFileHandler<T> {
      */
     default List<String> readFile(String filePath) {
         Path path = Paths.get(filePath);
-        Logger log = LoggerFactory.getLogger(IFileHandler.class);
         try {
             return Files.readAllLines(path);
         } catch (IOException ioException) {
