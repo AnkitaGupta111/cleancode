@@ -31,7 +31,7 @@ public interface FileReader<T> {
             try {
                 return Files.readAllLines(file.toPath());
             } catch (IOException exception) {
-                logger.warn(exception.getLocalizedMessage());
+                logger.error("Something went wrong while reading file at path {}", filePath, exception);
             }
         }
         return new ArrayList<>();

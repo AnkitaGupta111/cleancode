@@ -1,6 +1,6 @@
 package com.katas.kata2;
 
-import com.katas.kata2.services.impl.WeatherReporter;
+import com.katas.kata2.services.WeatherReporter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

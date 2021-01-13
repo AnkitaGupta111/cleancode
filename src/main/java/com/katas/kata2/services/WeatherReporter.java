@@ -1,7 +1,7 @@
-package com.katas.kata2.services.impl;
+package com.katas.kata2.services;
 
 import com.katas.kata2.pojos.WeatherForDay;
-import com.katas.kata2.services.FileReader;
+import com.katas.kata2.services.impl.WeatherFileReader;
 
 import java.util.Comparator;
 

@@ -17,6 +17,8 @@ public class FootballScoreReporter {
     }
 
     /**
+     * Returns team with smallest goalConceived and goalScored difference.
+     *
      * @return Team with smallest goal difference
      */
     public String getLeastDifferenceGoals() {
