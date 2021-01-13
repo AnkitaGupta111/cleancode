@@ -1,4 +1,4 @@
-package com.codingkata.kata2.weather;
+package com.codingkata.kata2.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class WeatherRecord {
      *
      * @return temperature difference
      */
-    double getTemperatureDifference() {
+    public double getTemperatureDifference() {
         return (maximumDailyTemperature-minimumDailyTemperature);
     }
 }
