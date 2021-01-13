@@ -15,12 +15,12 @@ public class FileHandler {
     /**
      * filtering input file by skipping the lines with the mentioned starting words and return filtered lines list
      *
-     * @param fileName                  name of the file
+     * @param filePath                  filePath for the file
      * @param skipLineWithStartingWords String array containing words to skip lines
      * @return filtered lines list
      */
-    public List<String> getFilteredFileData(final String fileName, String[] skipLineWithStartingWords) {
-        Path path = Paths.get(fileName);
+    public List<String> getFilteredFileData(final String filePath, String[] skipLineWithStartingWords) {
+        Path path = Paths.get(filePath);
         try {
             BufferedReader reader = Files.newBufferedReader(path);
             return reader.lines().filter(line -> !skipLine(line, skipLineWithStartingWords)).collect(Collectors.toList());

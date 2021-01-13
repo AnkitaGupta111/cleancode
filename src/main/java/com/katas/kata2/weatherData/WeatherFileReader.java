@@ -9,19 +9,19 @@ import java.util.List;
 public class WeatherFileReader extends FileHandler {
 
     /**
-     * returns the list containing day, maximumTemperature, minimumTemperature by trimming
-     * the respective substrings from the filtered lines
+     * returns the list containing day, maximumTemperature, minimumTemperature by splitting input data lines using regex
      *
-     * @param fileName                  name of the weather.dat file
+     * @param filePath                  filePath for the weather.dat file
      * @param skipLineWithStartingWords String array containing the words to skip lines
      * @return WeatherData list containing day, maximumTemperature, minimumTemperature
      */
-    private List<WeatherData> getRequiredWeatherData(final String fileName, final String[] skipLineWithStartingWords) {
+    private List<WeatherData> getRequiredWeatherData(final String filePath, final String[] skipLineWithStartingWords) {
         List<WeatherData> data = new ArrayList<>();
-        getFilteredFileData(fileName, skipLineWithStartingWords).stream().forEach(rowData -> {
-            int day = Integer.parseInt(rowData.trim().substring(0, 3).trim());
-            float maximumTemperature = Float.parseFloat(rowData.trim().substring(3, 7).trim().replaceAll("[^0-9]", ""));
-            float minimumTemperature = Float.parseFloat(rowData.trim().substring(8, 12).trim().replaceAll("[^0-9]", ""));
+        getFilteredFileData(filePath, skipLineWithStartingWords).stream().forEach(rowData -> {
+            String[] dataArray = rowData.split("\\s+");
+            int day = Integer.parseInt(dataArray[1]);
+            float maximumTemperature = Float.parseFloat(dataArray[2].replaceAll("[^0-9]", ""));
+            float minimumTemperature = Float.parseFloat(dataArray[3].replaceAll("[^0-9]", ""));
             data.add(new WeatherData(day, maximumTemperature, minimumTemperature));
         });
         return data;
@@ -30,15 +30,15 @@ public class WeatherFileReader extends FileHandler {
     /**
      * calculates the minimum temp difference and mapping to the respective day
      *
-     * @param fileName                  name of the weather.dat file
+     * @param filePath                  filePath for the weather.dat file
      * @param skipLineWithStartingWords String array containing words to skip lines
      * @return day with minimum temperature spread
      */
-    public int getMinimumTemperatureSpread(final String fileName, final String[] skipLineWithStartingWords) {
-        return getRequiredWeatherData(fileName, skipLineWithStartingWords)
+    public int getMinimumTemperatureSpread(final String filePath, final String[] skipLineWithStartingWords) {
+        return getRequiredWeatherData(filePath, skipLineWithStartingWords)
                 .stream()
                 .min(Comparator.comparingDouble(WeatherData::getTemperatureDifference))
                 .map(WeatherData::getDay)
-                .orElseThrow(null);
+                .orElseThrow();
     }
 }

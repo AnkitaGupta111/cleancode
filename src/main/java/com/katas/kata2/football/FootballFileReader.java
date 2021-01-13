@@ -11,16 +11,17 @@ public class FootballFileReader extends FileHandler {
      * returns the list containing teamName, goalsScoredForTheTeam, goalsScoredAgainstTheTeam by trimming
      * the respective substrings from the filtered lines
      *
-     * @param fileName                  name of the football.dat file
+     * @param filePath                  filePath for football.dat file
      * @param skipLineWithStartingWords String array containing words to skip lines
      * @return FootballData list containing teamName, goalsScoredForTheTeam, goalsScoredAgainstTheTeam
      */
-    private List<FootballData> getRequiredTeamData(String fileName, String[] skipLineWithStartingWords) {
+    private List<FootballData> getRequiredTeamData(String filePath, String[] skipLineWithStartingWords) {
         List<FootballData> data = new ArrayList<>();
-        getFilteredFileData(fileName, skipLineWithStartingWords).stream().forEach(rowData -> {
-            String teamName = rowData.trim().substring(3, 18).trim();
-            int goalsScoredForTheTeam = Integer.parseInt(rowData.trim().substring(39, 42).trim());
-            int goalsScoredAgainstTheTeam = Integer.parseInt(rowData.trim().substring(46, 49).trim());
+        getFilteredFileData(filePath, skipLineWithStartingWords).stream().forEach(rowData -> {
+            String[] dataArray = rowData.split("\\s+");
+            String teamName = dataArray[2];
+            int goalsScoredForTheTeam = Integer.parseInt(dataArray[7]);
+            int goalsScoredAgainstTheTeam = Integer.parseInt(dataArray[9]);
             data.add(new FootballData(teamName, goalsScoredForTheTeam, goalsScoredAgainstTheTeam));
         });
         return data;
@@ -29,15 +30,15 @@ public class FootballFileReader extends FileHandler {
     /**
      * calculates the minimum goals difference and mapping to the respective team
      *
-     * @param fileName                  name of the football.dat file
+     * @param filePath                  filePath for the football.dat file
      * @param skipLineWithStartingWords String array containing words to skip lines
      * @return team name with minimumGoalDifference
      */
-    public String getMinimumGoalDifference(final String fileName, final String[] skipLineWithStartingWords) {
-        return getRequiredTeamData(fileName, skipLineWithStartingWords)
+    public String getMinimumGoalDifference(final String filePath, final String[] skipLineWithStartingWords) {
+        return getRequiredTeamData(filePath, skipLineWithStartingWords)
                 .stream()
                 .min(Comparator.comparingDouble(FootballData::getGoalsDifference))
                 .map(FootballData::getTeamName)
-                .orElseThrow(null);
+                .orElseThrow();
     }
 }
