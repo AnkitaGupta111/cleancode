@@ -1,6 +1,5 @@
 package com.zemoso.zinteract.decisiontable;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +8,16 @@ public class DecisionTable {
 	private String options[];
 
 	private String name;
+
 	private String description;
+
 	private String artifact_id;
+
 	private Boolean ignoreCase = true;
 
-
 	private DtHeader header = new DtHeader();
-	//private HashMap<String,Enum> conditions = new HashMap<String, Enum>();
+
+	// private HashMap<String,Enum> conditions = new HashMap<String, Enum>();
 
 	private List<DtRow> dT = new ArrayList<DtRow>();
 
@@ -23,16 +25,16 @@ public class DecisionTable {
 
 	}
 
-	public void setIgnoreCase(Boolean ignoreCase){
+	public void setIgnoreCase(Boolean ignoreCase) {
 		this.ignoreCase = ignoreCase;
 	}
 
-	public Boolean getIgnoreCase(){
+	public Boolean getIgnoreCase() {
 		return this.ignoreCase;
 	}
 
 	public void setOptions(String options[]) {
-		//filter options and set default options
+		// filter options and set default options
 		options = new String[3];
 
 	}
@@ -41,8 +43,8 @@ public class DecisionTable {
 		dT = dt;
 	}
 
-	public void setHeaderConditions(String s,Enum e) {
-		this.header.addConditions(s,e);
+	public void setHeaderConditions(String s, Enum e) {
+		this.header.addConditions(s, e);
 	}
 
 	public DtHeader getHeader() {
@@ -53,7 +55,7 @@ public class DecisionTable {
 		return dT;
 	}
 
-	public void setName(String s){
+	public void setName(String s) {
 		this.name = s;
 	}
 
@@ -64,4 +66,5 @@ public class DecisionTable {
 	public void setArtifactId(String s) {
 		this.artifact_id = s;
 	}
+
 }

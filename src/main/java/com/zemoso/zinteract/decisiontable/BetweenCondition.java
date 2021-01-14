@@ -1,52 +1,56 @@
 package com.zemoso.zinteract.decisiontable;
 
+public class BetweenCondition extends GenericCondition {
 
-public class BetweenCondition extends GenericCondition{
-    private StringConstants comparatorName;
-    private GenericCondition lessThanCondition;
-    private GenericCondition greaterThanCondition;
-    private String conditionName;
-    private StringConstants dataType;
+	private StringConstants comparatorName;
 
-    public void setConditionValue(GenericCondition l,GenericCondition g) {
-        this.lessThanCondition = l;
-        this.greaterThanCondition = g;
-    }
+	private GenericCondition lessThanCondition;
 
-    public StringConstants getDataType() {
-        return this.dataType;
-    }
+	private GenericCondition greaterThanCondition;
 
-    public void setDataType(StringConstants s){
-        this.dataType = s;
-    }
+	private String conditionName;
 
-    public GenericCondition getLessThanConditionValue() {
-        return lessThanCondition;
-    }
+	private StringConstants dataType;
 
-    public GenericCondition getGreaterThanConditionValue() {
-        return greaterThanCondition;
-    }
+	public void setConditionValue(GenericCondition l, GenericCondition g) {
+		this.lessThanCondition = l;
+		this.greaterThanCondition = g;
+	}
 
-    public void setLessThanCondition(GenericCondition l){
-        this.lessThanCondition = l;
-    }
+	public StringConstants getDataType() {
+		return this.dataType;
+	}
 
-    public void setGreaterThanCondition(GenericCondition g){
-        this.greaterThanCondition = g;
-    }
+	public void setDataType(StringConstants s) {
+		this.dataType = s;
+	}
 
-    public void setComparatorName(StringConstants s){
-        this.comparatorName = s;
-    }
+	public GenericCondition getLessThanConditionValue() {
+		return lessThanCondition;
+	}
 
-    public StringConstants getComparatorName() {
-        return comparatorName;
-    }
+	public GenericCondition getGreaterThanConditionValue() {
+		return greaterThanCondition;
+	}
 
-    public String getConditionName() {
-        return conditionName;
-    }
+	public void setLessThanCondition(GenericCondition l) {
+		this.lessThanCondition = l;
+	}
+
+	public void setGreaterThanCondition(GenericCondition g) {
+		this.greaterThanCondition = g;
+	}
+
+	public void setComparatorName(StringConstants s) {
+		this.comparatorName = s;
+	}
+
+	public StringConstants getComparatorName() {
+		return comparatorName;
+	}
+
+	public String getConditionName() {
+		return conditionName;
+	}
 
 }

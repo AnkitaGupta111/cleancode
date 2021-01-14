@@ -1,40 +1,40 @@
 package com.zemoso.zinteract.decisiontable;
 
-public class DtAction{
+public class DtAction {
+
 	private String action;
 
-    public String getType() {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    private String type;
+	private String type;
 
+	public boolean isScripted() {
+		return isScripted;
+	}
 
-    public boolean isScripted() {
-        return isScripted;
-    }
+	public void setScripted(boolean scripted) {
+		isScripted = scripted;
+	}
 
-    public void setScripted(boolean scripted) {
-        isScripted = scripted;
-    }
+	private boolean isScripted = false;
 
-    private boolean isScripted=false;
+	public String getAction() {
+		return action;
+	}
 
+	public void setAction(String s) {
+		this.action = s;
+	}
 
-    public String getAction() {
-        return action;
-    }
+	@Override
+	public String toString() {
+		return action;
+	}
 
-    public void setAction(String s){
-        this.action = s;
-    }
-
-    @Override
-    public String toString(){
-            return action;
-    }
 }

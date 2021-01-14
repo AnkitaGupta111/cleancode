@@ -33,7 +33,7 @@
 
 # IntelliJ
 out/
-target/classes/com/
+target/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

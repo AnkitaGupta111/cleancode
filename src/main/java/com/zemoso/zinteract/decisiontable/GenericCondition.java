@@ -1,44 +1,45 @@
 package com.zemoso.zinteract.decisiontable;
 
+public class GenericCondition extends DtCondition {
 
-public class GenericCondition extends DtCondition{
-    private StringConstants comparatorName;
+	private StringConstants comparatorName;
 
-    private String conditionName;
+	private String conditionName;
 
-    private StringConstants dataType;
-    private ConditionValue conditionValue;
+	private StringConstants dataType;
 
-    public ConditionValue getConditionValue(){
-        return this.conditionValue;
-    }
-    
-    public StringConstants getDataType() {
-        return dataType;
-    }
+	private ConditionValue conditionValue;
 
-    public void setDataType(StringConstants dataType) {
-        this.dataType = dataType;
-    }
+	public ConditionValue getConditionValue() {
+		return this.conditionValue;
+	}
 
-    public void setConditionValue(ConditionValue conditionValue) {
-        this.conditionValue = conditionValue;
-    }
+	public StringConstants getDataType() {
+		return dataType;
+	}
 
-    public StringConstants getComparatorName() {
-        return comparatorName;
-    }
+	public void setDataType(StringConstants dataType) {
+		this.dataType = dataType;
+	}
 
-    public String getConditionName() {
-        return conditionName;
-    }
+	public void setConditionValue(ConditionValue conditionValue) {
+		this.conditionValue = conditionValue;
+	}
 
-    public void setComparatorName(StringConstants s) {
-        this.comparatorName = s;
-    }
+	public StringConstants getComparatorName() {
+		return comparatorName;
+	}
 
-    public void setConditionName(String s) {
-        this.conditionName = s;
-    }
+	public String getConditionName() {
+		return conditionName;
+	}
+
+	public void setComparatorName(StringConstants s) {
+		this.comparatorName = s;
+	}
+
+	public void setConditionName(String s) {
+		this.conditionName = s;
+	}
 
 }
