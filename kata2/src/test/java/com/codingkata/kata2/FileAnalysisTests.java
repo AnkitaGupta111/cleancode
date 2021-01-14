@@ -10,11 +10,11 @@ public class FileAnalysisTests {
     private SoccerLeagueDataAnalysis soccerLeagueDataAnalysis=new SoccerLeagueDataAnalysis("src/main/resources/football.dat");
     private WeatherDataAnalysis weatherDataAnalysis=new WeatherDataAnalysis("src/main/resources/weather.dat");
     @Test
-    void testWeather(){
+    void testWeatherData(){
         Assertions.assertEquals(14,weatherDataAnalysis.getSmallestTemperatureDifference());
     }
     @Test
-    void testSoccer(){
+    void testSoccerLeagueData(){
         Assertions.assertEquals("Aston_Villa",soccerLeagueDataAnalysis.getSmallestGoalDifference());
     }
 }
