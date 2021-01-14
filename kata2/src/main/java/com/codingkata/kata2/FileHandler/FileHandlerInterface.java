@@ -24,7 +24,7 @@ public interface FileHandlerInterface<T> {
 
     /**
      *
-     * @param filepath
+     * @param filepath  path of the file
      * @return lines in the file
      */
     default List<String> readFile(String filepath){

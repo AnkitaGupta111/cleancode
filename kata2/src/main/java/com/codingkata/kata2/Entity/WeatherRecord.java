@@ -13,7 +13,7 @@ public class WeatherRecord {
     private double minimumDailyTemperature;
 
     /**
-     *
+     * method to calculate difference between maximum and minimum daily temperature
      * @return temperature difference
      */
     public double getTemperatureDifference() {

@@ -20,7 +20,7 @@ public class WeatherDataHandler implements FileHandlerInterface<WeatherRecord> {
     public List<WeatherRecord> getFileData() {
         List<WeatherRecord> weatherObjects = readFile(filePath)
                 .stream()
-                .filter(line -> (!line.contains("Dy")))
+                .filter(line -> (!line.isBlank() &&(!line.contains("Dy")) &&!line.contains("mo")))
                 .map(line -> getWeatherObjectFromFileLine(line))
                 .collect(Collectors.toList());
         return weatherObjects;
@@ -28,12 +28,12 @@ public class WeatherDataHandler implements FileHandlerInterface<WeatherRecord> {
 
     /**
      *
-     * @param line
+     * @param line represents line in file
      * @return weather record from each line
      */
     private WeatherRecord getWeatherObjectFromFileLine(String line) {
         String [] dataInLines=line.replaceAll("[]*]", "").split("\\s+");
-        int day=Integer.parseInt(dataInLines[2]);
+        int day=Integer.parseInt(dataInLines[1]);
         double maxTemperature = Double.parseDouble(dataInLines[2]);
         double minTemperature = Double.parseDouble(dataInLines[3]);
         return new WeatherRecord(day,maxTemperature,minTemperature);

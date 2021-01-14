@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SoccerLeagueRecord {
-    public String teamName;
-    public int goalsScoredFor;
-    public int goalsScoredAgainst;
+    private String teamName;
+    private int goalsScoredFor;
+    private int goalsScoredAgainst;
     /**
      *
      * @return difference between goalsScoredFor and goalsScoredAgainst team

@@ -14,7 +14,7 @@ public class WeatherDataAnalysis {
 
     /**
      *
-     * @return smallest teamperature spread
+     * @return smallest temperature spread
      */
     public int getSmallestTemperatureDifference(){
         return fileHandlerInterface.getFileData()
